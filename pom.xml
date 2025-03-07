@@ -7,12 +7,17 @@
   <artifactId>crazy-test</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>crazy-test</name>
-  <description>Demo project for Spring Boot</description>
+  <description>测试平台</description>
   <properties>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring-boot.version>2.6.13</spring-boot.version>
+    <mybatis-plus-core.version>3.4.3.1</mybatis-plus-core.version>
+    <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
+    <swagger.version>3.0.0</swagger.version>
+    <swagger.boot.version>3.0.0</swagger.boot.version>
+    <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
   </properties>
   <dependencies>
     <dependency>
@@ -25,6 +30,49 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-boot-starter</artifactId>
+      <version>3.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+    <!--美化swagger-->
+    <dependency>
+      <groupId>com.github.xiaoymin</groupId>
+      <artifactId>knife4j-springdoc-ui</artifactId>
+      <version>3.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>1.5.13</version>
+    </dependency>
+
+
   </dependencies>
   <dependencyManagement>
     <dependencies>
