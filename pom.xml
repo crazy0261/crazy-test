@@ -19,6 +19,7 @@
     <knife4j-springdoc-ui.version>3.0.3</knife4j-springdoc-ui.version>
     <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
     <swagger-annotations.version>1.5.13</swagger-annotations.version>
+    <java-jwt.version>3.8.2</java-jwt.version>
   </properties>
 
   <dependencies>
@@ -72,6 +73,11 @@
       <groupId>io.swagger</groupId>
       <artifactId>swagger-annotations</artifactId>
       <version>${swagger-annotations.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>${java-jwt.version}</version>
     </dependency>
 
 

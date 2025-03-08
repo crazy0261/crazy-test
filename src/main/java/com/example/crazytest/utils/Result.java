@@ -10,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public class ResultUtil<T> {
+public class Result<T> {
 
   private int code;
   private boolean success;
@@ -18,23 +18,23 @@ public class ResultUtil<T> {
   private long total;
   private T data;
   // 构造方法（隐藏默认构造方法）
-  private ResultUtil() {}
+  private Result() {}
 
   // 成功的响应（带数据）
-  public static <T> ResultUtil<T> success(T data) {
-    ResultUtil<T> response = new ResultUtil<>();
+  public static <T> Result<T> success(T data) {
+    Result<T> response = new Result<>();
     response.code = 200; // 成功的状态码
     response.message = "操作成功"; // 默认的成功提示
     response.data = data;
     return response;
   }
   // 成功的响应（无数据）
-  public static <T> ResultUtil<T> success() {
+  public static <T> Result<T> success() {
     return success(null);
   }
   // 失败的响应（带错误信息）
-  public static <T> ResultUtil<T> fail(int code, String message) {
-    ResultUtil<T> response = new ResultUtil<>();
+  public static <T> Result<T> fail(int code, String message) {
+    Result<T> response = new Result<>();
     response.code = code; // 自定义错误状态码
     response.message = message; // 错误提示
     response.data = null;

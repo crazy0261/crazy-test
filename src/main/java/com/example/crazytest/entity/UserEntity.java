@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,6 +19,7 @@ import lombok.experimental.Accessors;
  */
 
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("user")
@@ -71,5 +73,8 @@ public class UserEntity implements Serializable {
 
   @ApiModelProperty(value = "修改人名称")
   private String updateByName;
+
+  @ApiModelProperty(value = "修改时间时间")
+  private LocalDateTime updateTime;
 
 }
