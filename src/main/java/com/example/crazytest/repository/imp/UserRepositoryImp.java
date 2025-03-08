@@ -28,4 +28,12 @@ public class UserRepositoryImp extends ServiceImpl<UserMapper, UserEntity> imple
     return lambdaQuery().eq(UserEntity::getAccount, account).eq(UserEntity::getIsDelete, 0)
         .orderByDesc(UserEntity::getUpdateTime).last("limit 1").one();
   }
+
+  @Override
+  public Boolean resetPwd(String account) {
+
+    return lambdaUpdate().eq(UserEntity::getAccount, account).eq(UserEntity::getIsDelete, 0)
+        .set(UserEntity::getPassword, "crazy-test")
+        .update();
+  }
 }

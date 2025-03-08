@@ -32,6 +32,11 @@ public class UserImp implements UserService {
   }
 
   @Override
+  public Boolean resetPwd(String resetPwd) {
+    return userRepositoryImp.resetPwd(resetPwd);
+  }
+
+  @Override
   public String login(String account, String password) {
     UserEntity userEntity = userRepositoryImp.getUser(account);
 

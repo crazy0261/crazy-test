@@ -55,5 +55,10 @@ public class UserController {
     return Result.success(userImp.save(userEntity));
   }
 
+  @PostMapping("/resetPwd")
+  public Result<Boolean> resetPwd(@RequestParam(value = "account") String account) {
+    return Result.success(userImp.resetPwd(account));
+  }
+
 
 }

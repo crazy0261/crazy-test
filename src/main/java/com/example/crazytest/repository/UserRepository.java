@@ -10,4 +10,5 @@ public interface UserRepository extends IService<UserEntity> {
 
   UserEntity getUser(String account);
 
+  Boolean resetPwd(String account);
 }

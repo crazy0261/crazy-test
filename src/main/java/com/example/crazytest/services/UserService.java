@@ -9,6 +9,8 @@ public interface UserService {
 
   Boolean save(UserEntity user);
 
+  Boolean resetPwd(String account);
+
   String login(String account,String password);
 
 }
