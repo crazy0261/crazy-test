@@ -2,7 +2,7 @@ package com.example.crazytest.utils;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.crazytest.config.Constants;
-import com.example.crazytest.entity.UserEntity;
+import com.example.crazytest.entity.User;
 import com.example.crazytest.enums.ResultEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class JWTInterceptor implements HandlerInterceptor {
     if (StringUtils.isNotEmpty(token)) {
       try {
         JWTUtil.getDecodeToken(token);
-        UserEntity user = JWTUtil.getUserByToken(token);
+        User user = JWTUtil.getUserByToken(token);
         BaseContext.setTenantId(user.getTenantId());
         BaseContext.setUserAccount(user.getAccount());
         BaseContext.setUserName(user.getName());

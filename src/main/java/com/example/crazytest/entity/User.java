@@ -22,8 +22,8 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("user")
-public class UserEntity implements Serializable {
+@TableName(value = "user")
+public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @TableId(value = "id", type = IdType.AUTO)

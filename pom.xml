@@ -37,16 +37,13 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
+      <version>3.5.1</version>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
+
     </dependency>
 
     <dependency>
@@ -78,6 +75,10 @@
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>${java-jwt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
     </dependency>
 
 

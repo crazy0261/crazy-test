@@ -19,3 +19,10 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml # Mapper XML 文件路径
   type-aliases-package: com.example.crazytest.entity # 实体类包路径
+
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
+
+
+

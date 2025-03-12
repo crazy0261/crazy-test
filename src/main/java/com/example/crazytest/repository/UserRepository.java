@@ -1,14 +1,14 @@
 package com.example.crazytest.repository;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.crazytest.entity.UserEntity;
+import com.example.crazytest.entity.User;
 import java.util.List;
 
-public interface UserRepository extends IService<UserEntity> {
+public interface UserRepository extends IService<User> {
 
-  List<UserEntity> listAll();
+  List<User> listAll();
 
-  UserEntity getUser(String account);
+  User getUser(String account);
 
   Boolean resetPwd(String account);
 }

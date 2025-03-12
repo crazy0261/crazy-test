@@ -1,6 +1,6 @@
 package com.example.crazytest.imp;
 
-import com.example.crazytest.entity.UserEntity;
+import com.example.crazytest.entity.User;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.imp.UserRepositoryImp;
 import com.example.crazytest.services.UserService;
@@ -8,6 +8,7 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author
@@ -16,18 +17,19 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @DESRIPTION
  */
 
+@Service
 public class UserImp implements UserService {
 
   @Autowired
   UserRepositoryImp userRepositoryImp;
 
   @Override
-  public List<UserEntity> getUsers() {
+  public List<User> getUsers() {
     return userRepositoryImp.listAll();
   }
 
   @Override
-  public Boolean save(UserEntity user) {
+  public Boolean save(User user) {
     return userRepositoryImp.saveOrUpdate(user);
   }
 
@@ -38,12 +40,14 @@ public class UserImp implements UserService {
 
   @Override
   public String login(String account, String password) {
-    UserEntity userEntity = userRepositoryImp.getUser(account);
+
+    AssertUtil.assertNotTrue(account.isEmpty() || password.isEmpty(),
+        ResultEnum.BAD_REQUEST.getMessage());
+    User userEntity = userRepositoryImp.getUser(account);
 
     AssertUtil.assertNotNull(userEntity, ResultEnum.USER_NOT_FOUND.getMessage());
     AssertUtil.assertNotTrue(Boolean.TRUE.equals(userEntity.getIsDelete()),
         ResultEnum.USER_STOP_STATUS.getMessage());
-
     AssertUtil.assertNotTrue(userEntity.getPassword().equals(password),
         ResultEnum.USER_PASSWORD_FAIL.getMessage());
 

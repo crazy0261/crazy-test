@@ -1,9 +1,15 @@
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    druid:
-      jacoco:
-        url: jdbc:mysql://124.221.169.10:3306/qmp?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: root
-        password: 123456
+    url: jdbc:mysql://124.222.16.11:3307/crazy_test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /api

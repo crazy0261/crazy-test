@@ -1,7 +1,7 @@
 package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.crazytest.entity.UserEntity;
+import com.example.crazytest.entity.User;
 import com.example.crazytest.mapper.user.UserMapper;
 import com.example.crazytest.repository.UserRepository;
 import java.util.List;
@@ -15,25 +15,25 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserRepositoryImp extends ServiceImpl<UserMapper, UserEntity> implements
+public class UserRepositoryImp extends ServiceImpl<UserMapper, User> implements
     UserRepository {
 
   @Override
-  public List<UserEntity> listAll() {
-    return lambdaQuery().eq(UserEntity::getIsDelete, 0).list();
+  public List<User> listAll() {
+    return lambdaQuery().eq(User::getIsDelete, 0).list();
   }
 
   @Override
-  public UserEntity getUser(String account) {
-    return lambdaQuery().eq(UserEntity::getAccount, account).eq(UserEntity::getIsDelete, 0)
-        .orderByDesc(UserEntity::getUpdateTime).last("limit 1").one();
+  public User getUser(String account) {
+    return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+        .orderByDesc(User::getUpdateTime).last("limit 1").one();
   }
 
   @Override
   public Boolean resetPwd(String account) {
 
-    return lambdaUpdate().eq(UserEntity::getAccount, account).eq(UserEntity::getIsDelete, 0)
-        .set(UserEntity::getPassword, "crazy-test")
+    return lambdaUpdate().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+        .set(User::getPassword, "crazy-test")
         .update();
   }
 }

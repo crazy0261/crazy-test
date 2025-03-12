@@ -31,7 +31,7 @@ public class CORSFilterConfig implements Filter {
     response.addHeader("Access-Control-Allow-Origin", "*");
 
     // 支持请求头
-    response.addHeader("Access-Control-Allow-Headers", "*");
+    response.addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
     if (((HttpServletRequest) servletRequest).getMethod().equals("OPTIONS")) {
       servletResponse.getWriter().println("ok");
