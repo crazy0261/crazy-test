@@ -25,7 +25,7 @@ public class UserRepositoryImp extends ServiceImpl<UserMapper, User> implements
 
   @Override
   public User getUser(String account) {
-    return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+    return lambdaQuery().eq(User::getAccount, account)
         .orderByDesc(User::getUpdateTime).last("limit 1").one();
   }
 
@@ -35,5 +35,11 @@ public class UserRepositoryImp extends ServiceImpl<UserMapper, User> implements
     return lambdaUpdate().eq(User::getAccount, account).eq(User::getIsDelete, 0)
         .set(User::getPassword, "crazy-test")
         .update();
+  }
+
+  @Override
+  public User currentUser(String account) {
+    return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+        .orderByDesc(User::getUpdateTime).last("limit 1").one();
   }
 }

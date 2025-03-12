@@ -13,7 +13,7 @@ import lombok.Data;
 public class Result<T> {
 
   private int code;
-  private boolean success;
+  private boolean success = true;
   private String message;
   private long total;
   private T data;

@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
+import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.imp.UserImp;
 import com.example.crazytest.utils.Result;
 import java.util.List;
@@ -40,12 +41,17 @@ public class UserController {
 
   /**
    * 登录
-
    */
   @PostMapping("/login")
   public Result<String> login(@RequestBody UserReq userReq) {
     return Result.success(userImp.login(userReq.getAccount(), userReq.getPassword()));
   }
+
+  @GetMapping("/currentUser")
+  public Result<UserResultEntity> currentUser(@RequestParam String account) {
+    return Result.success(userImp.currentUser(account));
+  }
+
   @PostMapping("/save")
   public Result<Boolean> save(@RequestBody User userEntity) {
     return Result.success(userImp.save(userEntity));

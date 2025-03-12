@@ -1,6 +1,7 @@
 package com.example.crazytest.imp;
 
 import com.example.crazytest.entity.User;
+import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.imp.UserRepositoryImp;
 import com.example.crazytest.services.UserService;
@@ -8,6 +9,7 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +55,13 @@ public class UserImp implements UserService {
         ResultEnum.USER_PASSWORD_FAIL.getMessage());
 
     return JWTUtil.crateToken(userEntity);
+  }
+
+  @Override
+  public UserResultEntity currentUser(String account) {
+    UserResultEntity userEntity = new UserResultEntity();
+    User user = userRepositoryImp.currentUser(account);
+    BeanUtils.copyProperties(user, userEntity);
+    return userEntity;
   }
 }
