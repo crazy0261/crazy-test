@@ -54,14 +54,13 @@ public class GlobalLogAspect {
 
     try {
       result = joinPoint.proceed();
+      log.info("request：ip:{} , url:{} ,reqParams:{}, header:{},result:{}", ip, url, reqData,
+          header, result);
       return result;
     } catch (Throwable e) {
       log.error("ERROR Req：ip:{} , url:{} ,reqParams:{}, header:{},result:{} ", ip, url, reqData,
           header, e.getMessage());
       throw e;
-    } finally {
-      log.info("request：ip:{} , url:{} ,reqParams:{}, header:{},result:{}", ip, url, reqData,
-          header, result);
     }
   }
 

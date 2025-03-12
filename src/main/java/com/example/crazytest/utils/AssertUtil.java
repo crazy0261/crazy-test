@@ -28,7 +28,7 @@ public class AssertUtil {
 
 
   public static void assertNotTrue(Boolean bool, String message) {
-    if (Boolean.TRUE.equals(bool)) {
+    if (Boolean.FALSE.equals(bool)) {
       throw new BusinessException(400, message);
     }
   }

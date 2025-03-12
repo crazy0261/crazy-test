@@ -7,6 +7,7 @@ import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,12 +42,12 @@ public class UserImp implements UserService {
   @Override
   public String login(String account, String password) {
 
-    AssertUtil.assertNotTrue(account.isEmpty() || password.isEmpty(),
+    AssertUtil.assertNotTrue(StringUtils.isNotEmpty(account) && StringUtils.isNotEmpty(password),
         ResultEnum.BAD_REQUEST.getMessage());
     User userEntity = userRepositoryImp.getUser(account);
 
     AssertUtil.assertNotNull(userEntity, ResultEnum.USER_NOT_FOUND.getMessage());
-    AssertUtil.assertNotTrue(Boolean.TRUE.equals(userEntity.getIsDelete()),
+    AssertUtil.assertNotTrue(Boolean.FALSE.equals(userEntity.getIsDelete()),
         ResultEnum.USER_STOP_STATUS.getMessage());
     AssertUtil.assertNotTrue(userEntity.getPassword().equals(password),
         ResultEnum.USER_PASSWORD_FAIL.getMessage());
