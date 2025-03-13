@@ -5,7 +5,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import java.util.List;
 
-public interface UserRepository extends IService<User> {
+public interface UserService extends IService<User> {
 
   List<UserResultEntity> listAll(String account, String name, String phone, Boolean status);
 

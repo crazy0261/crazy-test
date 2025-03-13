@@ -3,7 +3,7 @@ package com.example.crazytest.imp;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
-import com.example.crazytest.repository.imp.UserRepositoryImp;
+import com.example.crazytest.repository.imp.UserServiceImp;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.JWTUtil;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class UserImp implements UserService {
 
   @Autowired
-  UserRepositoryImp userRepositoryImp;
+  UserServiceImp userRepositoryImp;
 
   @Override
   public List<UserResultEntity> getUsers(String account, String name, String phone, Boolean status) {

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.mapper.user.UserMapper;
-import com.example.crazytest.repository.UserRepository;
+import com.example.crazytest.repository.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserRepositoryImp extends ServiceImpl<UserMapper, User> implements
-    UserRepository {
+public class UserServiceImp extends ServiceImpl<UserMapper, User> implements
+    UserService {
 
   @Override
   public List<UserResultEntity> listAll(String account, String name, String phone, Boolean status) {
