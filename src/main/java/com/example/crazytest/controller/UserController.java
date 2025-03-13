@@ -35,8 +35,12 @@ public class UserController {
    * @return
    */
   @GetMapping("/list")
-  public Result<List<User>> listAll() {
-    return Result.success(userImp.getUsers());
+  public Result<List<UserResultEntity>> listAll(
+      @RequestParam(value = "account", required = false) String account,
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "phone", required = false) String phone,
+      @RequestParam(value = "status", required = false) Boolean status) {
+    return Result.success(userImp.getUsers(account, name, phone,status));
   }
 
   /**

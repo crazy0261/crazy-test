@@ -47,7 +47,7 @@ public class GlobalLogAspect {
     }
     String url = request.getRequestURL().toString();
     String ip = request.getRemoteAddr();
-    String reqData = this.getParameters(joinPoint);
+    String reqData = this.getParameters(joinPoint, request);
     String header = this.getHeaders(request).toString();
 
     Object result = null;
@@ -79,10 +79,11 @@ public class GlobalLogAspect {
   }
 
   // 获取请求参数
-  private String getParameters(ProceedingJoinPoint joinPoint) {
+  private String getParameters(ProceedingJoinPoint joinPoint, HttpServletRequest request) {
     StringBuilder builder = new StringBuilder("[");
 
-    if (null != joinPoint && null != joinPoint.getSignature()) {
+    if (null != joinPoint && null != joinPoint.getSignature()
+        && request.getParameterNames() == null) {
       CodeSignature signature = (CodeSignature) joinPoint.getSignature();
       Object[] object = joinPoint.getArgs();
 
@@ -96,6 +97,17 @@ public class GlobalLogAspect {
           builder.append("-");
         }
       }
+    } else if (null != request.getParameterNames()) {
+      Map<String, String> parameters = new HashMap<>();
+      Enumeration<String> paramsEnumeration = request.getParameterNames();
+
+      while (paramsEnumeration.hasMoreElements()) {
+        String paramsName = paramsEnumeration.nextElement();
+        String paramsValue = request.getParameter(paramsName);
+        parameters.put(paramsName, paramsValue);
+      }
+      builder.append(parameters);
+      System.out.println("------");
     }
     builder.append("]");
 

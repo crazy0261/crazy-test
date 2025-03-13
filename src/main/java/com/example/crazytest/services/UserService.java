@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface UserService {
 
-  List<User> getUsers();
+  List<UserResultEntity> getUsers(String account, String name, String phone, Boolean status);
 
   Boolean save(User user);
 
   Boolean resetPwd(String account);
 
-  String login(String account,String password);
+  String login(String account, String password);
 
   UserResultEntity currentUser(String account);
 

@@ -27,8 +27,8 @@ public class UserImp implements UserService {
   UserRepositoryImp userRepositoryImp;
 
   @Override
-  public List<User> getUsers() {
-    return userRepositoryImp.listAll();
+  public List<UserResultEntity> getUsers(String account, String name, String phone, Boolean status) {
+    return userRepositoryImp.listAll(account, name, phone, status);
   }
 
   @Override

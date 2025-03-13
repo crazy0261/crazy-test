@@ -1,5 +1,6 @@
 package com.example.crazytest.entity.req;
 
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -25,5 +26,15 @@ public class UserResultEntity {
 
 
   private Boolean status;
+
+  private String createByName;
+
+  private LocalDateTime createTime;
+
+
+  private String updateByName;
+
+  private LocalDateTime updateTime;
+
 
 }
