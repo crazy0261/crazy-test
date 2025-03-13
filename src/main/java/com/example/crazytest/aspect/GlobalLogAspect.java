@@ -107,7 +107,6 @@ public class GlobalLogAspect {
         parameters.put(paramsName, paramsValue);
       }
       builder.append(parameters);
-      System.out.println("------");
     }
     builder.append("]");
 
