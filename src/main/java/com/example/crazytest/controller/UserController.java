@@ -1,5 +1,6 @@
 package com.example.crazytest.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
 import com.example.crazytest.entity.req.UserResultEntity;
@@ -35,12 +36,16 @@ public class UserController {
    * @return
    */
   @GetMapping("/list")
-  public Result<List<UserResultEntity>> listAll(
+  public Result listAll(
       @RequestParam(value = "account", required = false) String account,
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "phone", required = false) String phone,
-      @RequestParam(value = "status", required = false) Boolean status) {
-    return Result.success(userImp.getUsers(account, name, phone,status));
+      @RequestParam(value = "status", required = false) Boolean status,
+      @RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "size", defaultValue = "10") int size
+  ) {
+    IPage<UserResultEntity> users = userImp.getUsers(account, name, phone, status, page, size);
+    return Result.success(users.getRecords(), users.getTotal());
   }
 
   /**

@@ -1,12 +1,13 @@
 package com.example.crazytest.services;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import java.util.List;
 
 public interface UserService {
 
-  List<UserResultEntity> getUsers(String account, String name, String phone, Boolean status);
+  IPage<UserResultEntity> getUsers(String account, String name, String phone, Boolean status, Integer page, Integer size);
 
   Boolean save(User user);
 

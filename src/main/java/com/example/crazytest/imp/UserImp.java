@@ -1,5 +1,7 @@
 package com.example.crazytest.imp;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
@@ -27,8 +29,10 @@ public class UserImp implements UserService {
   UserServiceImp userRepositoryImp;
 
   @Override
-  public List<UserResultEntity> getUsers(String account, String name, String phone, Boolean status) {
-    return userRepositoryImp.listAll(account, name, phone, status);
+  public IPage<UserResultEntity> getUsers(String account, String name, String phone, Boolean status,
+      Integer pageNum, Integer pageSize) {
+    Page<User> page = new Page<>(pageNum, pageSize);
+    return userRepositoryImp.listAll(page, account, name, phone, status);
   }
 
   @Override

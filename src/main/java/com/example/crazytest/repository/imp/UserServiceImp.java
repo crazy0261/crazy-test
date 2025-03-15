@@ -1,6 +1,8 @@
 package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,8 +26,12 @@ import org.springframework.stereotype.Service;
 public class UserServiceImp extends ServiceImpl<UserMapper, User> implements
     UserService {
 
+  @Autowired
+  UserMapper userMapper;
+
   @Override
-  public List<UserResultEntity> listAll(String account, String name, String phone, Boolean status) {
+  public IPage<UserResultEntity> listAll(Page<User> page, String account, String name, String phone,
+      Boolean status) {
     LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<User>()
         .like(StringUtils.isNotEmpty(account), User::getAccount, account)
         .like(StringUtils.isNotEmpty(name), User::getName, name)
@@ -32,13 +39,18 @@ public class UserServiceImp extends ServiceImpl<UserMapper, User> implements
         .eq(status != null, User::getStatus, status)
         .eq(User::getIsDelete, 0)
         .orderByDesc(User::getUpdateTime);
+    IPage<User> userList = userMapper.selectPage(page, wrapper);
 
-    List<User> userList = list(wrapper);
-    return userList.stream().map(user -> {
+    Page<UserResultEntity> result = new Page<>();
+    result.setRecords(userList.getRecords().stream().map(user -> {
       UserResultEntity userResultEntity = new UserResultEntity();
       BeanUtils.copyProperties(user, userResultEntity);
       return userResultEntity;
-    }).collect(Collectors.toList());
+    }).collect(Collectors.toList()));
+
+    result.setTotal(userList.getTotal());
+    result.setSize(userList.getSize());
+    return result;
   }
 
   @Override
