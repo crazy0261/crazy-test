@@ -361,7 +361,7 @@ CREATE TABLE `mul_testcase_result_node`
     KEY                        `tenant_id_testcase_id_node_id_create_time` (`tenant_id`,`testcase_id`,`node_id`,`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1762369479539965753 DEFAULT CHARSET=utf8 COMMENT='多接口用例执行详情'
 
-CREATE TABLE `project`
+CREATE TABLE `project_management`
 (
     `id`          bigint(20) NOT NULL AUTO_INCREMENT,
     `tenant_id`   varchar(100)                                            NOT NULL COMMENT '租户',

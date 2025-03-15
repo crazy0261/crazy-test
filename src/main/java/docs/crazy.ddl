@@ -76,3 +76,20 @@ CREATE TABLE `api_case`
     `recent_exec_time`   datetime              DEFAULT NULL COMMENT '最近一次执行时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2006 DEFAULT CHARSET=utf8 COMMENT='测试用例'
+
+CREATE TABLE `project_management`
+(
+    `id`             bigint(20) NOT NULL AUTO_INCREMENT,
+    `tenant_id`      varchar(100) NOT NULL COMMENT '租户',
+    `name`           varchar(100) NOT NULL COMMENT '项目名称',
+    `remark`         varchar(255)          DEFAULT NULL COMMENT '项目描述',
+    `create_by_id`   int(100) DEFAULT NULL COMMENT '创建者id',
+    `create_by_name` varchar(100)          DEFAULT NULL COMMENT '创建者',
+    `create_time`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_by_id`   int(11) DEFAULT NULL COMMENT '更新人id',
+    `update_by_name` varchar(100)          DEFAULT NULL COMMENT '更新者姓名',
+    `update_time`    timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `is_delete`      int(11) NOT NULL DEFAULT '0' COMMENT '是否删除',
+    PRIMARY KEY (`id`),
+    KEY              `project_id_IDX` (`id`,`tenant_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='项目管理'NE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='项目管理'REMENT=14 DEFAULT CHARSET=utf8 COMMENT='项目管理'GINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='项目管理'

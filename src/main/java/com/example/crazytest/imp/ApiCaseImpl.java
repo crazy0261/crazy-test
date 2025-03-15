@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * @since 2025-03-15
  */
 @Service
-public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
+public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     ApiCaseService {
 
   @Autowired
@@ -27,8 +27,6 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Override
   public IPage<ApiCase> list(ApiCaseReq apiCaseReq) {
-    apiCaseRepository.list(apiCaseReq);
-
-    return null;
+    return  apiCaseRepository.list(apiCaseReq);
   }
 }
