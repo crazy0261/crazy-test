@@ -42,9 +42,9 @@ public class UserController {
       @RequestParam(value = "phone", required = false) String phone,
       @RequestParam(value = "status", required = false) Boolean status,
       @RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "10") int size
+      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
   ) {
-    IPage<UserResultEntity> users = userImp.getUsers(account, name, phone, status, page, size);
+    IPage<UserResultEntity> users = userImp.getUsers(account, name, phone, status, page, pageSize);
     return Result.success(users.getRecords(), users.getTotal());
   }
 
