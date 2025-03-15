@@ -14,7 +14,6 @@ import lombok.Data;
 @Data
 public class ProjectManagementReq extends PageParam {
 
-  long id;
 
   @ApiModelProperty(value = "项目名称")
   private String name;

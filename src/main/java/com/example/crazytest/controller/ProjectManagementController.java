@@ -30,7 +30,8 @@ public class ProjectManagementController {
   ProjectManagementService projectManagementService;
 
   @PostMapping("/list")
-  public Result<List<ProjectManagement>> list(ProjectManagementReq projectManagementReq) {
+  public Result<List<ProjectManagement>> list(
+      @RequestBody ProjectManagementReq projectManagementReq) {
     IPage<ProjectManagement> projectManagementResult = projectManagementService
         .list(projectManagementReq);
     return Result.success(projectManagementResult.getRecords(), projectManagementResult.getTotal());
