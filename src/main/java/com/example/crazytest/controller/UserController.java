@@ -36,7 +36,7 @@ public class UserController {
    * @return
    */
   @GetMapping("/list")
-  public Result listAll(
+  public Result<List<UserResultEntity>> listAll(
       @RequestParam(value = "account", required = false) String account,
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "phone", required = false) String phone,
