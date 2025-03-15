@@ -1,5 +1,6 @@
 package com.example.crazytest.entity.req;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
 import lombok.Data;
 
@@ -13,28 +14,34 @@ import lombok.Data;
 @Data
 public class UserResultEntity {
 
+  @ApiModelProperty(value = "租户")
   private String tenantId;
 
+  @ApiModelProperty(value = "账号")
   private String account;
 
+  @ApiModelProperty(value = "姓名")
   private String name;
 
-
+  @ApiModelProperty(value = "邮箱")
   private String email;
 
+  @ApiModelProperty(value = "手机号")
   private String phone;
 
-
+  @ApiModelProperty(value = "状态")
   private Boolean status;
 
+  @ApiModelProperty(value = "创建者")
   private String createByName;
 
+  @ApiModelProperty(value = "创建时间")
   private LocalDateTime createTime;
 
-
+  @ApiModelProperty(value = "修改者")
   private String updateByName;
 
+  @ApiModelProperty(value = "修改时间")
   private LocalDateTime updateTime;
-
 
 }

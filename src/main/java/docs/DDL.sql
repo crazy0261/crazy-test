@@ -79,7 +79,7 @@ CREATE TABLE `api_testcase`
     PRIMARY KEY (`id`),
     KEY                  `id_tenantid_projectid` (`id`,`tenant_id`,`project_id`) USING BTREE,
     KEY                  `id_tenantid` (`id`,`tenant_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3175 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=3175 DEFAULT CHARSET=utf8 COMMENT='测试用例'
 
 
 CREATE TABLE `api_testcase_result`
