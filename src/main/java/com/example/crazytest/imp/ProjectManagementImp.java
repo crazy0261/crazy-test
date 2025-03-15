@@ -41,4 +41,10 @@ public class ProjectManagementImp implements ProjectManagementService {
     projectManagement.setUpdateByName(BaseContext.getUserName());
     return projectManagementService.saveOrUpdate(projectManagement);
   }
+
+  @Override
+  public boolean delete(ProjectManagement projectManagement) {
+    projectManagement.setIsDelete(1);
+    return projectManagementService.saveOrUpdate(projectManagement);
+  }
 }

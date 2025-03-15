@@ -10,4 +10,6 @@ public interface ProjectManagementService {
 
   boolean save(ProjectManagement projectManagement);
 
+  boolean delete(ProjectManagement projectManagement);
+
 }

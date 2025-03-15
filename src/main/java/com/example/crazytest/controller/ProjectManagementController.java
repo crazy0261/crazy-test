@@ -42,4 +42,9 @@ public class ProjectManagementController {
     return Result.success(projectManagementService.save(projectManagement));
   }
 
+  @PostMapping("/delete")
+  public Result<Boolean> del(@RequestBody ProjectManagement projectManagement) {
+    return Result.success(projectManagementService.delete(projectManagement));
+  }
+
 }
