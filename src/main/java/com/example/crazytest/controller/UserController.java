@@ -5,6 +5,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.imp.UserImp;
+import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
   @Autowired
-  UserImp userImp;
+  UserService userService;
 
 
   /**
@@ -41,10 +42,11 @@ public class UserController {
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "phone", required = false) String phone,
       @RequestParam(value = "status", required = false) Boolean status,
-      @RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "current", defaultValue = "1") int current,
       @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
   ) {
-    IPage<UserResultEntity> users = userImp.getUsers(account, name, phone, status, page, pageSize);
+    IPage<UserResultEntity> users = userService
+        .getUsers(account, name, phone, status, current, pageSize);
     return Result.success(users.getRecords(), users.getTotal());
   }
 
@@ -53,22 +55,22 @@ public class UserController {
    */
   @PostMapping("/login")
   public Result<String> login(@RequestBody UserReq userReq) {
-    return Result.success(userImp.login(userReq.getAccount(), userReq.getPassword()));
+    return Result.success(userService.login(userReq.getAccount(), userReq.getPassword()));
   }
 
   @GetMapping("/currentUser")
   public Result<UserResultEntity> currentUser(@RequestParam String account) {
-    return Result.success(userImp.currentUser(account));
+    return Result.success(userService.currentUser(account));
   }
 
   @PostMapping("/save")
   public Result<Boolean> save(@RequestBody User userEntity) {
-    return Result.success(userImp.save(userEntity));
+    return Result.success(userService.save(userEntity));
   }
 
   @PostMapping("/resetPwd")
   public Result<Boolean> resetPwd(@RequestParam(value = "account") String account) {
-    return Result.success(userImp.resetPwd(account));
+    return Result.success(userService.resetPwd(account));
   }
 
 

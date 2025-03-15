@@ -1,4 +1,4 @@
-package com.example.crazytest.mapper.user;
+package com.example.crazytest.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.crazytest.entity.User;

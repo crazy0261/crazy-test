@@ -22,9 +22,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("api_manage")
-@ApiModel(value = "ApiManage对象", description = "接口管理表")
-public class ApiManage implements Serializable {
+@TableName("api_management")
+@ApiModel(value = "ApiManagement", description = "接口管理表")
+public class ApiManagement implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

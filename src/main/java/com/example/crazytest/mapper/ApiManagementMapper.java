@@ -1,6 +1,6 @@
 package com.example.crazytest.mapper;
 
-import com.example.crazytest.entity.ApiManage;
+import com.example.crazytest.entity.ApiManagement;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author author
  * @since 2025-03-13
  */
-public interface ApiManageMapper extends BaseMapper<ApiManage> {
+public interface ApiManagementMapper extends BaseMapper<ApiManagement> {
 
 }

@@ -1,14 +1,17 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.example.crazytest.entity.ApiManage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.dto.ApiManagementVo;
+import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,11 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-13
  */
 @RestController
-@RequestMapping("/api-manage")
-public class ApiManageController {
-//
-//  @Autowired
-//  ApiManageService apiManageService;
+@RequestMapping("/api/management")
+public class ApiManagementController {
+
+  //
+  @Autowired
+  ApiManagementService apiManagementService;
 //  @Autowired
 //  ApiTestcaseService apiTestcaseService;
 //  @Autowired
@@ -42,14 +46,15 @@ public class ApiManageController {
 //    return Result.suc(apiManageList, apiManageList.size());
 //  }
 //
-//  /**
-//   * 分页查询
-//   * */
-//  @PostMapping("/list")
-//  public Result list(@RequestBody ApiManageQueryReq apiManageQueryReq){
-//    IPage<ApiManageVo> ApiManageVoPage = apiManageService.queryByPage(apiManageQueryReq);
-//    return Result.suc(ApiManageVoPage.getRecords(), ApiManageVoPage.getTotal());
-//  }
+
+  /**
+   * 分页查询
+   */
+  @PostMapping("/listAll")
+  public Result<List<ApiManagementVo>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
+    IPage<ApiManagementVo> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
+    return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
+  }
 //
 //  @PostMapping("/queryById")
 //  public Result list(Long id){

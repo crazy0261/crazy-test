@@ -83,7 +83,7 @@ public class GlobalLogAspect {
     StringBuilder builder = new StringBuilder("[");
 
     if (null != joinPoint && null != joinPoint.getSignature()
-        && request.getParameterNames() == null) {
+        && !request.getParameterNames().hasMoreElements()) {
       CodeSignature signature = (CodeSignature) joinPoint.getSignature();
       Object[] object = joinPoint.getArgs();
 
