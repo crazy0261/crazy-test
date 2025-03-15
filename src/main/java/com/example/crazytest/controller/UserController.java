@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
 import com.example.crazytest.entity.req.UserResultEntity;
-import com.example.crazytest.imp.UserImp;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
