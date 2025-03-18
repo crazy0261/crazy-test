@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 public class UserResultEntity {
 
+  private Long id;
+
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
