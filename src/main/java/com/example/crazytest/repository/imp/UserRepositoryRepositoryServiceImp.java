@@ -59,4 +59,9 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
     return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, Boolean.FALSE)
         .orderByDesc(User::getUpdateTime).last("limit 1").one();
   }
+
+  @Override
+  public User getUserData(Long id) {
+    return lambdaQuery().eq(User::getId, id).eq(User::getIsDelete, Boolean.FALSE).one();
+  }
 }

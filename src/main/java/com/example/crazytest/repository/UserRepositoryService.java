@@ -15,4 +15,6 @@ public interface UserRepositoryService extends IService<User> {
   Boolean resetPwd(String account);
 
   User currentUser(String account);
+
+  User getUserData(Long id);
 }

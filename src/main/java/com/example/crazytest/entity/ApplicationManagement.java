@@ -36,9 +36,6 @@ public class ApplicationManagement implements Serializable {
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
-  @ApiModelProperty(value = "项目id")
-  private Long projectId;
-
   @ApiModelProperty(value = "应用名")
   private String name;
 

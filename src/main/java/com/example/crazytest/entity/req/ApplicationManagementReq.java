@@ -22,6 +22,9 @@ public class ApplicationManagementReq extends PageParam {
   @ApiModelProperty(value = "负责人")
   private Long ownerId;
 
+  @ApiModelProperty(value = "应用描述")
+  private String  remark;
+
   @ApiModelProperty(value = "租户")
   private String tenantId;
 

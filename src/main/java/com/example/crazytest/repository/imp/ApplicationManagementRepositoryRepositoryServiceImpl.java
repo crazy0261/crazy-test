@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.ApplicationManagement;
-import com.example.crazytest.entity.req.ApplicationManagementReq;
 import com.example.crazytest.mapper.ApplicationManagementMapper;
 import com.example.crazytest.repository.ApplicationManagementRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
+import com.example.crazytest.utils.BaseContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,15 +24,14 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
     ApplicationManagementRepositoryService {
 
   @Override
-  public IPage<ApplicationManagement> list(ApplicationManagementReq applicationManagementReq) {
+  public IPage<ApplicationManagement> list(String name, Long ownerId, int current, int pageSize) {
     return this.lambdaQuery()
-        .like(StringUtils.isNotEmpty(applicationManagementReq.getName()),
-            ApplicationManagement::getName, applicationManagementReq.getName())
-        .eq(StringUtils.isNotEmpty(applicationManagementReq.getTenantId()), ApplicationManagement::getTenantId,applicationManagementReq.getTenantId())
-        .eq(ObjectUtils.isNotNull(applicationManagementReq.getOwnerId()), ApplicationManagement::getOwnerId,applicationManagementReq.getOwnerId())
-        .eq( ApplicationManagement::getIsDelete,Boolean.FALSE)
+        .like(ObjectUtils.isNotNull(name), ApplicationManagement::getName, name)
+        .eq(ApplicationManagement::getTenantId, BaseContext.getTenantId())
+        .eq(ObjectUtils.isNotNull(ownerId), ApplicationManagement::getOwnerId, ownerId)
+        .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApplicationManagement::getUpdateTime)
-        .page(new Page<>(applicationManagementReq.getCurrent(), applicationManagementReq.getPageSize()));
+        .page(new Page<>(current, pageSize));
   }
 
 }
