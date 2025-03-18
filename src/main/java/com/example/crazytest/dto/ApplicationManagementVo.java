@@ -1,7 +1,5 @@
 package com.example.crazytest.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -32,7 +30,6 @@ public class ApplicationManagementVo {
   private LocalDateTime createTime;
 
 
-  @TableField(fill = FieldFill.INSERT)
   @ApiModelProperty(value = "创建者")
   private String createByName;
 
