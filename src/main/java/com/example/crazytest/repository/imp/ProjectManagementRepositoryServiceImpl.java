@@ -32,7 +32,7 @@ public class ProjectManagementRepositoryServiceImpl extends
     return this.lambdaQuery()
         .like(StringUtils.isNotEmpty(projectManagementReq.getName()), ProjectManagement::getName,
             projectManagementReq.getName())
-        .eq(ProjectManagement::getIsDelete, 0)
+        .eq(ProjectManagement::getIsDelete, Boolean.FALSE)
         .page(new Page<>(projectManagementReq.getCurrent(), projectManagementReq.getPageSize()));
   }
 }

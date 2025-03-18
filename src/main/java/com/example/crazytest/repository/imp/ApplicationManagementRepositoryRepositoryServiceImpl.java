@@ -31,7 +31,7 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
             ApplicationManagement::getName, applicationManagementReq.getName())
         .eq(StringUtils.isNotEmpty(applicationManagementReq.getTenantId()), ApplicationManagement::getTenantId,applicationManagementReq.getTenantId())
         .eq(ObjectUtils.isNotNull(applicationManagementReq.getOwnerId()), ApplicationManagement::getOwnerId,applicationManagementReq.getOwnerId())
-        .eq( ApplicationManagement::getIsDelete,0)
+        .eq( ApplicationManagement::getIsDelete,Boolean.FALSE)
         .orderByDesc(ApplicationManagement::getUpdateTime)
         .page(new Page<>(applicationManagementReq.getCurrent(), applicationManagementReq.getPageSize()));
   }

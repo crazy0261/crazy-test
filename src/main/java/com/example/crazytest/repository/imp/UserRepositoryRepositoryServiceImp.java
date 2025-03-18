@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.mapper.UserMapper;
 import com.example.crazytest.repository.UserRepositoryService;
+import com.example.crazytest.utils.BaseContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,9 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
         .like(StringUtils.isNotEmpty(account), User::getAccount, account)
         .like(StringUtils.isNotEmpty(name), User::getName, name)
         .eq(StringUtils.isNotEmpty(phone), User::getPhone, phone)
+        .eq(User::getTenantId, BaseContext.getTenantId())
         .eq(status != null, User::getStatus, status)
-        .eq(User::getIsDelete, 0)
+        .eq(User::getIsDelete, Boolean.FALSE)
         .orderByDesc(User::getUpdateTime);
     return userMapper.selectPage(page, wrapper);
   }
@@ -47,14 +49,14 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
   @Override
   public Boolean resetPwd(String account) {
 
-    return lambdaUpdate().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+    return lambdaUpdate().eq(User::getAccount, account).eq(User::getIsDelete, Boolean.FALSE)
         .set(User::getPassword, "297aae72cc4d0d068f46a9158469e34d")
         .update();
   }
 
   @Override
   public User currentUser(String account) {
-    return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, 0)
+    return lambdaQuery().eq(User::getAccount, account).eq(User::getIsDelete, Boolean.FALSE)
         .orderByDesc(User::getUpdateTime).last("limit 1").one();
   }
 }

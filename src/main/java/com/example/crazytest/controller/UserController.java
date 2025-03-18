@@ -41,8 +41,8 @@ public class UserController {
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "phone", required = false) String phone,
       @RequestParam(value = "status", required = false) Boolean status,
-      @RequestParam(value = "current", defaultValue = "1") int current,
-      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
+      @RequestParam(value = "current", required = false, defaultValue = "1") int current,
+      @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize
   ) {
     IPage<UserResultEntity> users = userService
         .getUsers(account, name, phone, status, current, pageSize);

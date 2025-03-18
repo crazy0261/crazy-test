@@ -34,6 +34,8 @@ public class UserImp implements UserService {
     Page<User> page = new Page<>(pageNum, pageSize);
     IPage<User> userList = userRepositoryService.listAll(page, account, name, phone, status);
 
+    System.out.println(userList);
+
     IPage<UserResultEntity> result = new Page<>();
     result.setRecords(userList.getRecords().stream().map(user -> {
       UserResultEntity userResultEntity = new UserResultEntity();

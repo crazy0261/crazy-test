@@ -31,7 +31,7 @@ public class ApiManagementRepositoryServiceImpl extends
   @Override
   public IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq) {
     LambdaQueryWrapper<ApiManagement> wrapper = new LambdaQueryWrapper<ApiManagement>()
-        .eq(ApiManagement::getIsDelete, 0)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApiManagement::getModifyTime);
 //        .like(StringUtils.isNotEmpty(apiManagementReq.getAccount()), ApiManagement::getAccount, apiManagementReq.getAccount())
 //        .like(StringUtils.isNotEmpty(apiManagementReq.getName()), ApiManagement::getName, apiManagementReq.getName())
