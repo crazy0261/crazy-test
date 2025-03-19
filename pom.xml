@@ -22,6 +22,7 @@
     <java-jwt.version>3.8.2</java-jwt.version>
     <hutool-all.version>5.8.22</hutool-all.version>
     <fastjson.version>1.2.47</fastjson.version>
+    <okhttp.version>4.9.3</okhttp.version>
   </properties>
 
   <dependencies>
@@ -95,6 +96,11 @@
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>
       <version>${fastjson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>${okhttp.version}</version>
     </dependency>
 
 
