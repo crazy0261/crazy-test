@@ -25,7 +25,7 @@ import okhttp3.Response;
 
 public class RequestUtil {
 
-  public static String sendRequest(OkHttpRequestConfig request) {
+  public static Response sendRequest(OkHttpRequestConfig request) throws IOException {
     // 创建 OkHttpClient 实例
     OkHttpClient client = OkHttpClientFactory.createClient(
         request.getConnectTimeout(),
@@ -67,15 +67,8 @@ public class RequestUtil {
       requestBuilder.header(entry.getKey(), entry.getValue());
     }
     // 发送请求
-    try (Response response = client.newCall(requestBuilder.build()).execute()) {
-      if (response.isSuccessful() && response.body() != null) {
-        return response.body().string();
-      } else {
-        return "Request failed: " + response.code() + " " + response.message();
-      }
-    } catch (IOException e) {
-      return "Request exception: " + e.getMessage();
-    }
+    return client.newCall(requestBuilder.build()).execute() ;
+
   }
 
   // 递归方法，将嵌套的 JSON 扁平化
