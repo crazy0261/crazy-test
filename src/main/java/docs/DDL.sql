@@ -225,7 +225,7 @@ CREATE TABLE `domain_info`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COMMENT='域名信息表'
 
-CREATE TABLE `env_info`
+CREATE TABLE `env_config`
 (
     `id`              bigint(20) NOT NULL AUTO_INCREMENT,
     `tenant_id`       varchar(100) NOT NULL COMMENT '租户',
