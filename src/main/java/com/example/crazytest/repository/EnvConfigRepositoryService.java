@@ -1,7 +1,9 @@
 package com.example.crazytest.repository;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-03-19
  */
 public interface EnvConfigRepositoryService extends IService<EnvConfig> {
+
+  IPage<EnvConfig> list(String tenantId, String appid, String name, List<String> domainId, int current,
+      int pageSize);
 
 }

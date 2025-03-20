@@ -11,6 +11,7 @@ import com.example.crazytest.utils.BaseContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author
@@ -43,6 +44,7 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public boolean save(ApplicationManagementReq applicationManagementReq) {
     ApplicationManagement appManagement = new ApplicationManagement();
     applicationManagementReq.setTenantId(BaseContext.getTenantId());
