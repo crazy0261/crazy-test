@@ -2,7 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.dto.EnvConfigVo;
+import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
@@ -29,13 +29,13 @@ public class EnvConfigController {
   EnvConfigService envConfigService;
 
   @GetMapping("/list")
-  public Result<List<EnvConfigVo>> list(
+  public Result<List<EnvConfigVO>> list(
       @RequestParam(value = "appid", required = false) String appid,
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "domainName", required = false) String domainName,
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-    IPage<EnvConfigVo> pageEnvInfoPage = envConfigService
+    IPage<EnvConfigVO> pageEnvInfoPage = envConfigService
         .list(appid, name, domainName, current, pageSize);
     return Result.success(pageEnvInfoPage.getRecords(), pageEnvInfoPage.getTotal());
   }

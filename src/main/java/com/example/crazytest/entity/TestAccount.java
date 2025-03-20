@@ -15,18 +15,18 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 环境信息表
+ * 测试账号表
  * </p>
  *
  * @author Menghui
- * @since 2025-03-19
+ * @since 2025-03-20
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("env_config")
-@ApiModel(value = "EnvConfig对象", description = "环境信息表")
-public class EnvConfig implements Serializable {
+@TableName("test_account")
+@ApiModel(value = "TestAccount对象", description = "测试账号表")
+public class TestAccount implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -36,52 +36,59 @@ public class EnvConfig implements Serializable {
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
-  @ApiModelProperty(value = "应用id")
-  private String appId;
+  @ApiModelProperty(value = "项目id")
+  private Long projectId;
 
-  @ApiModelProperty(value = "应用名")
-  private String appName;
+  @ApiModelProperty(value = "环境id")
+  private Long envId;
 
-  @ApiModelProperty(value = "环境 id")
-  private Long envNameId;
-
-  @ApiModelProperty(value = "环境名")
+  @ApiModelProperty(value = "名称")
   private String name;
 
-  @ApiModelProperty(value = "域名id")
-  private Long domainId;
+  @ApiModelProperty(value = "测试账号")
+  private String account;
 
-  @ApiModelProperty(value = "请求头")
-  private String requestHeaders;
+  @ApiModelProperty(value = "密码")
+  private String password;
 
-  @ApiModelProperty(value = "环境变量")
-  private String envVariables;
+  @ApiModelProperty(value = "接口用例id")
+  private String apiCaseId;
+
+  @ApiModelProperty(value = "token")
+  private String token;
+
+  @ApiModelProperty(value = "生成token状态")
+  private String genTokenStatus;
+
+  @ApiModelProperty(value = "失败原因")
+  private String failReason;
 
   @TableField(fill = FieldFill.INSERT)
-  @ApiModelProperty(value = "创建时间")
-  private LocalDateTime createTime;
-
-  @TableField(fill = FieldFill.INSERT)
-  @ApiModelProperty(value = "创建者id")
+  @ApiModelProperty(value = "创建者ID")
   private Long createById;
 
   @TableField(fill = FieldFill.INSERT)
   @ApiModelProperty(value = "创建者")
   private String createByName;
 
-  @TableField(fill = FieldFill.INSERT_UPDATE)
-  @ApiModelProperty(value = "更新时间")
-  private LocalDateTime updateTime;
+  @TableField(fill = FieldFill.INSERT)
+  @ApiModelProperty(value = "创建时间")
+  private LocalDateTime createTime;
 
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  @ApiModelProperty(value = "修改者id")
+  @ApiModelProperty(value = "修改者ID")
   private Long updateById;
 
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  @ApiModelProperty(value = "更新者")
+  @ApiModelProperty(value = "修改者")
   private String updateByName;
+
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  @ApiModelProperty(value = "修改时间")
+  private LocalDateTime updateTime;
 
   @ApiModelProperty(value = "是否删除")
   private Integer isDelete;
+
 
 }

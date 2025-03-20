@@ -1,4 +1,4 @@
-package com.example.crazytest.dto;
+package com.example.crazytest.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApplicationManagementVo {
+public class ApplicationManagementVO {
 
   @ApiModelProperty(value = "应用名")
   private String name;

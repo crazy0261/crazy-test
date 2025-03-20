@@ -36,4 +36,18 @@ public class EnvConfigRepositoryServiceImpl extends
         .orderByDesc(EnvConfig::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
+
+  @Override
+  public List<EnvConfig> getEnvConfigByName(String tenantId, String name) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getTenantId, tenantId)
+        .like(EnvConfig::getName, name)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .list();
+  }
+
+  @Override
+  public EnvConfig getEnvName(Long id) {
+    return this.getById(id);
+  }
 }

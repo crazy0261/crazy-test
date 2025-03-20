@@ -2,7 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.dto.ApiManagementVo;
+import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
@@ -51,8 +51,8 @@ public class ApiManagementController {
    * 分页查询
    */
   @PostMapping("/listAll")
-  public Result<List<ApiManagementVo>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
-    IPage<ApiManagementVo> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
+  public Result<List<ApiManagementVO>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
+    IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
     return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
   }
 //

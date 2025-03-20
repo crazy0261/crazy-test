@@ -2,7 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.dto.ApplicationManagementVo;
+import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.utils.Result;
@@ -32,13 +32,13 @@ public class ApplicationManagementController {
   ApplicationManagementService appManagementService;
 
   @GetMapping("/list")
-  public Result<List<ApplicationManagementVo>> list(
+  public Result<List<ApplicationManagementVO>> list(
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "负责人", required = false) Long ownerId,
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-    IPage<ApplicationManagementVo> resultPage = appManagementService.list(name, ownerId, current, pageSize);
+    IPage<ApplicationManagementVO> resultPage = appManagementService.list(name, ownerId, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());
   }
 

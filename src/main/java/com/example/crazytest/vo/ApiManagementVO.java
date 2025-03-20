@@ -1,4 +1,4 @@
-package com.example.crazytest.dto;
+package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.ApiManagement;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ApiManagementVo extends ApiManagement {
+public class ApiManagementVO extends ApiManagement {
 
   @ApiModelProperty(value = "应用名称")
   private String applicationName;

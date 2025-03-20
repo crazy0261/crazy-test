@@ -1,7 +1,7 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.dto.ApplicationManagementVo;
+import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.ApplicationManagement;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
 import com.example.crazytest.repository.ApplicationManagementRepositoryService;
@@ -30,12 +30,12 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   UserRepositoryService userRepositoryService;
 
   @Override
-  public IPage<ApplicationManagementVo> list(String name, Long ownerId, int current, int pageSize) {
+  public IPage<ApplicationManagementVO> list(String name, Long ownerId, int current, int pageSize) {
     IPage<ApplicationManagement> applicationManagementList = applicationManagementRepositoryService
         .list(name, ownerId, current, pageSize);
 
     return applicationManagementList.convert(applicationManagement -> {
-      ApplicationManagementVo applicationManagementVo = new ApplicationManagementVo();
+      ApplicationManagementVO applicationManagementVo = new ApplicationManagementVO();
       BeanUtils.copyProperties(applicationManagement, applicationManagementVo);
       applicationManagementVo.setOwnerName(
           userRepositoryService.getUserData(applicationManagement.getOwnerId()).getName());

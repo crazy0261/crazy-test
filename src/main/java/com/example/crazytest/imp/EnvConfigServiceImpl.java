@@ -1,7 +1,7 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.dto.EnvConfigVo;
+import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.services.EnvConfigService;
@@ -25,7 +25,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   EnvConfigRepositoryService envConfigRepositoryService;
 
   @Override
-  public IPage<EnvConfigVo> list(String appid, String name, String domainName, int current,
+  public IPage<EnvConfigVO> list(String appid, String name, String domainName, int current,
       int pageSize) {
 
     // todo 域名逻辑代补充 根据域名名称查询id
@@ -33,7 +33,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
     IPage<EnvConfig> envConfigIPage = envConfigRepositoryService
         .list(BaseContext.getTenantId(), appid, name, new ArrayList<>(), current, pageSize);
     return envConfigIPage.convert(envConfig -> {
-      EnvConfigVo envConfigVo = new EnvConfigVo();
+      EnvConfigVO envConfigVo = new EnvConfigVO();
       BeanUtils.copyProperties(envConfig, envConfigVo);
 
       // todo   根据域名id查询名称

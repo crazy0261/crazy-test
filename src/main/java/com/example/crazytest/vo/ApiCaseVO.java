@@ -1,4 +1,4 @@
-package com.example.crazytest.dto;
+package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.ApiCase;
 import lombok.Data;
@@ -13,6 +13,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ApiCaseVo extends ApiCase {
+public class ApiCaseVO extends ApiCase {
 
 }

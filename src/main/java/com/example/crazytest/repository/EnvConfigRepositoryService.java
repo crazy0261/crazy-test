@@ -15,7 +15,11 @@ import java.util.List;
  */
 public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
-  IPage<EnvConfig> list(String tenantId, String appid, String name, List<String> domainId, int current,
-      int pageSize);
+  IPage<EnvConfig> list(String tenantId, String appid, String name, List<String> domainId,
+      int current, int pageSize);
+
+  List<EnvConfig> getEnvConfigByName(String tenantId, String name);
+
+  EnvConfig getEnvName(Long id);
 
 }
