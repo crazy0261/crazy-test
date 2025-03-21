@@ -1,6 +1,7 @@
 package com.example.crazytest.entity.req;
 
 import com.example.crazytest.utils.PageParam;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,5 +13,26 @@ import lombok.Data;
 
 @Data
 public class ApiCaseReq extends PageParam {
+
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
+
+  @ApiModelProperty(value = "用例名")
+  private String name;
+
+  @ApiModelProperty(value = "负责人id")
+  private Long ownerId;
+
+  @ApiModelProperty(value = "接口路径")
+  private String urlPath;
+
+  @ApiModelProperty(value = "状态")
+  boolean status;
+
+  @ApiModelProperty(value = "优先级")
+  private Integer priority;
+
+  @ApiModelProperty(value = "执行结果")
+  private String recentExecResult;
 
 }
