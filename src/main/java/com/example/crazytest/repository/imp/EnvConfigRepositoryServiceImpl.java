@@ -31,7 +31,7 @@ public class EnvConfigRepositoryServiceImpl extends
         .like(ObjectUtils.isNotNull(name), EnvConfig::getName, name)
         .eq(EnvConfig::getTenantId, tenantId)
         .eq(ObjectUtils.isNotNull(appid), EnvConfig::getAppId, appid)
-        .in(ObjectUtils.isNotNull(domainId), EnvConfig::getDomainId, domainId)
+        .in(EnvConfig::getDomainId, domainId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .orderByDesc(EnvConfig::getUpdateTime)
         .page(new Page<>(current, pageSize));

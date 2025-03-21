@@ -7,6 +7,7 @@ import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.mapper.DomainInfoMapper;
 import com.example.crazytest.repository.DomainInfoRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,5 +33,13 @@ public class DomainInfoRepositoryServiceImpl extends
         .eq(DomainInfo::getIsDelete, Boolean.FALSE)
         .orderByDesc(DomainInfo::getUpdateTime)
         .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<DomainInfo> getByNameList(String tenantId, String name) {
+    return this.lambdaQuery()
+        .eq(DomainInfo::getTenantId, tenantId)
+        .like(ObjectUtils.isNotNull(name), DomainInfo::getName, name)
+        .list();
   }
 }

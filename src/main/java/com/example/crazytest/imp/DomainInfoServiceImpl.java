@@ -5,6 +5,7 @@ import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.repository.DomainInfoRepositoryService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.utils.BaseContext;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,16 @@ public class DomainInfoServiceImpl implements DomainInfoService {
   public boolean save(DomainInfo domainInfo) {
     domainInfo.setTenantId(BaseContext.getTenantId());
     return domainInfoRepositoryService.saveOrUpdate(domainInfo);
+  }
+
+  @Override
+  public DomainInfo getById(Long id) {
+    return domainInfoRepositoryService.getById(id);
+  }
+
+  @Override
+  public List<DomainInfo> getByNameList(String name) {
+    return domainInfoRepositoryService.getByNameList(BaseContext.getTenantId(), name);
   }
 
 }

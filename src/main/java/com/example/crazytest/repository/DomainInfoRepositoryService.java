@@ -3,6 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DomainInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -15,5 +16,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface DomainInfoRepositoryService extends IService<DomainInfo> {
 
   IPage<DomainInfo> list(String tenantId, String name, String urlPath, int current, int pageSize);
+
+  List<DomainInfo> getByNameList(String tenantId, String name);
 
 }

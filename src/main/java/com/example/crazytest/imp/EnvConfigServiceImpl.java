@@ -1,12 +1,14 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.BaseContext;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +26,23 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Autowired
   EnvConfigRepositoryService envConfigRepositoryService;
 
+  @Autowired
+  DomainInfoService domainInfoService;
+
   @Override
   public IPage<EnvConfigVO> list(String appid, String name, String domainName, int current,
       int pageSize) {
 
-    // todo 域名逻辑代补充 根据域名名称查询id
+    List<String> domainIds = domainInfoService.getByNameList(domainName).stream()
+        .map(domainInfo -> String.valueOf(domainInfo.getId())).collect(Collectors.toList());
 
     IPage<EnvConfig> envConfigIPage = envConfigRepositoryService
-        .list(BaseContext.getTenantId(), appid, name, new ArrayList<>(), current, pageSize);
+        .list(BaseContext.getTenantId(), appid, name, domainIds, current, pageSize);
+
     return envConfigIPage.convert(envConfig -> {
       EnvConfigVO envConfigVo = new EnvConfigVO();
       BeanUtils.copyProperties(envConfig, envConfigVo);
-
-      // todo   根据域名id查询名称
+      envConfigVo.setDomainName(domainInfoService.getById(envConfig.getDomainId()).getName());
       return envConfigVo;
     });
   }
