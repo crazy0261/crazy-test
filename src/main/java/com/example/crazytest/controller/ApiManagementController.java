@@ -2,16 +2,19 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -50,17 +53,17 @@ public class ApiManagementController {
   /**
    * 分页查询
    */
-  @PostMapping("/listAll")
+  @PostMapping("/list")
   public Result<List<ApiManagementVO>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
     IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
     return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
   }
-//
-//  @PostMapping("/queryById")
-//  public Result list(Long id){
-//    ApiManage apiManage = apiManageService.queryById(id);
-//    return Result.suc(apiManage);
-//  }
+
+
+  @GetMapping("/get/id")
+  public Result<ApiManagement> getById(@RequestParam(required = true) Long id) {
+    return Result.success(apiManagementService.getById(id));
+  }
 //
 //  // 新增
 //  @PostMapping("/add")

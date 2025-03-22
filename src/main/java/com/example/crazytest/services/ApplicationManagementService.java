@@ -14,5 +14,4 @@ public interface ApplicationManagementService {
 
   ApplicationManagement getById(Long id);
 
-
 }

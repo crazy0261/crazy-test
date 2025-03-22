@@ -27,6 +27,12 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
 
   @Override
   public IPage<ApiCase> list(ApiCaseReq apiCaseReq) {
-    return  apiCaseRepository.list(apiCaseReq);
+    return apiCaseRepository.list(apiCaseReq);
+  }
+
+  @Override
+  public ApiCase getById(Long id) {
+    return apiCaseRepository.getById(id);
+
   }
 }

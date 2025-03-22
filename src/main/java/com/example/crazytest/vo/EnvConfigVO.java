@@ -15,7 +15,7 @@ import lombok.Data;
 public class EnvConfigVO {
 
   @ApiModelProperty(value = "应用id")
-  private String appId;
+  private Long appId;
 
   @ApiModelProperty(value = "应用名")
   private String appName;
@@ -29,9 +29,11 @@ public class EnvConfigVO {
   @ApiModelProperty(value = "域名id")
   private Long domainId;
 
+  @ApiModelProperty(value = "域名url")
+  private String domainUrl;
+
   @ApiModelProperty(value = "域名name")
   private String domainName;
-
 
   @ApiModelProperty(value = "环境变量")
   private String envVariables;

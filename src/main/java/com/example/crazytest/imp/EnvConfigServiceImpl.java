@@ -1,6 +1,8 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.DomainInfo;
+import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.entity.EnvConfig;
@@ -27,6 +29,9 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   EnvConfigRepositoryService envConfigRepositoryService;
 
   @Autowired
+  ApplicationManagementService applicationManagementService;
+
+  @Autowired
   DomainInfoService domainInfoService;
 
   @Override
@@ -41,8 +46,11 @@ public class EnvConfigServiceImpl implements EnvConfigService {
 
     return envConfigIPage.convert(envConfig -> {
       EnvConfigVO envConfigVo = new EnvConfigVO();
+      DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
       BeanUtils.copyProperties(envConfig, envConfigVo);
-      envConfigVo.setDomainName(domainInfoService.getById(envConfig.getDomainId()).getName());
+      envConfigVo.setAppName(applicationManagementService.getById(envConfig.getAppId()).getName());
+      envConfigVo.setDomainUrl(domainInfo.getUrlPath());
+      envConfigVo.setDomainName(domainInfo.getName());
       return envConfigVo;
     });
   }

@@ -17,4 +17,6 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   IPage<ApiCase> list(ApiCaseReq apiCaseReq);
 
+  ApiCase getById(Long id);
+
 }

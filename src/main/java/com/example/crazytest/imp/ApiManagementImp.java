@@ -49,4 +49,9 @@ public class ApiManagementImp implements ApiManagementService {
       return apiManageVo;
     });
   }
+
+  @Override
+  public ApiManagement getById(Long id) {
+    return apiManageRepository.getById(id);
+  }
 }

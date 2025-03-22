@@ -8,6 +8,7 @@ import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,11 @@ public class ApiCaseController {
   public Result<List<ApiCase>> list(@RequestBody ApiCaseReq apiCaseReq) {
     IPage<ApiCase> result = apiCaseService.list(apiCaseReq);
     return Result.success(result.getRecords(), result.getTotal());
+  }
+
+  @GetMapping("/getById")
+  public Result<ApiCase> getById(Long id) {
+    return Result.success(apiCaseService.getById(id));
   }
 
 }
