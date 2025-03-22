@@ -1,6 +1,7 @@
 package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.ApiCase;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,5 +15,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ApiCaseVO extends ApiCase {
+
+  @ApiModelProperty(value = "应用名称")
+  private String appName;
+
+  @ApiModelProperty(value = "接口路径")
+  private String path;
+
+  @ApiModelProperty(value = "接口负责人")
+  private String ownerName;
 
 }

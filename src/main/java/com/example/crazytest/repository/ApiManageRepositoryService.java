@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiManagementReq;
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +17,7 @@ import com.example.crazytest.entity.req.ApiManagementReq;
 public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
     IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq);
+
+    List<ApiManagement> getPaths(String tenantId, String path);
 
 }

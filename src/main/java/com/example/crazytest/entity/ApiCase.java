@@ -36,9 +36,6 @@ public class ApiCase implements Serializable {
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
-  @ApiModelProperty(value = "项目id")
-  private Long projectId;
-
   @ApiModelProperty(value = "应用id")
   private Long appId;
 
@@ -70,7 +67,7 @@ public class ApiCase implements Serializable {
   private Integer secretId;
 
   @ApiModelProperty(value = "状态")
-  boolean status;
+  private Boolean status;
 
   @ApiModelProperty(value = "备注")
   private String remark;

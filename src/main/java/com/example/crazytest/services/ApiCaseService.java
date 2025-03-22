@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiCaseReq;
+import com.example.crazytest.vo.ApiCaseVO;
 
 /**
  * <p>
@@ -15,8 +16,10 @@ import com.example.crazytest.entity.req.ApiCaseReq;
  */
 public interface ApiCaseService extends IService<ApiCase> {
 
-  IPage<ApiCase> list(ApiCaseReq apiCaseReq);
+  IPage<ApiCaseVO> list(String name, Long appId,String path, Boolean status, String recentExecResult, Long ownerId, Integer current, Integer pageSize);
 
   ApiCase getById(Long id);
+
+  boolean save(ApiCase apiCase);
 
 }

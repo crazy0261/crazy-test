@@ -2,12 +2,14 @@ package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.mapper.ApiManagementMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.ApiManageRepositoryService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,12 @@ public class ApiManagementRepositoryServiceImpl extends
     return apiManageMapper
         .selectPage(new Page<>(apiManagementReq.getCurrent(), apiManagementReq.getPageSize()),
             wrapper);
+  }
+
+  @Override
+  public List<ApiManagement> getPaths(String tenantId, String path) {
+    return this.lambdaQuery()
+        .eq(ApiManagement::getTenantId, tenantId)
+        .like(ObjectUtils.isNotNull(path), ApiManagement::getPath, path).list();
   }
 }

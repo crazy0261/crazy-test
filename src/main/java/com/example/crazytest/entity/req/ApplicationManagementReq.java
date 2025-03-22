@@ -1,6 +1,5 @@
 package com.example.crazytest.entity.req;
 
-import com.example.crazytest.utils.PageParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -12,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApplicationManagementReq extends PageParam {
+public class ApplicationManagementReq  {
 
   private Long id;
 

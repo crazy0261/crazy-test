@@ -45,8 +45,8 @@ public class GlobalLogAspect {
     if (ObjectUtils.isEmpty(request)) {
       return joinPoint.proceed();
     }
-    String url = request.getRequestURL().toString();
     String ip = request.getRemoteAddr();
+    String url = request.getServletPath();
     String reqData = this.getParameters(joinPoint, request);
     String header = this.getHeaders(request).toString();
 
