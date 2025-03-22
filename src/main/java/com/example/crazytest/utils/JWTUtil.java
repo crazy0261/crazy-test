@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JWTUtil {
 
-  private static final long EXPIRATION = 30 * 24 * 60 * 60L;
+  private static final long EXPIRATION = 4 * 60 * 60L;
 
   private static final String SECRET = "AA5A90EFDD0EACD2BB47989EC034AD1A";
 
