@@ -29,7 +29,7 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   public IPage<ApiCase> list(ApiCaseReq apiCaseReq) {
     LambdaQueryWrapper<ApiCase> wrapper = new LambdaQueryWrapper<ApiCase>()
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
-        .orderByDesc(ApiCase::getModifyTime);
+        .orderByDesc(ApiCase::getUpdateTime);
     return apiCaseMapper
         .selectPage(new Page<>(apiCaseReq.getCurrent(), apiCaseReq.getPageSize()), wrapper);
   }

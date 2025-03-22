@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 public class ApplicationManagementVO {
 
+  private Long id;
+
   @ApiModelProperty(value = "应用名")
   private String name;
 
