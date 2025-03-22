@@ -1,6 +1,10 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApplicationManagement;
+import com.example.crazytest.entity.User;
+import com.example.crazytest.services.ApplicationManagementService;
+import com.example.crazytest.services.UserService;
 import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ApiManagementReq;
@@ -23,15 +27,25 @@ public class ApiManagementImp implements ApiManagementService {
   @Autowired
   ApiManageRepositoryService apiManageRepository;
 
+  @Autowired
+  ApplicationManagementService applicationManagementService;
+
+  @Autowired
+  UserService userService;
+
   @Override
   public IPage<ApiManagementVO> listAll(ApiManagementReq apiManagementReq) {
     IPage<ApiManagement> apiManagePage = apiManageRepository.listAll(apiManagementReq);
 
-    return apiManagePage.convert(apiManagement ->{
-
-      // TODO: 添加应用相关信息，后续添加
+    return apiManagePage.convert(apiManagement -> {
       ApiManagementVO apiManageVo = new ApiManagementVO();
+
+      ApplicationManagement applicationManagement = applicationManagementService
+          .getById(apiManagement.getApplicationId());
+      User user = userService.getById(apiManagement.getOwnerId());
       BeanUtils.copyProperties(apiManagement, apiManageVo);
+      apiManageVo.setApplicationName(applicationManagement.getName());
+      apiManageVo.setOwnerName(user.getName());
       return apiManageVo;
     });
   }

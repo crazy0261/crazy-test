@@ -33,12 +33,6 @@ public class ProjectManagementImp implements ProjectManagementService {
   public boolean save(ProjectManagement projectManagement) {
     projectManagement.setTenantId(Optional.ofNullable(projectManagement.getTenantId())
         .orElse(UUID.randomUUID().toString().replace("-", "").substring(0, 8)));
-    projectManagement.setCreateById(
-        Optional.ofNullable(projectManagement.getCreateById()).orElse(BaseContext.getUserId()));
-    projectManagement.setCreateByName(
-        Optional.ofNullable(projectManagement.getCreateByName()).orElse(BaseContext.getUserName()));
-    projectManagement.setUpdateById(BaseContext.getUserId());
-    projectManagement.setUpdateByName(BaseContext.getUserName());
     return projectManagementService.saveOrUpdate(projectManagement);
   }
 

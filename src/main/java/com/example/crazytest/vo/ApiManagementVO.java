@@ -19,21 +19,6 @@ public class ApiManagementVO extends ApiManagement {
   @ApiModelProperty(value = "应用名称")
   private String applicationName;
 
-  @ApiModelProperty(value = "负责人id")
-  private Long ownerById;
-
-  @ApiModelProperty(value = "负责人名称")
-  private String ownerByName;
-
-  @ApiModelProperty(value = "创建者id")
-  private Long createById;
-
-  @ApiModelProperty(value = "创建者姓名")
-  private String createByName;
-
-  @ApiModelProperty(value = "修改者id")
-  private Long updateById;
-
-  @ApiModelProperty(value = "修改者姓名")
-  private String updateByName;
+  @ApiModelProperty(value = "负责人名")
+  private String ownerName;
 }

@@ -6,7 +6,8 @@ import com.example.crazytest.entity.req.UserResultEntity;
 
 public interface UserService {
 
-  IPage<UserResultEntity> getUsers(String account, String name, String phone, Boolean status, Integer page, Integer size);
+  IPage<UserResultEntity> getUsers(String account, String name, String phone, Boolean status,
+      Integer page, Integer size);
 
   Boolean save(User user);
 
@@ -15,5 +16,7 @@ public interface UserService {
   String login(String account, String password);
 
   UserResultEntity currentUser(String account);
+
+  User getById(Long id);
 
 }

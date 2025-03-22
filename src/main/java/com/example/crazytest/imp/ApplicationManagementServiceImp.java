@@ -53,4 +53,9 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
     return applicationManagementRepositoryService.saveOrUpdate(appManagement);
   }
 
+  @Override
+  public ApplicationManagement getById(Long id) {
+    return applicationManagementRepositoryService.getById(id);
+  }
+
 }

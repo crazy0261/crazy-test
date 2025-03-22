@@ -79,4 +79,9 @@ public class UserImp implements UserService {
     BeanUtils.copyProperties(user, userEntity);
     return userEntity;
   }
+
+  @Override
+  public User getById(Long id) {
+    return userRepositoryService.getById(id);
+  }
 }

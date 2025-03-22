@@ -1,5 +1,7 @@
 package com.example.crazytest.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -77,30 +79,42 @@ public class ApiManagement implements Serializable {
   private String apiType;
 
   @ApiModelProperty(value = "负责人")
-  private Long owner;
+  private Long ownerId;
 
   @ApiModelProperty(value = "用例数")
   private Integer caseCount;
 
-  @ApiModelProperty(value = "创建者id")
-  private Long creatorId;
-
-  @ApiModelProperty(value = "修改者id")
-  private Long menderId;
-
   @ApiModelProperty(value = "最近30天调用次数")
   private Integer invokeTimes;
 
+  @ApiModelProperty(value = "备注")
+  private String remark;
+
+  @TableField(fill = FieldFill.INSERT)
   @ApiModelProperty(value = "创建时间")
   private LocalDateTime createTime;
 
-  @ApiModelProperty(value = "修改时间")
-  private LocalDateTime modifyTime;
+  @TableField(fill = FieldFill.INSERT)
+  @ApiModelProperty(value = "创建者id")
+  private Long createById;
+
+  @TableField(fill = FieldFill.INSERT)
+  @ApiModelProperty(value = "创建者")
+  private String createByName;
+
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  @ApiModelProperty(value = "更新时间")
+  private LocalDateTime updateTime;
+
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  @ApiModelProperty(value = "修改者id")
+  private Long updateById;
+
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  @ApiModelProperty(value = "更新者")
+  private String updateByName;
 
   @ApiModelProperty(value = "是否删除")
   private Integer isDelete;
-
-  @ApiModelProperty(value = "备注")
-  private String remark;
 
 }
