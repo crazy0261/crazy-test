@@ -28,6 +28,9 @@ public class UserResultEntity {
   @ApiModelProperty(value = "邮箱")
   private String email;
 
+  @ApiModelProperty(value = "项目id")
+  private String selectProject;
+
   @ApiModelProperty(value = "手机号")
   private String phone;
 

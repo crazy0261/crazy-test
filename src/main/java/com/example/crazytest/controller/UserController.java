@@ -5,6 +5,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.services.UserService;
+import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,12 @@ public class UserController {
   @PostMapping("/resetPwd")
   public Result<Boolean> resetPwd(@RequestParam(value = "account") String account) {
     return Result.success(userService.resetPwd(account));
+  }
+
+  @GetMapping("/update/projectId")
+  public Result<Boolean> updateSelectProjectId(
+      @RequestParam(value = "selectProject", required = false) String selectProjectId) {
+    return Result.success(userService.updateSelectProjectId(selectProjectId));
   }
 
 

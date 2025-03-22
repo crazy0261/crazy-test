@@ -8,6 +8,7 @@ import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
+import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -83,5 +84,16 @@ public class UserImp implements UserService {
   @Override
   public User getById(Long id) {
     return userRepositoryService.getById(id);
+  }
+
+  @Override
+  public boolean updateSelectProjectId(String selectProjectId) {
+    Long userId = BaseContext.getUserId();
+    User user = userRepositoryService.getUserData(userId);
+
+    AssertUtil.assertTrue(user == null, ResultEnum.USER_NOT_FOUND.getMessage());
+    assert user != null;
+    user.setSelectProject(selectProjectId);
+    return userRepositoryService.updateSelectProjectId(user);
   }
 }

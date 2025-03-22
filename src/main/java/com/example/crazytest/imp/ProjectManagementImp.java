@@ -25,8 +25,8 @@ public class ProjectManagementImp implements ProjectManagementService {
   ProjectManagementRepositoryService projectManagementService;
 
   @Override
-  public IPage<ProjectManagement> list(ProjectManagementReq projectManagementReq) {
-    return projectManagementService.list(projectManagementReq);
+  public IPage<ProjectManagement> list(String name, Integer current, Integer pageSize) {
+    return projectManagementService.list(name, current, pageSize);
   }
 
   @Override

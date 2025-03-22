@@ -64,4 +64,18 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
   public User getUserData(Long id) {
     return lambdaQuery().eq(User::getId, id).eq(User::getIsDelete, Boolean.FALSE).one();
   }
+
+  @Override
+  public boolean updateSelectProjectId(User userEntity) {
+    this.lambdaUpdate()
+        .set(User::getSelectProject, null)
+        .eq(User::getAccount, userEntity.getAccount())
+        .update();
+
+    return this.lambdaUpdate()
+        .set(User::getSelectProject, userEntity.getSelectProject())
+        .eq(User::getId, userEntity.getId())
+        .update();
+  }
+
 }

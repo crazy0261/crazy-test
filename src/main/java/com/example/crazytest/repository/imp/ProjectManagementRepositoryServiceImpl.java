@@ -1,13 +1,12 @@
 package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.ProjectManagement;
-import com.example.crazytest.entity.req.ProjectManagementReq;
 import com.example.crazytest.mapper.ProjectManagementMapper;
 import com.example.crazytest.repository.ProjectManagementRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +27,10 @@ public class ProjectManagementRepositoryServiceImpl extends
   ProjectManagementMapper projectMapper;
 
   @Override
-  public IPage<ProjectManagement> list(ProjectManagementReq projectManagementReq) {
+  public IPage<ProjectManagement> list(String name, Integer current, Integer pageSize) {
     return this.lambdaQuery()
-        .like(StringUtils.isNotEmpty(projectManagementReq.getName()), ProjectManagement::getName,
-            projectManagementReq.getName())
+        .like(ObjectUtils.isNotNull(name), ProjectManagement::getName, name)
         .eq(ProjectManagement::getIsDelete, Boolean.FALSE)
-        .page(new Page<>(projectManagementReq.getCurrent(), projectManagementReq.getPageSize()));
+        .page(new Page<>(current, pageSize));
   }
 }

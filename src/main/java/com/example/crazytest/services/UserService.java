@@ -19,4 +19,6 @@ public interface UserService {
 
   User getById(Long id);
 
+  boolean updateSelectProjectId(String selectProjectId);
+
 }

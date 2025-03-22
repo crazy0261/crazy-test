@@ -8,10 +8,12 @@ import com.example.crazytest.services.ProjectManagementService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -29,11 +31,13 @@ public class ProjectManagementController {
   @Autowired
   ProjectManagementService projectManagementService;
 
-  @PostMapping("/list")
+  @GetMapping("/list")
   public Result<List<ProjectManagement>> list(
-      @RequestBody ProjectManagementReq projectManagementReq) {
+      @RequestParam(name = "name", required = false) String name,
+      @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
+      @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
     IPage<ProjectManagement> projectManagementResult = projectManagementService
-        .list(projectManagementReq);
+        .list(name,current, pageSize);
     return Result.success(projectManagementResult.getRecords(), projectManagementResult.getTotal());
   }
 

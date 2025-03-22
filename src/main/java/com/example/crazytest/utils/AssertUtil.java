@@ -33,6 +33,12 @@ public class AssertUtil {
     }
   }
 
+  public static void assertTrue(Boolean bool, String message) {
+    if (Boolean.TRUE.equals(bool)) {
+      assertTrue(true, 400, message);
+    }
+  }
+
   /**
    * 断言对象为空
    *
@@ -40,7 +46,7 @@ public class AssertUtil {
    * @param code
    * @param message
    */
-  public static void assertNotTrue(Boolean bool, int code, String message) {
+  public static void assertTrue(Boolean bool, int code, String message) {
     if (Boolean.TRUE.equals(bool)) {
       throw new BusinessException(code, message);
     }
