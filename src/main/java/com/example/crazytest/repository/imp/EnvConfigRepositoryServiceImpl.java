@@ -50,4 +50,9 @@ public class EnvConfigRepositoryServiceImpl extends
   public EnvConfig getEnvName(Long id) {
     return this.getById(id);
   }
+
+  @Override
+  public EnvConfig getByAppId(Long appId) {
+    return this.lambdaQuery().eq(EnvConfig::getAppId, appId).one();
+  }
 }

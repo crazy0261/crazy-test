@@ -18,7 +18,7 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   IPage<ApiCaseVO> list(String name, Long appId,String path, Boolean status, String recentExecResult, Long ownerId, Integer current, Integer pageSize);
 
-  ApiCase getById(Long id);
+  ApiCaseVO getById(Long id);
 
   boolean save(ApiCase apiCase);
 

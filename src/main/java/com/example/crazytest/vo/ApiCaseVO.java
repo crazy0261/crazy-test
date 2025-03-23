@@ -22,6 +22,9 @@ public class ApiCaseVO extends ApiCase {
   @ApiModelProperty(value = "接口路径")
   private String path;
 
+  @ApiModelProperty(value = "域名")
+  private String domainUrl;
+
   @ApiModelProperty(value = "接口负责人")
   private String ownerName;
 

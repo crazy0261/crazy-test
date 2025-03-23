@@ -22,4 +22,6 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
   EnvConfig getEnvName(Long id);
 
+  EnvConfig getByAppId(Long appId);
+
 }

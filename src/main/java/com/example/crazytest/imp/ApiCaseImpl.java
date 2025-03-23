@@ -2,6 +2,7 @@ package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
@@ -9,6 +10,8 @@ import com.example.crazytest.services.ApiCaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.services.ApplicationManagementService;
+import com.example.crazytest.services.DomainInfoService;
+import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ApiCaseVO;
@@ -40,6 +43,12 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   ApplicationManagementService applicationManagementService;
 
   @Autowired
+  EnvConfigService envConfigService;
+
+  @Autowired
+  DomainInfoService domainInfoService;
+
+  @Autowired
   UserService userService;
 
   @Override
@@ -66,8 +75,14 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   }
 
   @Override
-  public ApiCase getById(Long id) {
-    return apiCaseRepository.getById(id);
+  public ApiCaseVO getById(Long id) {
+    ApiCase apiCase = apiCaseRepository.getById(id);
+    ApiCaseVO apiCaseVO = new ApiCaseVO();
+    BeanUtils.copyProperties(apiCase, apiCaseVO);
+
+    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
+    apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
+    return apiCaseVO;
 
   }
 

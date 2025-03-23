@@ -47,7 +47,7 @@ public class ApiCaseController {
   }
 
   @GetMapping("/getById")
-  public Result<ApiCase> getById(Long id) {
+  public Result<ApiCaseVO> getById(Long id) {
     return Result.success(apiCaseService.getById(id));
   }
 

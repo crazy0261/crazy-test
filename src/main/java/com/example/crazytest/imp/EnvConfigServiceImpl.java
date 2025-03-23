@@ -54,4 +54,9 @@ public class EnvConfigServiceImpl implements EnvConfigService {
       return envConfigVo;
     });
   }
+
+  @Override
+  public EnvConfig getByAppId(Long appId) {
+    return envConfigRepositoryService.getByAppId(appId);
+  }
 }
