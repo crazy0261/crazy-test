@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiCaseReq;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
+import java.io.IOException;
 
 /**
  * <p>
@@ -16,10 +18,13 @@ import com.example.crazytest.vo.ApiCaseVO;
  */
 public interface ApiCaseService extends IService<ApiCase> {
 
-  IPage<ApiCaseVO> list(String name, Long appId,String path, Boolean status, String recentExecResult, Long ownerId, Integer current, Integer pageSize);
+  IPage<ApiCaseVO> list(String name, Long appId, String path, Boolean status,
+      String recentExecResult, Long ownerId, Integer current, Integer pageSize);
 
   ApiCaseVO getById(Long id);
 
   boolean save(ApiCase apiCase);
+
+  boolean debug(ApiDebugReq apiDebugReq) throws IOException;
 
 }

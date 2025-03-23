@@ -3,6 +3,7 @@ package com.example.crazytest.config;
 import com.alibaba.fastjson.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -13,22 +14,15 @@ import lombok.Data;
  */
 
 @Data
+@Builder
 public class OkHttpRequestConfig {
 
   private String url;
   private String method;
-  private Map<String, String> headers;
+  private Map<String, Object> headers;
   private JSONObject params;
-  private int connectTimeout;
-  private int readTimeout;
-  private int writeTimeout;
+  private int connectTimeout = 10;
+  private int readTimeout = 10;
+  private int writeTimeout = 10;
 
-  // 私有构造函数
-  private OkHttpRequestConfig() {
-    this.headers = new HashMap<>();
-    this.params = new JSONObject();
-    this.connectTimeout = 10;
-    this.readTimeout = 10;
-    this.writeTimeout = 10;
-  }
 }

@@ -4,6 +4,7 @@ package com.example.crazytest.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.req.ApiCaseReq;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
@@ -54,5 +55,11 @@ public class ApiCaseController {
   @PostMapping("/save")
   public Result<Boolean> save(@RequestBody ApiCase apiCase) {
     return Result.success(apiCaseService.save(apiCase));
+  }
+
+  @PostMapping("/debug")
+  public Result<Boolean> debug(@RequestBody ApiDebugReq apiCaseReq) {
+
+    return Result.success();
   }
 }

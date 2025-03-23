@@ -1,9 +1,14 @@
 package com.example.crazytest.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.ApiManagement;
+import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.User;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
@@ -13,10 +18,16 @@ import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
+import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,5 +101,30 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   public boolean save(ApiCase apiCase) {
     apiCase.setTenantId(BaseContext.getTenantId());
     return apiCaseRepository.saveOrUpdate(apiCase);
+  }
+
+  @Override
+  public boolean debug(ApiDebugReq apiDebugReq) throws IOException {
+    ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
+    AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), "用例不存在");
+
+    // 获取域名
+    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
+    DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
+
+    // 获取API path
+    ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
+
+    // 请求头整理
+    Map<String, Object> headers = new HashMap<>();
+
+    OkHttpRequestConfig request = OkHttpRequestConfig.builder()
+        .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
+        .method(apiManagement.getMethod())
+        .headers(headers)
+        .params(JSON.parseObject(apiDebugReq.getInputParams()))
+        .build();
+    RequestUtil.sendRequest(request);
+    return false;
   }
 }
