@@ -14,5 +14,4 @@ public interface EnvConfigService {
   boolean save(EnvConfigReq envConfigReq);
 
   EnvConfigReq queryById(Long id);
-
 }

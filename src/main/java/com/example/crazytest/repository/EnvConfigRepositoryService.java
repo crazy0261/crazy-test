@@ -18,10 +18,11 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
   IPage<EnvConfig> list(String tenantId, String appid, String name, List<String> domainId,
       int current, int pageSize);
 
-  List<EnvConfig> getEnvConfigByName(String tenantId, String name);
-
   EnvConfig getEnvName(Long id);
 
   EnvConfig getByAppId(Long appId);
+
+  List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId);
+
 
 }

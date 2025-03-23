@@ -38,15 +38,6 @@ public class EnvConfigRepositoryServiceImpl extends
   }
 
   @Override
-  public List<EnvConfig> getEnvConfigByName(String tenantId, String name) {
-    return this.lambdaQuery()
-        .eq(EnvConfig::getTenantId, tenantId)
-        .like(EnvConfig::getName, name)
-        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
-        .list();
-  }
-
-  @Override
   public EnvConfig getEnvName(Long id) {
     return this.getById(id);
   }
@@ -54,5 +45,13 @@ public class EnvConfigRepositoryServiceImpl extends
   @Override
   public EnvConfig getByAppId(Long appId) {
     return this.lambdaQuery().eq(EnvConfig::getAppId, appId).one();
+  }
+
+  @Override
+  public List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getDomainId, domainId)
+        .list();
   }
 }

@@ -32,8 +32,7 @@ public class TestAccountController {
 
   @GetMapping("/list")
   public Result<List<TestAccountVO>> list(String name, String account, String genTokenStatus,
-      int current,
-      int pageSize) {
+      int current, int pageSize) {
     IPage<TestAccountVO> resultPage = testAccountService
         .list(name, account, genTokenStatus, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());

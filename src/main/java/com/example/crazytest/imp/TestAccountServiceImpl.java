@@ -43,6 +43,8 @@ public class TestAccountServiceImpl implements TestAccountService {
     IPage<TestAccount> testAccountPage = testAccountRepositoryService
         .list(tenantId, name, account, genTokenStatus, current, pageSize);
 
+    System.out.println(testAccountPage.getRecords());
+
     return testAccountPage.convert(testAccount -> {
       TestAccountVO testAccountVo = new TestAccountVO();
       BeanUtils.copyProperties(testAccount, testAccountVo);

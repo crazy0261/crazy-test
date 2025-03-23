@@ -3,10 +3,12 @@ package com.example.crazytest.imp;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
+import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
@@ -67,6 +69,11 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Override
   public boolean save(EnvConfigReq envConfigReq) {
     EnvConfig envConfig = new EnvConfig();
+
+    List<EnvConfig> envConfigs = envConfigRepositoryService
+        .getEnvConfigByAppIdAndDomainId(envConfigReq.getAppId(), envConfigReq.getDomainId());
+    AssertUtil.assertTrue(ObjectUtils.isEmpty(envConfigs), "该应用下已存在该域名的环境配置");
+
     BeanUtils.copyProperties(envConfigReq, envConfig);
     envConfig.setTenantId(BaseContext.getTenantId());
     envConfig.setRequestHeaders(JSON.toJSONString(envConfigReq.getRequestHeaders()));
