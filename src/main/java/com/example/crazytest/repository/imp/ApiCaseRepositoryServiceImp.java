@@ -41,4 +41,12 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .orderByDesc(ApiCase::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
+
+  @Override
+  public List<ApiCase> allList(String tenantId) {
+    return this.lambdaQuery()
+        .eq(ApiCase::getTenantId, tenantId)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

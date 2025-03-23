@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,18 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   }
 
   @Override
+  public List<Map<String, Object>> allList() {
+    List<ApiCase> apiCaseList = apiCaseRepository.allList(BaseContext.getTenantId());
+
+    return apiCaseList.stream().map(apiCase -> {
+      Map<String, Object> map = new HashMap<>();
+      map.put("id", apiCase.getId());
+      map.put("name", apiCase.getName());
+      return map;
+    }).collect(Collectors.toList());
+  }
+
+  @Override
   public boolean debug(ApiDebugReq apiDebugReq) throws IOException {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), "用例不存在");
@@ -116,7 +129,7 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
 
     // 请求头整理
-    Map<String, Object> headers = new HashMap<>();
+    Map<String, String> headers = new HashMap<>();
 
     OkHttpRequestConfig request = OkHttpRequestConfig.builder()
         .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))

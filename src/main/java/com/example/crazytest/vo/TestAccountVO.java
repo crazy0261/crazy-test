@@ -32,7 +32,7 @@ public class TestAccountVO {
   private String password;
 
   @ApiModelProperty(value = "接口用例id")
-  private String apiCaseId;
+  private Long apiCaseId;
 
   @ApiModelProperty(value = "接口用例名称")
   private String apiCaseName;

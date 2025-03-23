@@ -7,6 +7,8 @@ import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,6 +26,10 @@ public interface ApiCaseService extends IService<ApiCase> {
   ApiCaseVO getById(Long id);
 
   boolean save(ApiCase apiCase);
+
+  List<Map<String,Object>> allList();
+
+
 
   boolean debug(ApiDebugReq apiDebugReq) throws IOException;
 

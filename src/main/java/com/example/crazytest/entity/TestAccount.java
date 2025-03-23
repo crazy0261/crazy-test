@@ -52,10 +52,13 @@ public class TestAccount implements Serializable {
   private String password;
 
   @ApiModelProperty(value = "接口用例id")
-  private String apiCaseId;
+  private Long apiCaseId;
 
   @ApiModelProperty(value = "token")
   private String token;
+
+  @ApiModelProperty(value = "请求头")
+  private String headerParams;
 
   @ApiModelProperty(value = "生成token状态")
   private String genTokenStatus;

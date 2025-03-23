@@ -3,12 +3,12 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +55,11 @@ public class ApiCaseController {
   @PostMapping("/save")
   public Result<Boolean> save(@RequestBody ApiCase apiCase) {
     return Result.success(apiCaseService.save(apiCase));
+  }
+
+  @GetMapping("/all/list")
+  public Result<List<Map<String, Object>>> allList() {
+    return Result.success(apiCaseService.allList());
   }
 
   @PostMapping("/debug")

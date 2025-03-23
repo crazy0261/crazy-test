@@ -19,7 +19,7 @@ public class OkHttpRequestConfig {
 
   private String url;
   private String method;
-  private Map<String, Object> headers;
+  private Map<String, String> headers;
   private JSONObject params;
   private int connectTimeout = 10;
   private int readTimeout = 10;
