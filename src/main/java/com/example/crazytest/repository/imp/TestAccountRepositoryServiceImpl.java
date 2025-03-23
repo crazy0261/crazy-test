@@ -24,14 +24,14 @@ public class TestAccountRepositoryServiceImpl extends
     TestAccountRepositoryService {
 
   @Override
-  public IPage<TestAccount> list(String tenantId, String name, String account, List<String> envIds,
-      int current, int pageSize) {
+  public IPage<TestAccount> list(String tenantId, String name, String account,
+      String genTokenStatus, int current, int pageSize) {
 
     return this.lambdaQuery()
         .eq(TestAccount::getTenantId, tenantId)
         .like(ObjectUtils.isNotNull(name), TestAccount::getName, name)
         .like(ObjectUtils.isNotNull(account), TestAccount::getAccount, account)
-        .in(ObjectUtils.isNotNull(envIds), TestAccount::getEnvId, envIds)
+        .eq(ObjectUtils.isNotNull(genTokenStatus), TestAccount::getGenTokenStatus, genTokenStatus)
         .eq(TestAccount::getIsDelete, Boolean.FALSE)
         .orderByDesc(TestAccount::getUpdateTime)
         .page(new Page<>(current, pageSize));

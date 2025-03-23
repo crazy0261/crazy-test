@@ -5,6 +5,6 @@ import com.example.crazytest.vo.TestAccountVO;
 
 public interface TestAccountService {
 
-  IPage<TestAccountVO> list( String name, String account, String envName, int current, int pageSize);
+  IPage<TestAccountVO> list( String name, String account, String genTokenStatus, int current, int pageSize);
 
 }

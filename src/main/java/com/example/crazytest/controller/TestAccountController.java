@@ -28,10 +28,10 @@ public class TestAccountController {
   TestAccountService testAccountService;
 
   @GetMapping("/list")
-  public Result<List<TestAccountVO>> list(String name, String account, String envName, int current,
+  public Result<List<TestAccountVO>> list(String name, String account, String genTokenStatus, int current,
       int pageSize) {
     IPage<TestAccountVO> resultPage = testAccountService
-        .list(name, account, envName, current, pageSize);
+        .list(name, account, genTokenStatus, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());
   }
 

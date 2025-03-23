@@ -31,16 +31,13 @@ public class TestAccountServiceImpl implements TestAccountService {
   EnvConfigRepositoryService envConfigRepositoryService;
 
   @Override
-  public IPage<TestAccountVO> list(String name, String account, String envName, int current,
+  public IPage<TestAccountVO> list(String name, String account, String genTokenStatus, int current,
       int pageSize) {
 
     String tenantId = BaseContext.getTenantId();
 
-    List<EnvConfig> envConfigs = envConfigRepositoryService.getEnvConfigByName(tenantId, name);
-    List<String> envConfigIds = envConfigs.stream()
-        .map(envConfig -> String.valueOf(envConfig.getEnvNameId())).collect(Collectors.toList());
     IPage<TestAccount> testAccountPage = testAccountRepositoryService
-        .list(tenantId, name, account, envConfigIds, current, pageSize);
+        .list(tenantId, name, account,genTokenStatus, current, pageSize);
 
     return testAccountPage.convert(testAccount -> {
       TestAccountVO testAccountVo = new TestAccountVO();
