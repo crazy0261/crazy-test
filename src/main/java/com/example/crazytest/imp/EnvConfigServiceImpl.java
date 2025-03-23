@@ -1,7 +1,10 @@
 package com.example.crazytest.imp;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DomainInfo;
+import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.vo.EnvConfigVO;
@@ -9,6 +12,7 @@ import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.vo.paramsListVO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -58,5 +62,28 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Override
   public EnvConfig getByAppId(Long appId) {
     return envConfigRepositoryService.getByAppId(appId);
+  }
+
+  @Override
+  public boolean save(EnvConfigReq envConfigReq) {
+    EnvConfig envConfig = new EnvConfig();
+    BeanUtils.copyProperties(envConfigReq, envConfig);
+    envConfig.setTenantId(BaseContext.getTenantId());
+    envConfig.setRequestHeaders(JSON.toJSONString(envConfigReq.getRequestHeaders()));
+    envConfig.setEnvVariables(JSON.toJSONString(envConfigReq.getEnvVariables()));
+
+    return envConfigRepositoryService.saveOrUpdate(envConfig);
+  }
+
+  @Override
+  public EnvConfigReq queryById(Long id) {
+    EnvConfig envConfig = envConfigRepositoryService.getById(id);
+    EnvConfigReq envConfigReq = new EnvConfigReq();
+    BeanUtils.copyProperties(envConfig, envConfigReq);
+    envConfigReq
+        .setRequestHeaders(JSONArray.parseArray(envConfig.getRequestHeaders(), paramsListVO.class));
+    envConfigReq
+        .setEnvVariables(JSONArray.parseArray(envConfig.getEnvVariables(), paramsListVO.class));
+    return envConfigReq;
   }
 }

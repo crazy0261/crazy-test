@@ -2,12 +2,15 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.Result;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,5 +42,16 @@ public class EnvConfigController {
         .list(appid, name, domainName, current, pageSize);
     return Result.success(pageEnvInfoPage.getRecords(), pageEnvInfoPage.getTotal());
   }
+
+  @PostMapping("/save")
+  public Result<Boolean> save(@RequestBody EnvConfigReq envConfigReq) {
+    return Result.success(envConfigService.save(envConfigReq));
+  }
+
+  @GetMapping("/queryById")
+  public Result<EnvConfigReq> queryById(@RequestParam(value = "id") Long id) {
+    return Result.success(envConfigService.queryById(id));
+  }
+
 
 }
