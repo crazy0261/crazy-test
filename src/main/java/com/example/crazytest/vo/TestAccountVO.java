@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 public class TestAccountVO {
 
+  private Long id;
+
   @ApiModelProperty(value = "环境id")
   private Long envId;
 
