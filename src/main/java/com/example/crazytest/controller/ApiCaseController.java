@@ -7,8 +7,10 @@ import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,8 +65,7 @@ public class ApiCaseController {
   }
 
   @PostMapping("/debug")
-  public Result<Boolean> debug(@RequestBody ApiDebugReq apiCaseReq) {
-
-    return Result.success();
+  public Result<Response> debug(@RequestBody ApiDebugReq apiCaseReq) throws IOException {
+    return Result.success(apiCaseService.debug(apiCaseReq));
   }
 }

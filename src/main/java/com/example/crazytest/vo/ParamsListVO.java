@@ -10,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public class paramsListVO {
+public class ParamsListVO {
 
   Long id;
   String key;

@@ -14,7 +14,7 @@ import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.BaseContext;
-import com.example.crazytest.vo.paramsListVO;
+import com.example.crazytest.vo.ParamsListVO;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
@@ -88,9 +88,9 @@ public class EnvConfigServiceImpl implements EnvConfigService {
     EnvConfigReq envConfigReq = new EnvConfigReq();
     BeanUtils.copyProperties(envConfig, envConfigReq);
     envConfigReq
-        .setRequestHeaders(JSONArray.parseArray(envConfig.getRequestHeaders(), paramsListVO.class));
+        .setRequestHeaders(JSONArray.parseArray(envConfig.getRequestHeaders(), ParamsListVO.class));
     envConfigReq
-        .setEnvVariables(JSONArray.parseArray(envConfig.getEnvVariables(), paramsListVO.class));
+        .setEnvVariables(JSONArray.parseArray(envConfig.getEnvVariables(), ParamsListVO.class));
     return envConfigReq;
   }
 }

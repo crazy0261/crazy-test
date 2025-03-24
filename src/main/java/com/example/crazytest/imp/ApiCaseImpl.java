@@ -1,16 +1,20 @@
 package com.example.crazytest.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
+import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
+import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.services.ApiManagementService;
@@ -21,14 +25,20 @@ import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
+import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.ParamsListVO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import okhttp3.Response;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +71,13 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   DomainInfoService domainInfoService;
 
   @Autowired
+  TestAccountRepositoryService testAccountService;
+
+  @Autowired
   UserService userService;
+
+  @Autowired
+  VariablesUtil variablesUtil;
 
   @Override
   public IPage<ApiCaseVO> list(String name, Long appId, String path, Boolean status,
@@ -117,7 +133,7 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   }
 
   @Override
-  public boolean debug(ApiDebugReq apiDebugReq) throws IOException {
+  public Response debug(ApiDebugReq apiDebugReq) throws IOException {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), "用例不存在");
 
@@ -125,19 +141,39 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
+    // 环境变量
+    Map<String, String> envionmentVariables = new HashMap<>();
+
     // 获取API path
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
 
+    // 前置参数
+    JSONObject preParams = JSON.parseObject(apiDebugReq.getInputParams());
+    JSONArray paramsArr = preParams.getJSONArray("envVariables");
+    List<ParamsListVO> paramsArrList =
+        Objects.isNull(paramsArr) ? new ArrayList<>() : paramsArr.toJavaList(ParamsListVO.class);
+
+    // 获取token
+    String preParamsKey = preParams.keySet().stream().findFirst().orElse("");
+    String accountId = preParams.getJSONObject(preParamsKey).getString("testaccountID");
+
+    if (StringUtils.isNoneEmpty(accountId)) {
+      TestAccount user = testAccountService.getById(accountId);
+      AssertUtil.assertNotNull(user, "测试账号不存在,请检查！");
+      AssertUtil.assertTrue(ObjectUtils.isEmpty(user.getToken()), "token为空或已过期，请检查！");
+      envionmentVariables.put("token", user.getToken());
+    }
+
     // 请求头整理
-    Map<String, String> headers = new HashMap<>();
+    Map<String, String> headers = variablesUtil
+        .formatHeader(preParamsKey, envionmentVariables, paramsArrList, envConfig, apiCase);
 
     OkHttpRequestConfig request = OkHttpRequestConfig.builder()
         .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
         .method(apiManagement.getMethod())
         .headers(headers)
-        .params(JSON.parseObject(apiDebugReq.getInputParams()))
+        .params(variablesUtil.formatParams(apiCase.getRequestParams(), envionmentVariables))
         .build();
-    RequestUtil.sendRequest(request);
-    return false;
+    return RequestUtil.sendRequest(request);
   }
 }

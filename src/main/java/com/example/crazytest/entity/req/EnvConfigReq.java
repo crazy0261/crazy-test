@@ -1,6 +1,6 @@
 package com.example.crazytest.entity.req;
 
-import com.example.crazytest.vo.paramsListVO;
+import com.example.crazytest.vo.ParamsListVO;
 import java.util.List;
 import lombok.Data;
 
@@ -18,8 +18,8 @@ public class EnvConfigReq {
   Long appId;
   Long domainId;
   String name;
-  List<paramsListVO> requestHeaders;
-  List<paramsListVO> envVariables;
+  List<ParamsListVO> requestHeaders;
+  List<ParamsListVO> envVariables;
 
 
 }
