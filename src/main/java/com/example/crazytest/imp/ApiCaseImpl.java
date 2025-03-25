@@ -1,5 +1,6 @@
 package com.example.crazytest.imp;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -27,7 +28,9 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ParamsListVO;
+import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,7 +136,7 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   }
 
   @Override
-  public Response debug(ApiDebugReq apiDebugReq) throws IOException {
+  public ResultApiVO debug(ApiDebugReq apiDebugReq) throws IOException {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), "用例不存在");
 
@@ -168,12 +171,33 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     Map<String, String> headers = variablesUtil
         .formatHeader(preParamsKey, envionmentVariables, paramsArrList, envConfig, apiCase);
 
+    // 请求参数格式化
+    JSONObject paramsJson = variablesUtil
+        .formatParams(apiCase.getRequestParams(), envionmentVariables);
+
     OkHttpRequestConfig request = OkHttpRequestConfig.builder()
         .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
         .method(apiManagement.getMethod())
         .headers(headers)
-        .params(variablesUtil.formatParams(apiCase.getRequestParams(), envionmentVariables))
+        .params(paramsJson)
         .build();
-    return RequestUtil.sendRequest(request);
+
+    long startTime = System.currentTimeMillis();
+    Response response = RequestUtil.sendRequest(request);
+    long endTime = System.currentTimeMillis();
+
+
+    // todo  临时
+    AssertResultVo actualResultVo = AssertResultVo.fail();
+    return ResultApiVO
+        .builder()
+        .requestParams(paramsJson)
+        .requestUrl(request.getUrl())
+        .requestHeaders(request.getHeaders())
+        .response(JSON.parseObject(Objects.requireNonNull(response.body()).string()))
+        .assertResultVo(actualResultVo)
+        .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
+        .execTime(endTime - startTime)
+        .build();
   }
 }

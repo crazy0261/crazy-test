@@ -7,6 +7,7 @@ import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class ApiCaseController {
   }
 
   @PostMapping("/debug")
-  public Result<Response> debug(@RequestBody ApiDebugReq apiCaseReq) throws IOException {
+  public Result<ResultApiVO> debug(@RequestBody ApiDebugReq apiCaseReq) throws IOException {
     return Result.success(apiCaseService.debug(apiCaseReq));
   }
 }

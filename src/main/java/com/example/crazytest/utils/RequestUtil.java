@@ -66,6 +66,8 @@ public class RequestUtil {
     for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
       requestBuilder.header(entry.getKey(), entry.getValue());
     }
+
+
     // 发送请求
     return client.newCall(requestBuilder.build()).execute() ;
 

@@ -5,10 +5,10 @@ import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import okhttp3.Response;
 
 /**
  * <p>
@@ -29,6 +29,6 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   List<Map<String, Object>> allList();
 
-  Response debug(ApiDebugReq apiDebugReq) throws IOException;
+  ResultApiVO debug(ApiDebugReq apiDebugReq) throws IOException;
 
 }
