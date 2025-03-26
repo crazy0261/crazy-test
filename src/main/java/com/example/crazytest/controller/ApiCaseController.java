@@ -8,10 +8,11 @@ import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
 import com.example.crazytest.vo.ResultApiVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-15
  */
 @RestController
+@Tag(name = "测试用例管理")
 @RequestMapping("/api/case")
 public class ApiCaseController {
 
@@ -37,6 +39,7 @@ public class ApiCaseController {
   ApiCaseService apiCaseService;
 
   @GetMapping("/list")
+  @Operation(summary = "查询所有用例")
   public Result<List<ApiCaseVO>> list(@RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "appId", required = false) Long appId,
       @RequestParam(value = "path", required = false) String path,
@@ -51,21 +54,25 @@ public class ApiCaseController {
   }
 
   @GetMapping("/getById")
+  @Operation(summary = "根据id查询用例")
   public Result<ApiCaseVO> getById(Long id) {
     return Result.success(apiCaseService.getById(id));
   }
 
   @PostMapping("/save")
+  @Operation(summary = "保存用例")
   public Result<Boolean> save(@RequestBody ApiCase apiCase) {
     return Result.success(apiCaseService.save(apiCase));
   }
 
   @GetMapping("/all/list")
+  @Operation(summary = "查询所有用例")
   public Result<List<Map<String, Object>>> allList() {
     return Result.success(apiCaseService.allList());
   }
 
   @PostMapping("/debug")
+  @Operation(summary = "调试用例")
   public Result<ResultApiVO> debug(@RequestBody ApiDebugReq apiCaseReq) throws IOException {
     return Result.success(apiCaseService.debug(apiCaseReq));
   }

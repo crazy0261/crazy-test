@@ -6,6 +6,8 @@ import com.example.crazytest.entity.ProjectManagement;
 import com.example.crazytest.entity.req.ProjectManagementReq;
 import com.example.crazytest.services.ProjectManagementService;
 import com.example.crazytest.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-15
  */
 @RestController
+@Tag(name = "项目管理")
 @RequestMapping("/project/management")
 public class ProjectManagementController {
 
@@ -32,6 +35,7 @@ public class ProjectManagementController {
   ProjectManagementService projectManagementService;
 
   @GetMapping("/list")
+  @Operation(summary = "查询所有项目")
   public Result<List<ProjectManagement>> list(
       @RequestParam(name = "name", required = false) String name,
       @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
@@ -42,11 +46,13 @@ public class ProjectManagementController {
   }
 
   @PostMapping("/save")
+  @Operation(summary = "保存项目")
   public Result<Boolean> save(@RequestBody ProjectManagement projectManagement) {
     return Result.success(projectManagementService.save(projectManagement));
   }
 
   @PostMapping("/delete")
+  @Operation(summary = "删除项目")
   public Result<Boolean> del(@RequestBody ProjectManagement projectManagement) {
     return Result.success(projectManagementService.delete(projectManagement));
   }

@@ -1,6 +1,8 @@
 package com.example.crazytest.entity.req;
 
+import com.example.crazytest.vo.AssertReqVo;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -11,10 +13,15 @@ import lombok.Data;
  */
 
 @Data
-public class ApiCaseReq  {
+public class ApiCaseReq {
+
+  private Long id;
 
   @ApiModelProperty(value = "应用id")
   private Long appId;
+
+  @ApiModelProperty(value = "关联的接口id")
+  private Long apiId;
 
   @ApiModelProperty(value = "用例名")
   private String name;
@@ -25,13 +32,19 @@ public class ApiCaseReq  {
   @ApiModelProperty(value = "接口路径")
   private String urlPath;
 
-  @ApiModelProperty(value = "状态")
-  boolean status;
-
   @ApiModelProperty(value = "优先级")
   private Integer priority;
 
-  @ApiModelProperty(value = "执行结果")
-  private String recentExecResult;
+  @ApiModelProperty(value = "用例变量，优先级高于环境变量")
+  private String envVariables;
+
+  @ApiModelProperty(value = "请求头")
+  private String requestHeaders;
+
+  @ApiModelProperty(value = "请求参数")
+  private String requestParams;
+
+  @ApiModelProperty(value = "断言")
+  private List<AssertReqVo> assertsArray;
 
 }

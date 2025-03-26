@@ -7,6 +7,8 @@ import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-13
  */
 @RestController
+@Tag(name = "接口管理")
 @RequestMapping("/api/management")
 public class ApiManagementController {
 
@@ -54,6 +57,7 @@ public class ApiManagementController {
    * 分页查询
    */
   @PostMapping("/list")
+  @Operation(summary = "查询所有接口")
   public Result<List<ApiManagementVO>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
     IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
     return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
@@ -61,6 +65,7 @@ public class ApiManagementController {
 
 
   @GetMapping("/get/id")
+  @Operation(summary = "根据id查询接口")
   public Result<ApiManagement> getById(@RequestParam(required = true) Long id) {
     return Result.success(apiManagementService.getById(id));
   }

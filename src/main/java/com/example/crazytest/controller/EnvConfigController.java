@@ -6,6 +6,8 @@ import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-19
  */
 @RestController
+@Tag(name = "环境信息管理")
 @RequestMapping("/env/config")
 public class EnvConfigController {
 
@@ -32,6 +35,7 @@ public class EnvConfigController {
   EnvConfigService envConfigService;
 
   @GetMapping("/list")
+  @Operation(summary = "查询所有环境信息")
   public Result<List<EnvConfigVO>> list(
       @RequestParam(value = "appid", required = false) String appid,
       @RequestParam(value = "name", required = false) String name,
@@ -44,11 +48,13 @@ public class EnvConfigController {
   }
 
   @PostMapping("/save")
+  @Operation(summary = "保存环境信息")
   public Result<Boolean> save(@RequestBody EnvConfigReq envConfigReq) {
     return Result.success(envConfigService.save(envConfigReq));
   }
 
   @GetMapping("/queryById")
+  @Operation(summary = "根据id查询环境信息")
   public Result<EnvConfigReq> queryById(@RequestParam(value = "id") Long id) {
     return Result.success(envConfigService.queryById(id));
   }

@@ -6,6 +6,8 @@ import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.services.TestAccountService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.TestAccountVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-20
  */
 @RestController
+@Tag(name = "测试账号管理")
 @RequestMapping("/test/account")
 public class TestAccountController {
 
@@ -31,6 +34,7 @@ public class TestAccountController {
   TestAccountService testAccountService;
 
   @GetMapping("/list")
+  @Operation(summary = "分页查询账号")
   public Result<List<TestAccountVO>> list(String name, String account, String genTokenStatus,
       int current, int pageSize) {
     IPage<TestAccountVO> resultPage = testAccountService
@@ -39,6 +43,7 @@ public class TestAccountController {
   }
 
   @PostMapping("/save")
+  @Operation(summary = "保存账号")
   public Result<Boolean> save(@RequestBody TestAccount testAccount) {
     return Result.success(testAccountService.save(testAccount));
   }

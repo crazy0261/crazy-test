@@ -17,6 +17,13 @@ public class Constants {
    * 白名单接口
    */
   public static final List<String> EXCLUDE_PATH = new ArrayList<>(
-      Arrays.asList("/user/login", "/user/register"));
+      Arrays.asList(
+          "/user/login",
+          "/user/register",
+          "/swagger-ui/*",
+          "/v3/api-docs/*",
+          "/webjars/",
+          "/doc.html"
+      ));
 
 }

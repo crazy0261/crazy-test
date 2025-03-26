@@ -9,7 +9,10 @@ spring:
       minimum-idle: 2
 
 springdoc:
-  api-docs:
-    enabled: true
   swagger-ui:
-    path: /api
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+  api-docs:
+    path: /v3/api-docs
+knife4j:
+  enable: true

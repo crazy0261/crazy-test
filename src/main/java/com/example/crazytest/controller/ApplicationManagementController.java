@@ -6,6 +6,8 @@ import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.utils.Result;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-03-17
  */
 @RestController
+@Tag(name = "应用管理")
 @RequestMapping("/application/management")
 public class ApplicationManagementController {
 
@@ -32,6 +35,7 @@ public class ApplicationManagementController {
   ApplicationManagementService appManagementService;
 
   @GetMapping("/list")
+  @Operation(summary = "查询所有应用")
   public Result<List<ApplicationManagementVO>> list(
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "负责人", required = false) Long ownerId,
@@ -43,6 +47,7 @@ public class ApplicationManagementController {
   }
 
   @PostMapping("/save")
+  @Operation(summary = "保存应用")
   public Result<Boolean> save(@RequestBody ApplicationManagementReq applicationManagementReq) {
     return Result.success(appManagementService.save(applicationManagementReq));
   }
