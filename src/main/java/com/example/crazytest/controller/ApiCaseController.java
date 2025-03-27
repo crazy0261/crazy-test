@@ -3,6 +3,7 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
@@ -61,8 +62,8 @@ public class ApiCaseController {
 
   @PostMapping("/save")
   @Operation(summary = "保存用例")
-  public Result<Boolean> save(@RequestBody ApiCase apiCase) {
-    return Result.success(apiCaseService.save(apiCase));
+  public Result<Boolean> save(@RequestBody ApiCaseReq apiCaseReq) {
+    return Result.success(apiCaseService.save(apiCaseReq));
   }
 
   @GetMapping("/all/list")

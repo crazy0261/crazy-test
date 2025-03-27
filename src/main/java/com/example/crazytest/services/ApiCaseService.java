@@ -3,6 +3,7 @@ package com.example.crazytest.services;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
 import com.example.crazytest.vo.ResultApiVO;
@@ -25,7 +26,7 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   ApiCaseVO getById(Long id);
 
-  boolean save(ApiCase apiCase);
+  boolean save(ApiCaseReq apiCase);
 
   List<Map<String, Object>> allList();
 

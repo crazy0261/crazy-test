@@ -2,6 +2,7 @@ package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.ApiCase;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,5 +28,8 @@ public class ApiCaseVO extends ApiCase {
 
   @ApiModelProperty(value = "接口负责人")
   private String ownerName;
+
+  @ApiModelProperty(value = "断言")
+  public List<AssertReqVo> assertsArray;
 
 }

@@ -12,6 +12,7 @@ import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.User;
+import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
@@ -28,6 +29,7 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.AssertReqVo;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ParamsListVO;
 import com.example.crazytest.vo.ResultApiVO;
@@ -113,13 +115,20 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
 
     EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
     apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
+    apiCaseVO.setAssertsArray(Objects.isNull(apiCase.getAsserts()) ? new ArrayList<>()
+        : JSON.parseArray(apiCase.getAsserts(), AssertReqVo.class));
     return apiCaseVO;
 
   }
 
   @Override
-  public boolean save(ApiCase apiCase) {
-    apiCase.setTenantId(BaseContext.getTenantId());
+  public boolean save(ApiCaseReq apiCaseReq) {
+    apiCaseReq.setTenantId(BaseContext.getTenantId());
+    ApiCase apiCase = new ApiCase();
+    BeanUtils.copyProperties(apiCaseReq, apiCase);
+    apiCase.setAsserts(Objects.isNull(apiCaseReq.getAssertsArray()) ? ""
+        : JSON.toJSONString(apiCaseReq.getAssertsArray()));
+
     return apiCaseRepository.saveOrUpdate(apiCase);
   }
 
@@ -185,7 +194,6 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     long startTime = System.currentTimeMillis();
     Response response = RequestUtil.sendRequest(request);
     long endTime = System.currentTimeMillis();
-
 
     // todo  临时
     AssertResultVo actualResultVo = AssertResultVo.fail();

@@ -17,6 +17,9 @@ public class ApiCaseReq {
 
   private Long id;
 
+  @ApiModelProperty(value = "租户")
+  private String tenantId;
+
   @ApiModelProperty(value = "应用id")
   private Long appId;
 
