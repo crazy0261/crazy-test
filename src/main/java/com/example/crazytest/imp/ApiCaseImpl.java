@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,7 @@ import org.springframework.stereotype.Service;
  * @author Menghui
  * @since 2025-03-15
  */
+@Slf4j
 @Service
 public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     ApiCaseService {
@@ -243,12 +245,16 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     String expectedValue = assertReqVo.getExpectValue();
     String actualValue;
 
-    if (jsonPath.contains("size()")) {
-      String path = jsonPath.split("size\\(\\)")[0];
-      JSONArray jsonArray = JSON.parseArray(JSONPath.eval(body, path).toString());
-      actualValue = String.valueOf(jsonArray.size());
-    } else {
-      actualValue = JSONPath.eval(body, jsonPath).toString();
+    try {
+      if (jsonPath.contains("size()")) {
+        String path = jsonPath.split("size\\(\\)")[0];
+        JSONArray jsonArray = JSON.parseArray(JSONPath.eval(body, path).toString());
+        actualValue = String.valueOf(jsonArray.size());
+      } else {
+        actualValue = JSONPath.eval(body, jsonPath).toString();
+      }
+    } catch (Exception e) {
+      return Boolean.FALSE;
     }
 
     return assertConditionResult(assertReqVo.getCondition(), expectedValue, actualValue);
