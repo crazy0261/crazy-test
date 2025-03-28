@@ -54,6 +54,9 @@ public class TestAccount implements Serializable {
   @ApiModelProperty(value = "接口用例id")
   private Long apiCaseId;
 
+  @ApiModelProperty(value = "json path")
+  private String jsonPath;
+
   @ApiModelProperty(value = "token")
   private String token;
 
