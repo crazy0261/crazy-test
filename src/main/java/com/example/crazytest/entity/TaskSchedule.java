@@ -55,8 +55,8 @@ public class TaskSchedule implements Serializable {
   @ApiModelProperty(value = "cron表达式")
   private String cron;
 
-  @ApiModelProperty(value = "状态，1启用，-1禁用")
-  private Integer enable;
+  @ApiModelProperty(value = "状态，0启用，1禁用")
+  private Boolean enable;
 
   @ApiModelProperty(value = "执行状态")
   private String status;
@@ -76,7 +76,7 @@ public class TaskSchedule implements Serializable {
 
   @ApiModelProperty(value = "创建人")
   @TableField(fill = FieldFill.INSERT)
-  private Long createByName;
+  private String createByName;
 
   @ApiModelProperty(value = "创建时间")
   @TableField(fill = FieldFill.INSERT)
@@ -88,7 +88,7 @@ public class TaskSchedule implements Serializable {
 
   @ApiModelProperty(value = "修改人")
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  private Long updateByName;
+  private String updateByName;
 
   @ApiModelProperty(value = "修改时间")
   @TableField(fill = FieldFill.INSERT_UPDATE)

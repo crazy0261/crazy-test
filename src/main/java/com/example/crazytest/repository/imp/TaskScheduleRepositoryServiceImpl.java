@@ -7,6 +7,7 @@ import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.mapper.TaskScheduleMapper;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.crazytest.utils.BaseContext;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class TaskScheduleRepositoryServiceImpl extends
       Integer enable, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
+        .eq(TaskSchedule::getTenantId, BaseContext.getTenantId())
         .like(ObjectUtils.isNotNull(name), TaskSchedule::getName, name)
         .eq(ObjectUtils.isNotNull(testcaseType), TaskSchedule::getTestcaseType, testcaseType)
         .in(ObjectUtils.isNotNull(ownerId), TaskSchedule::getOwnerId, ownerId)

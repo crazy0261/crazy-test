@@ -5,10 +5,15 @@ import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
+import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.TaskScheduleVO;
+import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author
@@ -17,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @DESRIPTION
  */
 
+@Service
 public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Autowired
@@ -39,5 +45,14 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
       taskScheduleVO.setOwnerName(userService.getById(taskSchedule.getOwnerId()).getName());
       return taskScheduleVO;
     });
+  }
+
+  @Override
+  public Boolean save(TaskSchedule taskSchedule) {
+    taskSchedule.setTenantId(
+        Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
+    taskSchedule
+        .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
+    return repositoryService.saveOrUpdate(taskSchedule);
   }
 }
