@@ -8,9 +8,7 @@ import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.TaskScheduleVO;
-import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +50,22 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   @Override
   @Transactional(rollbackFor = Exception.class)
   public Boolean save(TaskSchedule taskSchedule) {
-    List<TaskSchedule> taskSchedules =repositoryService.cheTaskSchedule(taskSchedule.getName());
-    AssertUtil.assertTrue(taskSchedules.isEmpty(),"任务名称已存在");
+    List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
+    AssertUtil.assertTrue(taskSchedules.isEmpty(), "任务名称已存在");
 
     taskSchedule.setTenantId(
         Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
     taskSchedule
         .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
     return repositoryService.saveOrUpdate(taskSchedule);
+  }
+
+  @Override
+  public TaskScheduleVO queryById(Long id) {
+    TaskSchedule taskSchedule = repositoryService.getById(id);
+    TaskScheduleVO taskScheduleVO = new TaskScheduleVO();
+    BeanUtils.copyProperties(taskSchedule, taskScheduleVO);
+    taskScheduleVO.setOwnerName(userService.getById(taskSchedule.getOwnerId()).getName());
+    return taskScheduleVO;
   }
 }

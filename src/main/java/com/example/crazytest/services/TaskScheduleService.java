@@ -11,5 +11,8 @@ public interface TaskScheduleService {
 
   Boolean save(TaskSchedule taskSchedule);
 
+  TaskScheduleVO queryById(Long id);
+
+
 
 }

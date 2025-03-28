@@ -54,4 +54,10 @@ public class TaskScheduleController {
     return Result.success(taskScheduleService.save(taskSchedule));
   }
 
+  @GetMapping("/query")
+  @Operation(summary = "详情")
+  public Result<TaskScheduleVO> save(@RequestParam(value = "id") Long id) {
+    return Result.success(taskScheduleService.queryById(id));
+  }
+
 }
