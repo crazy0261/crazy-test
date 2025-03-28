@@ -59,7 +59,7 @@ public class GlobalLogAspect {
       return result;
     } catch (Throwable e) {
       log.error("ERROR Req：ip:{} , url:{} ,reqParams:{}, header:{},result:{} ", ip, url, reqData,
-          header, e.getMessage());
+          header, e);
       throw e;
     }
   }

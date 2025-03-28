@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.entity.ApiCase;
@@ -14,6 +15,7 @@ import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.enums.ConditionTypeEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
@@ -35,6 +37,7 @@ import com.example.crazytest.vo.ParamsListVO;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +168,10 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     List<ParamsListVO> paramsArrList =
         Objects.isNull(paramsArr) ? new ArrayList<>() : paramsArr.toJavaList(ParamsListVO.class);
 
+    // 获取断言
+    List<AssertReqVo> assertsArray = Optional.ofNullable(apiCase.getAsserts())
+        .map(str -> JSON.parseArray(str, AssertReqVo.class)).orElse(Collections.emptyList());
+
     // 获取token
     String preParamsKey = preParams.keySet().stream().findFirst().orElse("");
     String accountId = preParams.getJSONObject(preParamsKey).getString("testaccountID");
@@ -193,19 +200,64 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
 
     long startTime = System.currentTimeMillis();
     Response response = RequestUtil.sendRequest(request);
+    JSONObject body = JSON.parseObject(Objects.requireNonNull(response.body()).string());
     long endTime = System.currentTimeMillis();
 
-    // todo  临时
-    AssertResultVo actualResultVo = AssertResultVo.fail();
     return ResultApiVO
         .builder()
         .requestParams(paramsJson)
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
-        .response(JSON.parseObject(Objects.requireNonNull(response.body()).string()))
-        .assertResultVo(actualResultVo)
+        .response(body)
+        .assertResultVo(assertResult(assertsArray, body))
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)
         .build();
+  }
+
+  @Override
+  public AssertResultVo assertResult(List<AssertReqVo> assertReqVos, JSONObject body) {
+    AssertResultVo assertResult = new AssertResultVo();
+    assertResult.setPass(Boolean.TRUE);
+
+    Integer code = body.getInteger("code");
+    if (code != 200) {
+      assertResult.setPass(Boolean.FALSE);
+      return assertResult;
+    }
+
+    if (assertReqVos.isEmpty()) {
+      return assertResult;
+    }
+
+    boolean allAssertionsPass = assertReqVos.stream()
+        .allMatch(assertReqVo -> checkAssertion(assertReqVo, body));
+
+    assertResult.setPass(allAssertionsPass);
+    return assertResult;
+  }
+
+  @Override
+  public Boolean checkAssertion(AssertReqVo assertReqVo, JSONObject body) {
+    String jsonPath = assertReqVo.getJsonPath();
+    String expectedValue = assertReqVo.getExpectValue();
+    String actualValue;
+
+    if (jsonPath.contains("size()")) {
+      String path = jsonPath.split("size\\(\\)")[0];
+      JSONArray jsonArray = JSON.parseArray(JSONPath.eval(body, path).toString());
+      actualValue = String.valueOf(jsonArray.size());
+    } else {
+      actualValue = JSONPath.eval(body, jsonPath).toString();
+    }
+
+    return assertConditionResult(assertReqVo.getCondition(), expectedValue, actualValue);
+  }
+
+  @Override
+  public Boolean assertConditionResult(String condition, String expectValue, String actualValue) {
+
+    ConditionTypeEnum conditionType = ConditionTypeEnum.getConditionType(condition);
+    return conditionType.getPredicate().test(expectValue, actualValue);
   }
 }

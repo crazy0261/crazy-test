@@ -53,7 +53,6 @@ public class JWTInterceptor implements HandlerInterceptor {
             .fail(ResultEnum.UNAUTHORIZED.getCode(), ResultEnum.UNAUTHORIZED.getMessage());
       }
     } else {
-      System.out.println(request.getRequestURI());
       result = Result.fail(ResultEnum.TOKEN_NOT.getCode(), ResultEnum.TOKEN_NOT.getMessage());
     }
 
