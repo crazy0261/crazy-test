@@ -131,8 +131,10 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     apiCaseReq.setTenantId(BaseContext.getTenantId());
     ApiCase apiCase = new ApiCase();
     BeanUtils.copyProperties(apiCaseReq, apiCase);
-    apiCase.setAsserts(Objects.isNull(apiCaseReq.getAssertsArray()) ? ""
-        : JSON.toJSONString(apiCaseReq.getAssertsArray()));
+    apiCase
+        .setOwnerId(Optional.ofNullable(apiCaseReq.getOwnerId()).orElse(BaseContext.getUserId()));
+    apiCase.setAsserts(
+        Optional.ofNullable(apiCaseReq.getAssertsArray()).map(JSON::toJSONString).orElse(""));
 
     return apiCaseRepository.saveOrUpdate(apiCase);
   }
@@ -167,8 +169,7 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     // 前置参数
     JSONObject preParams = JSON.parseObject(apiDebugReq.getInputParams());
     JSONArray paramsArr = preParams.getJSONArray("envVariables");
-    List<ParamsListVO> paramsArrList =
-        Objects.isNull(paramsArr) ? new ArrayList<>() : paramsArr.toJavaList(ParamsListVO.class);
+    List<ParamsListVO> paramsArrList = Optional.ofNullable(paramsArr).map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
 
     // 获取断言
     List<AssertReqVo> assertsArray = Optional.ofNullable(apiCase.getAsserts())

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,13 +30,9 @@ public class VariablesUtil {
 
   public Map<String, String> formatHeader(String envId, Map<String, String> variables,
       List<ParamsListVO> paramsArrList, EnvConfig envConfig, ApiCase apiCase) {
-    List<ParamsListVO> headerEnv = Objects.isNull(envConfig) ? new ArrayList<>()
-        : JSON.parseArray(envConfig.getRequestHeaders(), ParamsListVO.class);
-    List<ParamsListVO> envVariables = Objects.isNull(envConfig) ? new ArrayList<>()
-        : JSON.parseArray(envConfig.getEnvVariables(), ParamsListVO.class);
-    List<ParamsListVO> apiCaseVariables = Objects.isNull(apiCase) ? new ArrayList<>()
-        : JSON.parseObject(apiCase.getEnvVariables()).getJSONObject(envId)
-            .getJSONArray("envVariables").toJavaList(ParamsListVO.class);
+    List<ParamsListVO> headerEnv =Optional.ofNullable(envConfig).map(item-> JSON.parseArray(item.getRequestHeaders(), ParamsListVO.class)).orElse(new ArrayList<>());
+    List<ParamsListVO> envVariables = Optional.ofNullable(envConfig).map(item-> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class)).orElse( new ArrayList<>());
+    List<ParamsListVO> apiCaseVariables = Optional.ofNullable(apiCase).map(item-> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class)).orElse(new ArrayList<>());
 
     // 合并变量
     Map<String, String> allVariables = Stream
