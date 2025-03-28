@@ -34,6 +34,9 @@ public class TestAccountVO {
   @ApiModelProperty(value = "接口用例id")
   private Long apiCaseId;
 
+  @ApiModelProperty(value = "json path")
+  private String jsonPath;
+
   @ApiModelProperty(value = "请求头")
   private String headerParams;
 
