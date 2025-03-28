@@ -21,8 +21,8 @@ public class ResultApiVO {
   private Map<String, String> requestHeaders;
   private Object requestParams;
   private String requestUrl;
-  private String startExecTime; // 开始执行时间
-  private Long execTime;  // 执行耗时（ms）
+  private String startExecTime;
+  private Long execTime;
 //  private List<AssertVo> autoGenerateAsserts;  // 自动生成的断言
   private Long envNameId;
   private String envName;

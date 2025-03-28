@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,6 +23,7 @@ import lombok.experimental.Accessors;
  * @since 2025-03-23
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("api_case_result")
@@ -47,7 +49,7 @@ public class ApiCaseResult implements Serializable {
   private Long scheduleBatchId;
 
   @ApiModelProperty(value = "用例id")
-  private String apiTestcaseId;
+  private Long apiTestcaseId;
 
   @ApiModelProperty(value = "用例负责人ID")
   private Long caseOwnerId;
@@ -55,7 +57,7 @@ public class ApiCaseResult implements Serializable {
   @ApiModelProperty(value = "环境名称id")
   private String envNameId;
 
-  @ApiModelProperty(value = "执行模式,schedule")
+  @ApiModelProperty(value = "执行模式：自动 schedule/手动 manual")
   private String mode;
 
   @ApiModelProperty(value = "执行状态,INIT,RUNNING,SUCCESS,FAIL")
@@ -90,5 +92,8 @@ public class ApiCaseResult implements Serializable {
   @ApiModelProperty(value = "修改时间")
   @TableField(fill = FieldFill.INSERT_UPDATE)
   private LocalDateTime updateTime;
+
+  @ApiModelProperty(value = "是否删除")
+  private Long isDelete;
 
 }

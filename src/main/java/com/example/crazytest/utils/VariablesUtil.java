@@ -30,9 +30,19 @@ public class VariablesUtil {
 
   public Map<String, String> formatHeader(String envId, Map<String, String> variables,
       List<ParamsListVO> paramsArrList, EnvConfig envConfig, ApiCase apiCase) {
-    List<ParamsListVO> headerEnv =Optional.ofNullable(envConfig).map(item-> JSON.parseArray(item.getRequestHeaders(), ParamsListVO.class)).orElse(new ArrayList<>());
-    List<ParamsListVO> envVariables = Optional.ofNullable(envConfig).map(item-> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class)).orElse( new ArrayList<>());
-    List<ParamsListVO> apiCaseVariables = Optional.ofNullable(apiCase).map(item-> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class)).orElse(new ArrayList<>());
+    List<ParamsListVO> headerEnv = Optional.ofNullable(envConfig)
+        .map(item -> JSON.parseArray(item.getRequestHeaders(), ParamsListVO.class))
+        .orElse(new ArrayList<>());
+    List<ParamsListVO> envVariables = Optional.ofNullable(envConfig)
+        .map(item -> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class))
+        .orElse(new ArrayList<>());
+    List<ParamsListVO> apiCaseVariables = Optional.ofNullable(apiCase)
+        .map(item -> JSON.parseObject(item.getEnvVariables()))
+        .map(item -> item.getJSONObject(envId))
+        .map(item -> item.getJSONArray("envVariables"))
+        .map(item -> item.toJavaList(ParamsListVO.class))
+        .orElse(new ArrayList<>());
+
 
     // 合并变量
     Map<String, String> allVariables = Stream

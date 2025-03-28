@@ -51,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -127,6 +128,7 @@ public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public boolean save(ApiCaseReq apiCaseReq) {
     apiCaseReq.setTenantId(BaseContext.getTenantId());
     ApiCase apiCase = new ApiCase();

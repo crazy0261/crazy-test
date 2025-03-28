@@ -2,9 +2,9 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ApiCaseVO;
@@ -38,6 +38,9 @@ public class ApiCaseController {
 
   @Autowired
   ApiCaseService apiCaseService;
+
+  @Autowired
+  ApiCaseResultService apiCaseResultService;
 
   @GetMapping("/list")
   @Operation(summary = "查询所有用例")
@@ -75,6 +78,8 @@ public class ApiCaseController {
   @PostMapping("/debug")
   @Operation(summary = "调试用例")
   public Result<ResultApiVO> debug(@RequestBody ApiDebugReq apiCaseReq) throws IOException {
-    return Result.success(apiCaseService.debug(apiCaseReq));
+    ResultApiVO resultApiVO = apiCaseService.debug(apiCaseReq);
+    apiCaseResultService.save(apiCaseReq, resultApiVO);
+    return Result.success(resultApiVO);
   }
 }
