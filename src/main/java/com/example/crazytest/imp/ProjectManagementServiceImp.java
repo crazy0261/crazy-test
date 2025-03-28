@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class ProjectManagementImp implements ProjectManagementService {
+public class ProjectManagementServiceImp implements ProjectManagementService {
 
   @Autowired
   ProjectManagementRepositoryService projectManagementService;

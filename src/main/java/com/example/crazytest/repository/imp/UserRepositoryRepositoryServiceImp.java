@@ -8,6 +8,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.mapper.UserMapper;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.utils.BaseContext;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,15 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
         .set(User::getSelectProject, userEntity.getSelectProject())
         .eq(User::getId, userEntity.getId())
         .update();
+  }
+
+  @Override
+  public List<User> getNameList(String name) {
+
+    return this.lambdaQuery()
+        .like(StringUtils.isNotEmpty(name), User::getName, name)
+        .eq(User::getTenantId, BaseContext.getTenantId())
+        .list();
   }
 
 }

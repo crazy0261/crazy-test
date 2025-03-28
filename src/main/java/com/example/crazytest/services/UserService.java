@@ -3,6 +3,7 @@ package com.example.crazytest.services;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
+import java.util.List;
 
 public interface UserService {
 
@@ -20,5 +21,8 @@ public interface UserService {
   User getById(Long id);
 
   boolean updateSelectProjectId(String selectProjectId);
+
+  List<Long> getNameList(String name);
+
 
 }

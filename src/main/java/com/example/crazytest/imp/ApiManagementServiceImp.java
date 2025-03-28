@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class ApiManagementImp implements ApiManagementService {
+public class ApiManagementServiceImp implements ApiManagementService {
 
   @Autowired
   ApiManageRepositoryService apiManageRepository;

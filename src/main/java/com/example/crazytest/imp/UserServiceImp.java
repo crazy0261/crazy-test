@@ -10,6 +10,7 @@ import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.JWTUtil;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserImp implements UserService {
+public class UserServiceImp implements UserService {
 
   @Autowired
   UserRepositoryService userRepositoryService;
@@ -95,5 +96,11 @@ public class UserImp implements UserService {
     assert user != null;
     user.setSelectProject(selectProjectId);
     return userRepositoryService.updateSelectProjectId(user);
+  }
+
+  @Override
+  public List<Long> getNameList(String name) {
+    List<User> userList = userRepositoryService.getNameList(name);
+    return userList.stream().map(User::getId).collect(Collectors.toList());
   }
 }

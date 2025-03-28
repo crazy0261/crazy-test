@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.User;
+import java.util.List;
 
 public interface UserRepositoryService extends IService<User> {
 
@@ -19,5 +20,7 @@ public interface UserRepositoryService extends IService<User> {
   User getUserData(Long id);
 
   boolean updateSelectProjectId(User userEntity);
+
+  List<User> getNameList(String name);
 
 }

@@ -63,7 +63,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @Service
-public class ApiCaseImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
+public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> implements
     ApiCaseService {
 
   @Autowired
