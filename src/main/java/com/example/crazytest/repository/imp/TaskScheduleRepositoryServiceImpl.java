@@ -38,4 +38,10 @@ public class TaskScheduleRepositoryServiceImpl extends
         .orderByDesc(TaskSchedule::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
+
+  @Override
+  public List<TaskSchedule> cheTaskSchedule(String name) {
+    return this.lambdaQuery().eq(TaskSchedule::getIsDelete, Boolean.FALSE)
+        .eq(TaskSchedule::getName, name).list();
+  }
 }

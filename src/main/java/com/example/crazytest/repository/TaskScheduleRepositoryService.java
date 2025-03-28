@@ -18,4 +18,6 @@ public interface TaskScheduleRepositoryService extends IService<TaskSchedule> {
   IPage<TaskSchedule> list(String name, String testcaseType, List<Long> ownerId, Integer enable,
       Integer current, Integer pageSize);
 
+  List<TaskSchedule> cheTaskSchedule(String name);
+
 }

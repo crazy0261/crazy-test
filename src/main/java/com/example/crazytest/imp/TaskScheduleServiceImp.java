@@ -5,6 +5,7 @@ import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
+import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.TaskScheduleVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author
@@ -48,7 +50,11 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   }
 
   @Override
+  @Transactional(rollbackFor = Exception.class)
   public Boolean save(TaskSchedule taskSchedule) {
+    List<TaskSchedule> taskSchedules =repositoryService.cheTaskSchedule(taskSchedule.getName());
+    AssertUtil.assertTrue(taskSchedules.isEmpty(),"任务名称已存在");
+
     taskSchedule.setTenantId(
         Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
     taskSchedule
