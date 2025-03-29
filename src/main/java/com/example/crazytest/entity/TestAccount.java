@@ -2,6 +2,7 @@ package com.example.crazytest.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -93,6 +94,7 @@ public class TestAccount implements Serializable {
   @ApiModelProperty(value = "修改时间")
   private LocalDateTime updateTime;
 
+  @TableLogic
   @ApiModelProperty(value = "是否删除")
   private Integer isDelete;
 

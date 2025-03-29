@@ -1,8 +1,11 @@
 package com.example.crazytest.imp;
 
+import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
+import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.mapper.TestAccountMapper;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
@@ -10,9 +13,12 @@ import com.example.crazytest.services.TestAccountService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.CronUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.ResultApiVO;
 import com.example.crazytest.vo.TestAccountVO;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.support.CronExpression;
@@ -37,6 +43,9 @@ public class TestAccountServiceImpl implements TestAccountService {
   @Autowired
   ApiCaseService apiCaseService;
 
+  @Autowired
+  TestAccountMapper testAccountMapper;
+
   @Override
   public IPage<TestAccountVO> list(String name, String genTokenStatus, int current,
       int pageSize) {
@@ -57,7 +66,7 @@ public class TestAccountServiceImpl implements TestAccountService {
   }
 
   @Override
-  public boolean save(TestAccount testAccount) {
+  public Boolean save(TestAccount testAccount) {
     CronUtil.cronCheckRule(testAccount.getCron());
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
@@ -67,6 +76,40 @@ public class TestAccountServiceImpl implements TestAccountService {
   @Override
   public List<TestAccount> listAllTestAccount() {
     return testAccountRepositoryService.listAllTestAccount();
+  }
+
+  @Override
+  public Boolean delete(Long id) {
+    return testAccountMapper.deleteById(id) > 0;
+  }
+
+  @Override
+  public void createToken(TestAccount testAccount)
+      throws IOException {
+    ApiDebugReq apiDebugReq = ApiDebugReq.builder().id(testAccount.getApiCaseId())
+        .envId(testAccount.getEnvId()).inputParams(testAccount.getInputParams()).build();
+
+    ResultApiVO result = apiCaseService.debug(apiDebugReq);
+    testAccount
+        .setGenTokenStatus(result.getAssertResultVo().isPass() ? "SUCCESS" : "Error");
+    testAccount.setToken(Optional.ofNullable(result.getResponse())
+        .map(json -> JSONPath.eval(json, testAccount.getJsonPath()))
+        .map(Object::toString).orElse(""));
+    testAccount.setFailReason(
+        !result.getAssertResultVo().isPass() ? result.getResponse().toJSONString() : "");
+    save(testAccount);
+  }
+
+  @Override
+  public void crateManualToken(Long id) throws IOException {
+
+    TestAccount testAccount = this.queryById(id);
+    this.createToken(testAccount);
+  }
+
+  @Override
+  public TestAccount queryById(Long id) {
+    return testAccountRepositoryService.getById(id);
   }
 }
 
