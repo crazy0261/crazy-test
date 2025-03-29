@@ -8,6 +8,7 @@ import com.example.crazytest.mapper.ApplicationManagementMapper;
 import com.example.crazytest.repository.ApplicationManagementRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.utils.BaseContext;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,6 +33,14 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
         .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApplicationManagement::getUpdateTime)
         .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<ApplicationManagement> listAllApplicationManagement(String tenantId) {
+    return this.lambdaQuery()
+        .eq(ApplicationManagement::getTenantId, tenantId)
+        .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
+        .list();
   }
 
 }

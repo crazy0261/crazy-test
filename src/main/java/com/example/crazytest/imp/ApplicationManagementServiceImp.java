@@ -8,6 +8,7 @@ import com.example.crazytest.repository.ApplicationManagementRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.utils.BaseContext;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,12 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   @Override
   public ApplicationManagement getById(Long id) {
     return applicationManagementRepositoryService.getById(id);
+  }
+
+  @Override
+  public List<ApplicationManagement> listAllApplicationManagement() {
+    return applicationManagementRepositoryService
+        .listAllApplicationManagement(BaseContext.getTenantId());
   }
 
 }

@@ -3,6 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApplicationManagement;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -15,5 +16,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ApplicationManagementRepositoryService extends IService<ApplicationManagement> {
 
   IPage<ApplicationManagement> list(String name, Long ownerId, int current, int pageSize);
+
+  List<ApplicationManagement> listAllApplicationManagement(String tenantId);
+
 
 }

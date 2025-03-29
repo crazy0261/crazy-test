@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApplicationManagement;
 import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
+import java.util.List;
 
 public interface ApplicationManagementService {
 
@@ -13,5 +14,7 @@ public interface ApplicationManagementService {
   boolean save(ApplicationManagementReq applicationManagementReq);
 
   ApplicationManagement getById(Long id);
+
+  List<ApplicationManagement> listAllApplicationManagement();
 
 }

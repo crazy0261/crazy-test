@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApplicationManagement;
 import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
 import com.example.crazytest.services.ApplicationManagementService;
@@ -42,7 +43,8 @@ public class ApplicationManagementController {
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-    IPage<ApplicationManagementVO> resultPage = appManagementService.list(name, ownerId, current, pageSize);
+    IPage<ApplicationManagementVO> resultPage = appManagementService
+        .list(name, ownerId, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());
   }
 
@@ -50,6 +52,12 @@ public class ApplicationManagementController {
   @Operation(summary = "保存应用")
   public Result<Boolean> save(@RequestBody ApplicationManagementReq applicationManagementReq) {
     return Result.success(appManagementService.save(applicationManagementReq));
+  }
+
+  @GetMapping("/list/all")
+  @Operation(summary = "查询当前租户下所有应用")
+  public Result<List<ApplicationManagement>> listAll() {
+    return Result.success(appManagementService.listAllApplicationManagement());
   }
 
 }
