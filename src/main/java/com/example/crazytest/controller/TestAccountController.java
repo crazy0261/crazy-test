@@ -35,10 +35,10 @@ public class TestAccountController {
 
   @GetMapping("/list")
   @Operation(summary = "分页查询账号")
-  public Result<List<TestAccountVO>> list(String name, String account, String genTokenStatus,
+  public Result<List<TestAccountVO>> list(String name, String genTokenStatus,
       int current, int pageSize) {
     IPage<TestAccountVO> resultPage = testAccountService
-        .list(name, account, genTokenStatus, current, pageSize);
+        .list(name, genTokenStatus, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());
   }
 

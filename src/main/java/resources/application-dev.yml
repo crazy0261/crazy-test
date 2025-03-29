@@ -8,6 +8,22 @@ spring:
       maximum-pool-size: 10
       minimum-idle: 2
 
+xxl:
+  job:
+    accessToken: crazyTest20250329
+    admin:
+      addresses: http://124.222.106.11:8800/xxl-job-admin
+      timeout: 10
+    executor:
+      appname: xxl-job-executor-crazy-test
+#      address: http://124.222.106.11:8800
+#      address:
+      ip:
+      port: 9999
+      logpath: ./xxl-job/executor
+      logretentiondays: 7
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

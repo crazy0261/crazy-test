@@ -7,6 +7,7 @@ import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.mapper.TestAccountMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.TestAccountRepositoryService;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +25,23 @@ public class TestAccountRepositoryServiceImpl extends
     TestAccountRepositoryService {
 
   @Override
-  public IPage<TestAccount> list(String tenantId, String name, String account,
+  public IPage<TestAccount> list(String tenantId, String name,
       String genTokenStatus, int current, int pageSize) {
 
     return this.lambdaQuery()
         .eq(TestAccount::getTenantId, tenantId)
         .like(ObjectUtils.isNotNull(name), TestAccount::getName, name)
-        .like(ObjectUtils.isNotNull(account), TestAccount::getAccount, account)
         .eq(ObjectUtils.isNotNull(genTokenStatus), TestAccount::getGenTokenStatus, genTokenStatus)
         .eq(TestAccount::getIsDelete, Boolean.FALSE)
         .orderByDesc(TestAccount::getUpdateTime)
         .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<TestAccount> listAllTestAccount() {
+    return this.lambdaQuery()
+        .lt(TestAccount::getNextExecTime, LocalDateTime.now())
+        .eq(TestAccount::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

@@ -23,6 +23,7 @@
     <hutool-all.version>5.8.22</hutool-all.version>
     <fastjson.version>1.2.47</fastjson.version>
     <okhttp.version>4.9.3</okhttp.version>
+    <xxl-job-core.version>2.4.0</xxl-job-core.version>
   </properties>
 
   <dependencies>
@@ -46,7 +47,6 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>${mysql-connector-java.version}</version>
-
     </dependency>
 
     <dependency>
@@ -102,6 +102,12 @@
       <artifactId>okhttp</artifactId>
       <version>${okhttp.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.xuxueli</groupId>
+      <artifactId>xxl-job-core</artifactId>
+      <version>${xxl-job-core.version}</version>
+    </dependency>
+
 
 
   </dependencies>

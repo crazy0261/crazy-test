@@ -45,14 +45,14 @@ public class TestAccount implements Serializable {
   @ApiModelProperty(value = "名称")
   private String name;
 
-  @ApiModelProperty(value = "测试账号")
-  private String account;
-
-  @ApiModelProperty(value = "密码")
-  private String password;
+  @ApiModelProperty(value = "账号/密码")
+  private String inputParams;
 
   @ApiModelProperty(value = "接口用例id")
   private Long apiCaseId;
+
+  @ApiModelProperty(value = "cron表达式")
+  private String cron;
 
   @ApiModelProperty(value = "json path")
   private String jsonPath;
@@ -60,14 +60,14 @@ public class TestAccount implements Serializable {
   @ApiModelProperty(value = "token")
   private String token;
 
-  @ApiModelProperty(value = "请求头")
-  private String headerParams;
-
   @ApiModelProperty(value = "生成token状态")
   private String genTokenStatus;
 
   @ApiModelProperty(value = "失败原因")
   private String failReason;
+
+  @ApiModelProperty(value = "下次执行时间")
+  private LocalDateTime nextExecTime;
 
   @TableField(fill = FieldFill.INSERT)
   @ApiModelProperty(value = "创建者ID")

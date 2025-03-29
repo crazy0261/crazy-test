@@ -25,11 +25,8 @@ public class TestAccountVO {
   @ApiModelProperty(value = "名称")
   private String name;
 
-  @ApiModelProperty(value = "测试账号")
-  private String account;
-
-  @ApiModelProperty(value = "密码")
-  private String password;
+  @ApiModelProperty(value = "账号/密码")
+  private String inputParams;
 
   @ApiModelProperty(value = "接口用例id")
   private Long apiCaseId;

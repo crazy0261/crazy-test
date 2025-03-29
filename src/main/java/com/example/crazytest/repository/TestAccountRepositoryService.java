@@ -15,7 +15,8 @@ import java.util.List;
  */
 public interface TestAccountRepositoryService extends IService<TestAccount> {
 
-  IPage<TestAccount> list(String tenantId, String name, String account, String genTokenStatus,
+  IPage<TestAccount> list(String tenantId, String name, String genTokenStatus,
       int current, int pageSize);
 
+  List<TestAccount> listAllTestAccount();
 }
