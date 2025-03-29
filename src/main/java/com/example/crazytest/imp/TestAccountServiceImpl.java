@@ -8,6 +8,7 @@ import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.TestAccountService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.CronUtil;
 import com.example.crazytest.vo.ApiCaseVO;
 import com.example.crazytest.vo.TestAccountVO;
 import java.time.LocalDateTime;
@@ -57,6 +58,7 @@ public class TestAccountServiceImpl implements TestAccountService {
 
   @Override
   public boolean save(TestAccount testAccount) {
+    CronUtil.cronCheckRule(testAccount.getCron());
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
     return testAccountRepositoryService.saveOrUpdate(testAccount);

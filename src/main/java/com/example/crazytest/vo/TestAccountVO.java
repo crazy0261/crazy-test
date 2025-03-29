@@ -34,6 +34,9 @@ public class TestAccountVO {
   @ApiModelProperty(value = "json path")
   private String jsonPath;
 
+  @ApiModelProperty(value = "cron表达式")
+  private String cron;
+
   @ApiModelProperty(value = "请求头")
   private String headerParams;
 
