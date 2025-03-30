@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.req.EnvConfigReq;
+import com.example.crazytest.mapper.EnvConfigMapper;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.utils.AssertUtil;
@@ -40,6 +41,9 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Autowired
   DomainInfoService domainInfoService;
 
+  @Autowired
+  EnvConfigMapper envConfigMapper;
+
   @Override
   public IPage<EnvConfigVO> list(String appid, String name, String domainName, int current,
       int pageSize) {
@@ -67,7 +71,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   }
 
   @Override
-  public boolean save(EnvConfigReq envConfigReq) {
+  public Boolean save(EnvConfigReq envConfigReq) {
     EnvConfig envConfig = new EnvConfig();
 
     List<EnvConfig> envConfigs = envConfigRepositoryService
@@ -97,5 +101,10 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Override
   public List<EnvConfig> listAll() {
     return envConfigRepositoryService.listAll();
+  }
+
+  @Override
+  public Boolean delete(Long id) {
+    return envConfigMapper.deleteById(id) > 0;
   }
 }

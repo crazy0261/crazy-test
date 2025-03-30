@@ -67,4 +67,11 @@ public class EnvConfigController {
   }
 
 
+  @PostMapping("/delete")
+  @Operation(summary = "删除环境信息")
+  public Result<Boolean> save(@RequestBody EnvConfig envConfig) {
+    return Result.success(envConfigService.delete(envConfig.getId()));
+  }
+
+
 }

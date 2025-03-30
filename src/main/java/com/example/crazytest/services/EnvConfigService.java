@@ -12,9 +12,12 @@ public interface EnvConfigService {
 
   EnvConfig getByAppId(Long appId);
 
-  boolean save(EnvConfigReq envConfigReq);
+  Boolean save(EnvConfigReq envConfigReq);
 
   EnvConfigReq queryById(Long id);
 
   List<EnvConfig> listAll();
+
+  Boolean delete(Long id);
+
 }
