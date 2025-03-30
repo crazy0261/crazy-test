@@ -19,6 +19,7 @@
     <knife4j-springdoc-ui.version>3.0.3</knife4j-springdoc-ui.version>
     <mybatis-spring-boot-starter.version>3.0.0</mybatis-spring-boot-starter.version>
     <swagger-annotations.version>1.5.13</swagger-annotations.version>
+    <swagger-parser.version>2.1.15</swagger-parser.version>
     <java-jwt.version>3.8.2</java-jwt.version>
     <hutool-all.version>5.8.22</hutool-all.version>
     <fastjson.version>1.2.47</fastjson.version>
@@ -107,7 +108,11 @@
       <artifactId>xxl-job-core</artifactId>
       <version>${xxl-job-core.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.swagger.parser.v3</groupId>
+      <artifactId>swagger-parser</artifactId>
+      <version>${swagger-parser.version}</version>
+    </dependency>
 
 
   </dependencies>

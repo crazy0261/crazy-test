@@ -10,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApiTypeReq {
+public class ApiTypeVO {
 
   private String apiIds;
   private String apiType;

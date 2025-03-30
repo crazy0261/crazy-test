@@ -30,11 +30,14 @@ public class JWTInterceptor implements HandlerInterceptor {
     MDC.put("traceId", UUID.randomUUID().toString().replace("-", ""));
 
     Result result;
+
+    // 放行
     if (Constants.EXCLUDE_PATH.contains(request.getRequestURI())) {
       BaseContext.setTenantId(null);
       BaseContext.setUserAccount(null);
       BaseContext.setUserName(null);
       BaseContext.setUserId(null);
+
       return Boolean.TRUE;
     }
 
@@ -43,6 +46,7 @@ public class JWTInterceptor implements HandlerInterceptor {
       try {
         JWTUtil.getDecodeToken(token);
         User user = JWTUtil.getUserByToken(token);
+        assert user != null;
         BaseContext.setTenantId(user.getTenantId());
         BaseContext.setUserAccount(user.getAccount());
         BaseContext.setUserName(user.getName());

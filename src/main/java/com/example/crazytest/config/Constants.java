@@ -22,7 +22,7 @@ public class Constants {
           "/user/register",
           "/swagger-ui/*",
           "/v3/api-docs/*",
-          "/webjars/",
+          "/webjars/**",
           "/doc.html"
       ));
 

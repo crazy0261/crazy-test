@@ -11,7 +11,7 @@ import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.services.ApiManagementService;
-import com.example.crazytest.vo.ApiTypeReq;
+import com.example.crazytest.vo.ApiTypeVO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -77,23 +77,23 @@ public class ApiManagementServiceImp implements ApiManagementService {
   }
 
   @Override
-  public Boolean batchUpdateType(ApiTypeReq apiTypeReq) {
-    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+  public Boolean batchUpdateType(ApiTypeVO apiTypeVO) {
+    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
         .collect(Collectors.toList());
-    return apiManageRepository.batchUpdateType(ids, apiTypeReq.getApiType());
+    return apiManageRepository.batchUpdateType(ids, apiTypeVO.getApiType());
   }
 
   @Override
-  public Boolean batchDelete(ApiTypeReq apiTypeReq) {
-    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+  public Boolean batchDelete(ApiTypeVO apiTypeVO) {
+    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
         .collect(Collectors.toList());
-    return apiManageRepository.batchDelete(ids, apiTypeReq.getRemark());
+    return apiManageRepository.batchDelete(ids, apiTypeVO.getRemark());
   }
 
   @Override
-  public Boolean batchMove(ApiTypeReq apiTypeReq) {
-    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+  public Boolean batchMove(ApiTypeVO apiTypeVO) {
+    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
         .collect(Collectors.toList());
-    return apiManageRepository.batchMove(ids, apiTypeReq.getAppId());
+    return apiManageRepository.batchMove(ids, apiTypeVO.getAppId());
   }
 }

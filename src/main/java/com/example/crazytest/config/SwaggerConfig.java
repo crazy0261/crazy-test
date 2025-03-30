@@ -14,6 +14,7 @@ public class SwaggerConfig {
 
   // 原始地址 ：http://localhost:8080/swagger-ui/index.html
   // 美化地址： http://localhost:8080/doc.html#/home
+  //json 地址： http://localhost:8080/v3/api-docs/crazy-test
 
   @Bean
   public GroupedOpenApi api() {
