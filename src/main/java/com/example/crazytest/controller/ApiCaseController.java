@@ -88,4 +88,10 @@ public class ApiCaseController {
   public Result<Boolean> copy(@RequestBody ApiDebugReq apiCaseReq) {
     return Result.success(apiCaseService.copyApiCase(apiCaseReq));
   }
+
+  @PostMapping("/delete")
+  @Operation(summary = "删除用例")
+  public Result<Boolean> delete(@RequestBody ApiDebugReq apiCaseReq) {
+    return Result.success(apiCaseService.delete(apiCaseReq));
+  }
 }

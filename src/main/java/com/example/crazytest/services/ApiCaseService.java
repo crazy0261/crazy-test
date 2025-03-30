@@ -39,8 +39,10 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   Boolean checkAssertion(AssertReqVo assertReqVo, JSONObject body);
 
-  Boolean assertConditionResult(String condition,String expectValue, String actualValue);
+  Boolean assertConditionResult(String condition, String expectValue, String actualValue);
 
   Boolean copyApiCase(ApiDebugReq apiDebugReq);
+
+  Boolean delete(ApiDebugReq apiCaseReq);
 
 }

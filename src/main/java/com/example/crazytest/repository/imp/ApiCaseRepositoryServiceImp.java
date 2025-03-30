@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
 
   @Override
   public IPage<ApiCase> list(String tenantId, String name, Long appId, List<Long> pathIds,
-      Boolean status,  List<Long> allIds, Long ownerId, Integer current, Integer pageSize) {
+      Boolean status, List<Long> allIds, Long ownerId, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
         .eq(ApiCase::getTenantId, tenantId)
@@ -48,5 +49,14 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .eq(ApiCase::getTenantId, tenantId)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .list();
+  }
+
+  @Override
+  public Boolean updateApiCase(ApiDebugReq apiCase) {
+    return this.lambdaUpdate()
+        .set(ApiCase::getRemark, apiCase.getRemark())
+        .set(ApiCase::getIsDelete, Boolean.TRUE)
+        .eq(ApiCase::getId, apiCase.getId())
+        .update();
   }
 }

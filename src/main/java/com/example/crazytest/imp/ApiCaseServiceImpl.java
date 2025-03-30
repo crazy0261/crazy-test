@@ -310,4 +310,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     apiCase.setName(apiCase.getName().concat("-copy"));
     return apiCaseRepository.save(apiCase);
   }
+
+  @Override
+  public Boolean delete(ApiDebugReq apiDebugReq) {
+    return apiCaseRepository.updateApiCase(apiDebugReq);
+  }
 }

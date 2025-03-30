@@ -17,4 +17,5 @@ public class ApiDebugReq {
   private Long envId;
   private String inputParams;
   private String mode;
+  private String remark;
 }
