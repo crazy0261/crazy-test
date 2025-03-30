@@ -23,4 +23,6 @@ public interface UserRepositoryService extends IService<User> {
 
   List<User> getNameList(String name);
 
+  List<User> listAccount(String account);
+
 }

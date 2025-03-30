@@ -24,5 +24,9 @@ public interface UserService {
 
   List<Long> getNameList(String name);
 
+  Boolean delete(Long id);
+
+  Boolean checkUser(String account);
+
 
 }

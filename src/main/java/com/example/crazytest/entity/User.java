@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -81,6 +82,7 @@ public class User implements Serializable {
   private LocalDateTime updateTime;
 
   @ApiModelProperty(value = "是否删除")
+  @TableLogic
   private Boolean isDelete;
 
 }

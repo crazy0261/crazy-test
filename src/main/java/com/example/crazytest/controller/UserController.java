@@ -90,5 +90,11 @@ public class UserController {
     return Result.success(userService.updateSelectProjectId(selectProjectId));
   }
 
+  @PostMapping("/del")
+  @Operation(summary = "删除用户")
+  public Result<Boolean> delete(@RequestBody User userEntity) {
+    return Result.success(userService.delete(userEntity.getId()));
+  }
+
 
 }

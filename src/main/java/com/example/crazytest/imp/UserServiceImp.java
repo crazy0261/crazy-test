@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
+import com.example.crazytest.mapper.UserMapper;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
@@ -32,6 +33,9 @@ public class UserServiceImp implements UserService {
   @Autowired
   UserRepositoryService userRepositoryService;
 
+  @Autowired
+  UserMapper userMapper;
+
   @Value("${user.resetPwd}")
   String password;
 
@@ -56,7 +60,10 @@ public class UserServiceImp implements UserService {
   @Override
   public Boolean save(User user) {
     user.setPassword(Objects.isNull(user.getPassword()) ? password : user.getPassword());
-    user.setTenantId(Objects.isNull(user.getTenantId()) ? BaseContext.getTenantId() : user.getTenantId());
+    user.setTenantId(
+        Objects.isNull(user.getTenantId()) ? BaseContext.getTenantId() : user.getTenantId());
+    Boolean checkAccount = checkUser(user.getAccount());
+    AssertUtil.assertTrue(checkAccount, ResultEnum.USER_EXIST_FAIL.getMessage());
     return userRepositoryService.saveOrUpdate(user);
   }
 
@@ -109,5 +116,16 @@ public class UserServiceImp implements UserService {
   public List<Long> getNameList(String name) {
     List<User> userList = userRepositoryService.getNameList(name);
     return userList.stream().map(User::getId).collect(Collectors.toList());
+  }
+
+  @Override
+  public Boolean delete(Long id) {
+    return userMapper.deleteById(id) > 0;
+  }
+
+  @Override
+  public Boolean checkUser(String account) {
+    List<User> userList = userRepositoryService.listAccount(account);
+    return userList.isEmpty();
   }
 }
