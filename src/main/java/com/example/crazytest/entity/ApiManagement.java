@@ -36,9 +36,6 @@ public class ApiManagement implements Serializable {
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
-  @ApiModelProperty(value = "项目Id")
-  private Long projectId;
-
   @ApiModelProperty(value = "应用id")
   private Long applicationId;
 
