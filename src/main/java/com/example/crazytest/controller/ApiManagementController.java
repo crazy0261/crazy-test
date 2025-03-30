@@ -7,6 +7,7 @@ import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.ApiTypeReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -74,6 +75,25 @@ public class ApiManagementController {
   public Result<Boolean> save(@RequestBody ApiManagement apiManagement) {
     return Result.success(apiManagementService.save(apiManagement));
   }
+
+  @PostMapping("/batch/update/type")
+  @Operation(summary = "批量修改类型")
+  public Result<Boolean> batchUpdateType(@RequestBody ApiTypeReq apiTypeReq)  {
+    return Result.success(apiManagementService.batchUpdateType(apiTypeReq));
+  }
+
+  @PostMapping("/batch/update/delete")
+  @Operation(summary = "批量删除")
+  public Result<Boolean> batchDelete(@RequestBody ApiTypeReq apiTypeReq)  {
+    return Result.success(apiManagementService.batchDelete(apiTypeReq));
+  }
+
+  @PostMapping("/batch/update/move")
+  @Operation(summary = "批量移动")
+  public Result<Boolean> batchMove(@RequestBody ApiTypeReq apiTypeReq)  {
+    return Result.success(apiManagementService.batchMove(apiTypeReq));
+  }
+
 //
 //  // 新增
 //  @PostMapping("/add")

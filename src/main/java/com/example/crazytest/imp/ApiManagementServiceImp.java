@@ -11,6 +11,8 @@ import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.services.ApiManagementService;
+import com.example.crazytest.vo.ApiTypeReq;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -72,5 +74,26 @@ public class ApiManagementServiceImp implements ApiManagementService {
         Objects.nonNull(apiManagement.getTenantId()) ? apiManagement.getTenantId()
             : BaseContext.getTenantId());
     return apiManageRepository.saveOrUpdate(apiManagement);
+  }
+
+  @Override
+  public Boolean batchUpdateType(ApiTypeReq apiTypeReq) {
+    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+        .collect(Collectors.toList());
+    return apiManageRepository.batchUpdateType(ids, apiTypeReq.getApiType());
+  }
+
+  @Override
+  public Boolean batchDelete(ApiTypeReq apiTypeReq) {
+    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+        .collect(Collectors.toList());
+    return apiManageRepository.batchDelete(ids, apiTypeReq.getRemark());
+  }
+
+  @Override
+  public Boolean batchMove(ApiTypeReq apiTypeReq) {
+    List<Long> ids = Arrays.stream(apiTypeReq.getApiIds().split(",")).map(Long::valueOf)
+        .collect(Collectors.toList());
+    return apiManageRepository.batchMove(ids, apiTypeReq.getAppId());
   }
 }

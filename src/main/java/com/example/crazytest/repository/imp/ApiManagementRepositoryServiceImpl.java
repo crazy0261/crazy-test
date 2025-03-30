@@ -51,4 +51,31 @@ public class ApiManagementRepositoryServiceImpl extends
         .eq(ApiManagement::getTenantId, tenantId)
         .like(ObjectUtils.isNotNull(path), ApiManagement::getPath, path).list();
   }
+
+  @Override
+  public Boolean batchUpdateType(List<Long> ids, String apiType) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getApiType, apiType)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .in(ApiManagement::getId, ids)
+        .update();
+  }
+
+  @Override
+  public Boolean batchDelete(List<Long> ids, String remark) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getRemark, remark)
+        .set(ApiManagement::getIsDelete, Boolean.TRUE)
+        .in(ApiManagement::getId, ids)
+        .update();
+  }
+
+  @Override
+  public Boolean batchMove(List<Long> ids, Long appId) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getApplicationId, appId)
+        .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
 }
