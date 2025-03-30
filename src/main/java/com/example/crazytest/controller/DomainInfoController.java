@@ -50,4 +50,10 @@ public class DomainInfoController {
     return Result.success(domainInfoService.save(domainInfo));
   }
 
+  @PostMapping("/delete")
+  @Operation(summary = "保存域名")
+  public Result<Boolean> delete(@RequestBody DomainInfo domainInfo) {
+    return Result.success(domainInfoService.delete(domainInfo.getId()));
+  }
+
 }

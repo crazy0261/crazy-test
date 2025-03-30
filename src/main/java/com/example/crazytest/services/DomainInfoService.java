@@ -8,10 +8,12 @@ public interface DomainInfoService {
 
   IPage<DomainInfo> list(String name, String urlPath, int current, int pageSize);
 
-  boolean save(DomainInfo domainInfo);
+  Boolean save(DomainInfo domainInfo);
 
   DomainInfo getById(Long id);
 
   List<DomainInfo> getByNameList(String name);
+
+  Boolean delete(Long id);
 
 }
