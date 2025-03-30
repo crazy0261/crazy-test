@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
+import com.example.crazytest.conver.GetInputParamConver;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.DomainInfo;
@@ -90,6 +91,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   @Autowired
   VariablesUtil variablesUtil;
 
+  @Autowired
+  GetInputParamConver getInputParamConver;
+
   @Override
   public IPage<ApiCaseVO> list(String name, Long appId, String path, Boolean status,
       String recentExecResult, Long ownerId, Integer current, Integer pageSize) {
@@ -171,7 +175,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     // 前置参数
     JSONObject preParams = JSON.parseObject(apiDebugReq.getInputParams());
     JSONArray paramsArr = preParams.getJSONArray("envVariables");
-    List<ParamsListVO> paramsArrList = Optional.ofNullable(paramsArr).map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
+    List<ParamsListVO> paramsArrList = Optional.ofNullable(paramsArr)
+        .map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
 
     // 获取断言
     List<AssertReqVo> assertsArray = Optional.ofNullable(apiCase.getAsserts())
@@ -179,9 +184,17 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     // 获取token
     String preParamsKey = preParams.keySet().stream().findFirst().orElse("");
-    String accountId = preParams.getJSONObject(preParamsKey).getString("testaccountID");
+    // 判断是测试账号通过请求
+    Object preParamsValue = preParams.get(preParamsKey);
+    boolean checkJson = preParamsValue instanceof JSONObject;
+    if (!checkJson) {
+      envionmentVariables.putAll(
+          getInputParamConver.jsonMapConver(JSON.parseObject(apiDebugReq.getInputParams())));
+    }
+    String accountId =
+        checkJson ? preParams.getJSONObject(preParamsKey).getString("testaccountID") : "";
 
-    if (StringUtils.isNoneEmpty(accountId)) {
+    if (StringUtils.isNotEmpty(accountId)) {
       TestAccount user = testAccountService.getById(accountId);
       AssertUtil.assertNotNull(user, "测试账号不存在,请检查！");
       AssertUtil.assertTrue(ObjectUtils.isEmpty(user.getToken()), "token为空或已过期，请检查！");

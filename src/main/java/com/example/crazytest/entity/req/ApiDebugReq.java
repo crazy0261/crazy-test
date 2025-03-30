@@ -11,7 +11,6 @@ import lombok.Data;
  */
 
 @Data
-@Builder
 public class ApiDebugReq {
 
   private Long id;

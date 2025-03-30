@@ -71,7 +71,8 @@ public class TestAccountServiceImpl implements TestAccountService {
     CronUtil.cronCheckRule(testAccount.getCron());
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
-    testAccount.setTenantId(Optional.ofNullable(testAccount.getTenantId()).orElse(BaseContext.getTenantId()));
+    testAccount.setTenantId(
+        Optional.ofNullable(testAccount.getTenantId()).orElse(BaseContext.getTenantId()));
     return testAccountRepositoryService.saveOrUpdate(testAccount);
   }
 
@@ -88,8 +89,10 @@ public class TestAccountServiceImpl implements TestAccountService {
   @Override
   public void createToken(TestAccount testAccount)
       throws IOException {
-    ApiDebugReq apiDebugReq = ApiDebugReq.builder().id(testAccount.getApiCaseId())
-        .envId(testAccount.getEnvId()).inputParams(testAccount.getInputParams()).build();
+    ApiDebugReq apiDebugReq = new ApiDebugReq();
+    apiDebugReq.setId(testAccount.getApiCaseId());
+    apiDebugReq.setEnvId(testAccount.getEnvId());
+    apiDebugReq.setInputParams(testAccount.getInputParams());
 
     ResultApiVO result = apiCaseService.debug(apiDebugReq);
     testAccount
