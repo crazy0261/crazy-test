@@ -5,6 +5,7 @@ import com.example.crazytest.entity.ApiCaseResult;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseResultVo;
 import com.example.crazytest.vo.ResultApiVO;
+import java.util.List;
 
 public interface ApiCaseResultService {
 
@@ -14,4 +15,5 @@ public interface ApiCaseResultService {
 
   boolean save(ApiDebugReq apiDebugReq,ResultApiVO resultApiVO);
 
+  List<Long> listResult(String tenantId, String recentExecResult);
 }

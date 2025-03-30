@@ -72,12 +72,6 @@ public class ApiCase implements Serializable {
   @ApiModelProperty(value = "备注")
   private String remark;
 
-  @ApiModelProperty(value = "最近一次执行结果")
-  private String recentExecResult;
-
-  @ApiModelProperty(value = "最近一次执行时间")
-  private LocalDateTime recentExecTime;
-
   @ApiModelProperty(value = "创建者id")
   @TableField(fill = FieldFill.INSERT)
   private Long createById;

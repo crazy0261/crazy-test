@@ -13,8 +13,10 @@ import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ApiCaseResultVo;
 import com.example.crazytest.vo.ResultApiVO;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,5 +70,12 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .debugResult(JSON.toJSONString(resultApiVO))
         .build();
     return apiCaseResultRepositoryService.save(apiCaseResult);
+  }
+
+  @Override
+  public List<Long> listResult(String tenantId, String recentExecResult) {
+    List<ApiCaseResult> apiCaseResults = apiCaseResultRepositoryService
+        .listResult(tenantId, recentExecResult);
+    return apiCaseResults.stream().map(ApiCaseResult::getApiTestcaseId).collect(Collectors.toList());
   }
 }

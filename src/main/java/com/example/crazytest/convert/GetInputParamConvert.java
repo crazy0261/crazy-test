@@ -1,4 +1,4 @@
-package com.example.crazytest.conver;
+package com.example.crazytest.convert;
 
 import com.alibaba.fastjson.JSONObject;
 import java.util.Map;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class GetInputParamConver {
+public class GetInputParamConvert {
 
-  public Map<String, String> jsonMapConver(JSONObject json) {
+  public Map<String, String> jsonMapConvert(JSONObject json) {
     return json.entrySet().stream()
         .collect(Collectors.toMap(Map.Entry::getKey,
             entry -> Optional.ofNullable(entry.getValue().toString()).orElse("")));

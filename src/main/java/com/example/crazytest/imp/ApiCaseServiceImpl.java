@@ -7,8 +7,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
-import com.example.crazytest.conver.GetInputParamConver;
+import com.example.crazytest.convert.GetInputParamConvert;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.ApiCaseResult;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
@@ -19,7 +20,9 @@ import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ConditionTypeEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
+import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
+import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.services.ApiManagementService;
@@ -92,7 +95,14 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   VariablesUtil variablesUtil;
 
   @Autowired
-  GetInputParamConver getInputParamConver;
+  GetInputParamConvert getInputParamConvert;
+
+  @Autowired
+  ApiCaseResultService apiCaseResultService;
+
+  @Autowired
+  ApiCaseResultRepositoryService apiCaseResultRepositoryService;
+
 
   @Override
   public IPage<ApiCaseVO> list(String name, Long appId, String path, Boolean status,
@@ -100,14 +110,24 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     List<Long> pathIds = apiManagementService.getPaths(path);
 
+    List<Long> allIds = StringUtils.isNotEmpty(recentExecResult) ? apiCaseResultService
+        .listResult(BaseContext.getTenantId(), recentExecResult) : null;
+
     IPage<ApiCase> apiCaseIPage = apiCaseRepository
-        .list(BaseContext.getTenantId(), name, appId, pathIds, status, recentExecResult, ownerId,
+        .list(BaseContext.getTenantId(), name, appId, pathIds, status, allIds, ownerId,
             current, pageSize);
 
     return apiCaseIPage.convert(apiCase -> {
       ApiCaseVO apiCaseVO = new ApiCaseVO();
       BeanUtils.copyProperties(apiCase, apiCaseVO);
       apiCaseRepository.getById(apiCase.getAppId());
+
+      ApiCaseResult apiCaseResult = apiCaseResultRepositoryService
+          .lastApiCaseResult(apiCase.getId());
+      apiCaseVO.setRecentExecResult(
+          ObjectUtils.isEmpty(apiCaseResult) ? null : apiCaseResult.getStatus());
+      apiCaseVO.setRecentExecTime(
+          ObjectUtils.isEmpty(apiCaseResult) ? null : apiCaseResult.getUpdateTime());
 
       User user = userService.getById(apiCase.getOwnerId());
       apiCaseVO.setAppName(applicationManagementService.getById(apiCase.getAppId()).getName());
@@ -189,7 +209,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     boolean checkJson = preParamsValue instanceof JSONObject;
     if (!checkJson) {
       envionmentVariables.putAll(
-          getInputParamConver.jsonMapConver(JSON.parseObject(apiDebugReq.getInputParams())));
+          getInputParamConvert.jsonMapConvert(JSON.parseObject(apiDebugReq.getInputParams())));
     }
     String accountId =
         checkJson ? preParams.getJSONObject(preParamsKey).getString("testaccountID") : "";
@@ -286,6 +306,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   @Override
   public Boolean copyApiCase(ApiDebugReq apiDebugReq) {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
+    apiCase.setId(null);
     apiCase.setName(apiCase.getName().concat("-copy"));
     return apiCaseRepository.save(apiCase);
   }

@@ -27,15 +27,15 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
 
   @Override
   public IPage<ApiCase> list(String tenantId, String name, Long appId, List<Long> pathIds,
-      Boolean status, String recentExecResult, Long ownerId, Integer current, Integer pageSize) {
+      Boolean status,  List<Long> allIds, Long ownerId, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
         .eq(ApiCase::getTenantId, tenantId)
         .like(ObjectUtils.isNotNull(name), ApiCase::getName, name)
         .eq(ObjectUtils.isNotNull(appId), ApiCase::getAppId, appId)
         .in(ObjectUtils.isNotNull(pathIds), ApiCase::getApiId, pathIds)
+        .in(ObjectUtils.isNotNull(allIds), ApiCase::getId, allIds)
         .eq(ObjectUtils.isNotNull(status), ApiCase::getStatus, status)
-        .eq(ObjectUtils.isNotNull(recentExecResult), ApiCase::getRecentExecResult, recentExecResult)
         .eq(ObjectUtils.isNotNull(ownerId), ApiCase::getOwnerId, ownerId)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApiCase::getUpdateTime)
