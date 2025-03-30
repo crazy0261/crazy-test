@@ -82,4 +82,10 @@ public class ApiCaseController {
     apiCaseResultService.save(apiCaseReq, resultApiVO);
     return Result.success(resultApiVO);
   }
+
+  @PostMapping("/copy")
+  @Operation(summary = "复制用例")
+  public Result<Boolean> copy(@RequestBody ApiDebugReq apiCaseReq) {
+    return Result.success(apiCaseService.copyApiCase(apiCaseReq));
+  }
 }

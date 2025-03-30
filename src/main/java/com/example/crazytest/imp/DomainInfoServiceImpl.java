@@ -2,7 +2,6 @@ package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DomainInfo;
-import com.example.crazytest.mapper.DomainInfoMapper;
 import com.example.crazytest.repository.DomainInfoRepositoryService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.utils.BaseContext;
@@ -23,9 +22,6 @@ public class DomainInfoServiceImpl implements DomainInfoService {
 
   @Autowired
   DomainInfoRepositoryService domainInfoRepositoryService;
-
-  @Autowired
-  DomainInfoMapper domainInfoMapper;
 
   @Override
   public IPage<DomainInfo> list(String name, String urlPath, int current, int pageSize) {
@@ -53,7 +49,7 @@ public class DomainInfoServiceImpl implements DomainInfoService {
 
   @Override
   public Boolean delete(Long id) {
-    return domainInfoMapper.deleteById(id) > 0;
+    return domainInfoRepositoryService.removeById(id);
   }
 
 }

@@ -9,6 +9,6 @@ public interface ProjectManagementService {
 
   boolean save(ProjectManagement projectManagement);
 
-  boolean delete(Long id);
+  Boolean delete(Long id);
 
 }

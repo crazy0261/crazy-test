@@ -282,4 +282,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     ConditionTypeEnum conditionType = ConditionTypeEnum.getConditionType(condition);
     return conditionType.getPredicate().test(expectValue, actualValue);
   }
+
+  @Override
+  public Boolean copyApiCase(ApiDebugReq apiDebugReq) {
+    ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
+    apiCase.setName(apiCase.getName().concat("-copy"));
+    return apiCaseRepository.save(apiCase);
+  }
 }

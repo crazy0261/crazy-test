@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
-import com.example.crazytest.mapper.TestAccountMapper;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
@@ -18,7 +17,6 @@ import com.example.crazytest.vo.TestAccountVO;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +41,6 @@ public class TestAccountServiceImpl implements TestAccountService {
 
   @Autowired
   ApiCaseService apiCaseService;
-
-  @Autowired
-  TestAccountMapper testAccountMapper;
 
   @Override
   public IPage<TestAccountVO> list(String name, String genTokenStatus, int current,
@@ -83,7 +78,7 @@ public class TestAccountServiceImpl implements TestAccountService {
 
   @Override
   public Boolean delete(Long id) {
-    return testAccountMapper.deleteById(id) > 0;
+    return testAccountRepositoryService.removeById(id);
   }
 
   @Override

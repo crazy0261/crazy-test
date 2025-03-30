@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
-import com.example.crazytest.mapper.UserMapper;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
@@ -32,9 +31,6 @@ public class UserServiceImp implements UserService {
 
   @Autowired
   UserRepositoryService userRepositoryService;
-
-  @Autowired
-  UserMapper userMapper;
 
   @Value("${user.resetPwd}")
   String password;
@@ -120,7 +116,7 @@ public class UserServiceImp implements UserService {
 
   @Override
   public Boolean delete(Long id) {
-    return userMapper.deleteById(id) > 0;
+    return userRepositoryService.removeById(id);
   }
 
   @Override

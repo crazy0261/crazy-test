@@ -41,4 +41,6 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   Boolean assertConditionResult(String condition,String expectValue, String actualValue);
 
+  Boolean copyApiCase(ApiDebugReq apiDebugReq);
+
 }

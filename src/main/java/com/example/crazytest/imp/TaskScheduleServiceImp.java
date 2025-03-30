@@ -2,7 +2,6 @@ package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
-import com.example.crazytest.mapper.TaskScheduleMapper;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
@@ -28,9 +27,6 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Autowired
   TaskScheduleRepositoryService repositoryService;
-
-  @Autowired
-  TaskScheduleMapper taskScheduleMapper;
 
   @Autowired
   UserService userService;
@@ -75,6 +71,6 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Override
   public Boolean delete(Long id) {
-    return taskScheduleMapper.deleteById(id) > 0;
+    return repositoryService.removeById(id) ;
   }
 }
