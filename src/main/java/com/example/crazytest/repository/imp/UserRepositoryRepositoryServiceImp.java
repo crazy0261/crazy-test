@@ -51,7 +51,7 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
   public Boolean resetPwd(String account) {
 
     return lambdaUpdate().eq(User::getAccount, account).eq(User::getIsDelete, Boolean.FALSE)
-        .set(User::getPassword, "297aae72cc4d0d068f46a9158469e34d")
+        .set(User::getPassword, "2667544fa2fa43948243f8871dfc9139")
         .update();
   }
 

@@ -1,12 +1,13 @@
 package com.example.crazytest.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,7 +20,6 @@ import lombok.experimental.Accessors;
  */
 
 @Data
-@Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName(value = "user")
@@ -35,7 +35,7 @@ public class User implements Serializable {
   @ApiModelProperty(value = "账号")
   private String account;
 
-  @ApiModelProperty(value = "用户名")
+  @ApiModelProperty(value = "姓名")
   private String name;
 
   @ApiModelProperty(value = "密码")
@@ -56,25 +56,31 @@ public class User implements Serializable {
   @ApiModelProperty(value = "状态")
   private Boolean status;
 
-  @ApiModelProperty(value = "是否删除")
-  private Boolean isDelete;
-
   @ApiModelProperty(value = "创建人id")
+  @TableField(fill = FieldFill.INSERT)
   private Long createById;
 
   @ApiModelProperty(value = "创建人名称")
+  @TableField(fill = FieldFill.INSERT)
   private String createByName;
 
   @ApiModelProperty(value = "创建时间")
+  @TableField(fill = FieldFill.INSERT)
   private LocalDateTime createTime;
 
   @ApiModelProperty(value = "修改人id")
+  @TableField(fill = FieldFill.INSERT_UPDATE)
   private Long updateById;
 
   @ApiModelProperty(value = "修改人名称")
+  @TableField(fill = FieldFill.INSERT_UPDATE)
   private String updateByName;
 
   @ApiModelProperty(value = "修改时间时间")
+  @TableField(fill = FieldFill.INSERT_UPDATE)
   private LocalDateTime updateTime;
+
+  @ApiModelProperty(value = "是否删除")
+  private Boolean isDelete;
 
 }

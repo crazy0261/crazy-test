@@ -30,5 +30,8 @@ logging:
   level:
     org.springframework.jdbc: DEBUG
 
+user:
+  resetPwd: 2667544fa2fa43948243f8871dfc9139 # crazy-test2025
+
 
 

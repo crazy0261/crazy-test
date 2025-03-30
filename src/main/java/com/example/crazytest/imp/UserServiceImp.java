@@ -11,10 +11,12 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +31,9 @@ public class UserServiceImp implements UserService {
 
   @Autowired
   UserRepositoryService userRepositoryService;
+
+  @Value("${user.resetPwd}")
+  String password;
 
   @Override
   public IPage<UserResultEntity> getUsers(String account, String name, String phone, Boolean status,
@@ -50,6 +55,8 @@ public class UserServiceImp implements UserService {
 
   @Override
   public Boolean save(User user) {
+    user.setPassword(Objects.isNull(user.getPassword()) ? password : user.getPassword());
+    user.setTenantId(Objects.isNull(user.getTenantId()) ? BaseContext.getTenantId() : user.getTenantId());
     return userRepositoryService.saveOrUpdate(user);
   }
 

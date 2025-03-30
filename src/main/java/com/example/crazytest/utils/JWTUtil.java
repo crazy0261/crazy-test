@@ -59,13 +59,14 @@ public class JWTUtil {
   public static User getUserByToken(String token) {
     if (StringUtils.isNotEmpty(token)) {
       Map<String, Claim> claimMap = getDecodeToken(token).getClaims();
-      return User.builder().id(claimMap.get("id").asLong())
-          .account(claimMap.get("account").asString())
-          .name(claimMap.get("name").asString())
-          .tenantId(claimMap.get("tenantId").asString())
-          .roleId(claimMap.get("roleId").asLong())
-          .build();
+      User user = new User();
+      user.setId(claimMap.get("id").asLong());
+      user.setAccount(claimMap.get("account").asString());
+      user.setName(claimMap.get("name").asString());
+      user.setTenantId(claimMap.get("tenantId").asString());
+      user.setRoleId(claimMap.get("roleId").asLong());
+      return user;
     }
-    return User.builder().build();
+    return null;
   }
 }

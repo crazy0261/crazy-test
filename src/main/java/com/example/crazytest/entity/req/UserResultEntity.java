@@ -31,6 +31,9 @@ public class UserResultEntity {
   @ApiModelProperty(value = "项目id")
   private String selectProject;
 
+  @ApiModelProperty(value = "角色id")
+  private Long roleId;
+
   @ApiModelProperty(value = "手机号")
   private String phone;
 
