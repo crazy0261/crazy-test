@@ -40,7 +40,7 @@ public class ProjectManagementController {
       @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
     IPage<ProjectManagement> projectManagementResult = projectManagementService
-        .list(name,current, pageSize);
+        .list(name, current, pageSize);
     return Result.success(projectManagementResult.getRecords(), projectManagementResult.getTotal());
   }
 
@@ -53,7 +53,7 @@ public class ProjectManagementController {
   @PostMapping("/delete")
   @Operation(summary = "删除项目")
   public Result<Boolean> del(@RequestBody ProjectManagement projectManagement) {
-    return Result.success(projectManagementService.delete(projectManagement));
+    return Result.success(projectManagementService.delete(projectManagement.getId()));
   }
 
 }

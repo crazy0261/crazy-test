@@ -4,6 +4,7 @@ import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ProjectManagement;
 import com.example.crazytest.entity.req.ProjectManagementReq;
+import com.example.crazytest.mapper.ProjectManagementMapper;
 import com.example.crazytest.repository.ProjectManagementRepositoryService;
 import com.example.crazytest.services.ProjectManagementService;
 import com.example.crazytest.utils.BaseContext;
@@ -24,6 +25,9 @@ public class ProjectManagementServiceImp implements ProjectManagementService {
   @Autowired
   ProjectManagementRepositoryService projectManagementService;
 
+  @Autowired
+  ProjectManagementMapper projectMapper;
+
   @Override
   public IPage<ProjectManagement> list(String name, Integer current, Integer pageSize) {
     return projectManagementService.list(name, current, pageSize);
@@ -37,8 +41,7 @@ public class ProjectManagementServiceImp implements ProjectManagementService {
   }
 
   @Override
-  public boolean delete(ProjectManagement projectManagement) {
-    projectManagement.setIsDelete(1);
-    return projectManagementService.saveOrUpdate(projectManagement);
+  public boolean delete(Long id) {
+    return projectMapper.deleteById(id) > 0;
   }
 }
