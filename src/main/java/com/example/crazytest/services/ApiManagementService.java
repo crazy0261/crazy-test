@@ -14,4 +14,6 @@ public interface ApiManagementService {
 
   List<Long> getPaths(String path);
 
+  Boolean save(ApiManagement apiManagement);
+
 }

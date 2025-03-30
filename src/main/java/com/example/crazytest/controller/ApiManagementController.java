@@ -63,11 +63,16 @@ public class ApiManagementController {
     return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
   }
 
-
   @GetMapping("/get/id")
   @Operation(summary = "根据id查询接口")
   public Result<ApiManagement> getById(@RequestParam(required = true) Long id) {
     return Result.success(apiManagementService.getById(id));
+  }
+
+  @PostMapping("/save")
+  @Operation(summary = "保存接口")
+  public Result<Boolean> save(@RequestBody ApiManagement apiManagement) {
+    return Result.success(apiManagementService.save(apiManagement));
   }
 //
 //  // 新增

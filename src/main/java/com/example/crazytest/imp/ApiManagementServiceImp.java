@@ -12,6 +12,7 @@ import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.services.ApiManagementService;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,16 @@ public class ApiManagementServiceImp implements ApiManagementService {
 
   @Override
   public List<Long> getPaths(String path) {
-    List<ApiManagement> apiManagements =apiManageRepository.getPaths(BaseContext.getTenantId(),path);
+    List<ApiManagement> apiManagements = apiManageRepository
+        .getPaths(BaseContext.getTenantId(), path);
     return apiManagements.stream().map(ApiManagement::getId).collect(Collectors.toList());
+  }
+
+  @Override
+  public Boolean save(ApiManagement apiManagement) {
+    apiManagement.setTenantId(
+        Objects.nonNull(apiManagement.getTenantId()) ? apiManagement.getTenantId()
+            : BaseContext.getTenantId());
+    return apiManageRepository.saveOrUpdate(apiManagement);
   }
 }
