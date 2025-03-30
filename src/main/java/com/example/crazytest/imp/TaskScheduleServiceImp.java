@@ -2,6 +2,7 @@ package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.mapper.TaskScheduleMapper;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
@@ -29,6 +30,9 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   TaskScheduleRepositoryService repositoryService;
 
   @Autowired
+  TaskScheduleMapper taskScheduleMapper;
+
+  @Autowired
   UserService userService;
 
   @Override
@@ -51,7 +55,7 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   @Transactional(rollbackFor = Exception.class)
   public Boolean save(TaskSchedule taskSchedule) {
     List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
-    AssertUtil.assertTrue(taskSchedules.isEmpty(), "任务名称已存在");
+    AssertUtil.assertNotTrue(taskSchedules.isEmpty(), "任务名称已存在");
 
     taskSchedule.setTenantId(
         Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
@@ -67,5 +71,10 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
     BeanUtils.copyProperties(taskSchedule, taskScheduleVO);
     taskScheduleVO.setOwnerName(userService.getById(taskSchedule.getOwnerId()).getName());
     return taskScheduleVO;
+  }
+
+  @Override
+  public Boolean delete(Long id) {
+    return taskScheduleMapper.deleteById(id) > 0;
   }
 }

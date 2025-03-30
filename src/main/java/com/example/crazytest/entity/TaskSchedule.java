@@ -2,6 +2,7 @@ package com.example.crazytest.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -95,6 +96,7 @@ public class TaskSchedule implements Serializable {
   private LocalDateTime updateTime;
 
   @ApiModelProperty(value = "删除")
+  @TableLogic
   private Long isDelete;
 
 

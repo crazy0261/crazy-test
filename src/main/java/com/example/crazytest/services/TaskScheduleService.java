@@ -13,6 +13,8 @@ public interface TaskScheduleService {
 
   TaskScheduleVO queryById(Long id);
 
+  Boolean delete(Long id);
+
 
 
 }

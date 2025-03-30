@@ -60,4 +60,10 @@ public class TaskScheduleController {
     return Result.success(taskScheduleService.queryById(id));
   }
 
+  @PostMapping("/delete")
+  @Operation(summary = "删除定时任务")
+  public Result<Boolean> delete(@RequestBody TaskSchedule taskSchedule) {
+    return Result.success(taskScheduleService.delete(taskSchedule.getId()));
+  }
+
 }
