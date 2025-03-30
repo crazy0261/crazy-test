@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.vo.EnvConfigVO;
+import java.util.List;
 
 public interface EnvConfigService {
 
@@ -14,4 +15,6 @@ public interface EnvConfigService {
   boolean save(EnvConfigReq envConfigReq);
 
   EnvConfigReq queryById(Long id);
+
+  List<EnvConfig> listAll();
 }

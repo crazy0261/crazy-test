@@ -7,6 +7,7 @@ import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.mapper.EnvConfigMapper;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.crazytest.utils.BaseContext;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,14 @@ public class EnvConfigRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(EnvConfig::getAppId, appId)
         .eq(EnvConfig::getDomainId, domainId)
+        .list();
+  }
+
+  @Override
+  public List<EnvConfig> listAll() {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getTenantId, BaseContext.getTenantId())
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .list();
   }
 }

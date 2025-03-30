@@ -37,9 +37,6 @@ public class TestAccount implements Serializable {
   @ApiModelProperty(value = "租户")
   private String tenantId;
 
-  @ApiModelProperty(value = "项目id")
-  private Long projectId;
-
   @ApiModelProperty(value = "环境id")
   private Long envId;
 

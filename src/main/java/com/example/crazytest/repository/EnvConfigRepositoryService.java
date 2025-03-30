@@ -24,5 +24,7 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
   List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId);
 
+  List<EnvConfig> listAll();
+
 
 }

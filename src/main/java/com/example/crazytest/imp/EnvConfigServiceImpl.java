@@ -93,4 +93,9 @@ public class EnvConfigServiceImpl implements EnvConfigService {
         .setEnvVariables(JSONArray.parseArray(envConfig.getEnvVariables(), ParamsListVO.class));
     return envConfigReq;
   }
+
+  @Override
+  public List<EnvConfig> listAll() {
+    return envConfigRepositoryService.listAll();
+  }
 }

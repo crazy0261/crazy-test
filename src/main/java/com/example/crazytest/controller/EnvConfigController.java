@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.vo.EnvConfigVO;
 import com.example.crazytest.services.EnvConfigService;
@@ -57,6 +58,12 @@ public class EnvConfigController {
   @Operation(summary = "根据id查询环境信息")
   public Result<EnvConfigReq> queryById(@RequestParam(value = "id") Long id) {
     return Result.success(envConfigService.queryById(id));
+  }
+
+  @GetMapping("/list/all")
+  @Operation(summary = "查询所有环境信息")
+  public Result<List<EnvConfig>> listAll() {
+    return Result.success(envConfigService.listAll());
   }
 
 

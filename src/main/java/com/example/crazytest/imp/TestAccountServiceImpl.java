@@ -18,6 +18,7 @@ import com.example.crazytest.vo.TestAccountVO;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class TestAccountServiceImpl implements TestAccountService {
     CronUtil.cronCheckRule(testAccount.getCron());
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
+    testAccount.setTenantId(Optional.ofNullable(testAccount.getTenantId()).orElse(BaseContext.getTenantId()));
     return testAccountRepositoryService.saveOrUpdate(testAccount);
   }
 
