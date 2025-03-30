@@ -23,5 +23,7 @@ public interface ApiManagementService {
 
   Boolean batchMove(ApiTypeVO apiTypeVO);
 
+  Boolean batchSetPriority(ApiTypeVO apiTypeVO);
+
 
 }

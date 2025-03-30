@@ -69,6 +69,9 @@ public class ApiManagement implements Serializable {
   @ApiModelProperty(value = "优先级")
   private Integer priority;
 
+  @ApiModelProperty(value = "状态")
+  private Integer status;
+
   @ApiModelProperty(value = "是否可生产执行：0否 1是")
   private Integer canProdExec;
 

@@ -96,4 +96,11 @@ public class ApiManagementServiceImp implements ApiManagementService {
         .collect(Collectors.toList());
     return apiManageRepository.batchMove(ids, apiTypeVO.getAppId());
   }
+
+  @Override
+  public Boolean batchSetPriority(ApiTypeVO apiTypeVO) {
+    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
+        .collect(Collectors.toList());
+    return apiManageRepository.batchSetPriority(ids, apiTypeVO.getPriority());
+  }
 }

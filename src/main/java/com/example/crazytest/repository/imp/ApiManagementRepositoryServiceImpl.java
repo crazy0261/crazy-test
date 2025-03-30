@@ -9,6 +9,7 @@ import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.mapper.ApiManagementMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.ApiManageRepositoryService;
+import com.example.crazytest.utils.BaseContext;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,17 +33,41 @@ public class ApiManagementRepositoryServiceImpl extends
 
   @Override
   public IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq) {
-    LambdaQueryWrapper<ApiManagement> wrapper = new LambdaQueryWrapper<ApiManagement>()
+    return this.lambdaQuery()
+        .eq(ApiManagement::getTenantId, BaseContext.getTenantId())
+        .like(ObjectUtils.isNotNull(apiManagementReq.getName()), ApiManagement::getName,
+            apiManagementReq.getName())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getApiType()), ApiManagement::getApiType,
+            apiManagementReq.getApiType())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getCanProdExec()), ApiManagement::getCanProdExec,
+            apiManagementReq.getCanProdExec())
+        .gt(ObjectUtils.isNotNull(apiManagementReq.getCaseCount())
+                && Long.parseLong(apiManagementReq.getCaseCount()) > 0, ApiManagement::getCaseCount,
+            apiManagementReq.getCaseCount())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getCaseCount())
+                && Long.parseLong(apiManagementReq.getCaseCount()) == 0, ApiManagement::getCaseCount,
+            apiManagementReq.getCaseCount())
+        .gt(ObjectUtils.isNotNull(apiManagementReq.getInvokeTimes())
+                && Long.parseLong(apiManagementReq.getCaseCount()) > 0, ApiManagement::getInvokeTimes,
+            apiManagementReq.getInvokeTimes())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getInvokeTimes())
+                && Long.parseLong(apiManagementReq.getInvokeTimes()) == 0,
+            ApiManagement::getInvokeTimes,
+            apiManagementReq.getInvokeTimes())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getOwnerId()), ApiManagement::getOwnerId,
+            apiManagementReq.getOwnerId())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getStatus()), ApiManagement::getStatus,
+            apiManagementReq.getStatus())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getApplicationId()),
+            ApiManagement::getApplicationId, apiManagementReq.getApplicationId())
+        .eq(ObjectUtils.isNotNull(apiManagementReq.getPriority()), ApiManagement::getPriority,
+            apiManagementReq.getPriority())
+        .like(ObjectUtils.isNotNull(apiManagementReq.getPath()), ApiManagement::getPath,
+            apiManagementReq.getPath())
         .eq(ApiManagement::getIsDelete, Boolean.FALSE)
-        .orderByDesc(ApiManagement::getUpdateTime);
-//        .like(StringUtils.isNotEmpty(apiManagementReq.getAccount()), ApiManagement::getAccount, apiManagementReq.getAccount())
-//        .like(StringUtils.isNotEmpty(apiManagementReq.getName()), ApiManagement::getName, apiManagementReq.getName())
-//        .eq(StringUtils.isNotEmpty(apiManagementReq.getMethod()), ApiManagement::getMethod, apiManagementReq.getMethod())
-//       .eq(StringUtils.isNotEmpty())
+        .orderByDesc(ApiManagement::getUpdateTime)
+        .page(new Page<>(apiManagementReq.getCurrent(), apiManagementReq.getPageSize()));
 
-    return apiManageMapper
-        .selectPage(new Page<>(apiManagementReq.getCurrent(), apiManagementReq.getPageSize()),
-            wrapper);
   }
 
   @Override
@@ -75,6 +100,15 @@ public class ApiManagementRepositoryServiceImpl extends
     return this.lambdaUpdate()
         .set(ApiManagement::getApplicationId, appId)
         .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchSetPriority(List<Long> ids, Integer priority) {
+    return this.lambdaUpdate()
+        .in(ApiManagement::getId, ids)
+        .set(ApiManagement::getPriority, priority)
         .eq(ApiManagement::getIsDelete, Boolean.FALSE)
         .update();
   }

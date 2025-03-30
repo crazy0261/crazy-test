@@ -79,6 +79,12 @@ public class ApiManagementController {
     return Result.success(apiManagementService.batchMove(apiTypeVO));
   }
 
+  @PostMapping("/batch/update/setPriority")
+  @Operation(summary = "批量设置优先级")
+  public Result<Boolean> batchSetPriority(@RequestBody ApiTypeVO apiTypeVO) {
+    return Result.success(apiManagementService.batchSetPriority(apiTypeVO));
+  }
+
   @PostMapping("/curl/import")
   @Operation(summary = "curl导入接口")
   public Result<Boolean> importCUrlImport(@RequestBody ImportApiVO imp) {
@@ -86,7 +92,7 @@ public class ApiManagementController {
   }
 
   @PostMapping("/swagger/import")
-  @Operation(summary = "swagger")
+  @Operation(summary = "swagger导入接口")
   public Result<Void> importSwaggerImport(@RequestBody ImportApiVO imp) throws IOException {
     importerService.importSwaggerApi(imp);
     return Result.success();

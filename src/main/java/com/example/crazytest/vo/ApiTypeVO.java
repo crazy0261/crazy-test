@@ -16,5 +16,6 @@ public class ApiTypeVO {
   private String apiType;
   private String remark;
   private Long appId;
+  private Integer priority;
 
 }

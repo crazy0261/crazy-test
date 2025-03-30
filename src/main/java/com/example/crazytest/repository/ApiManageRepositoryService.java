@@ -26,6 +26,9 @@ public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
   Boolean batchMove(List<Long> ids, Long appId);
 
+  Boolean batchSetPriority(List<Long> ids, Integer priority);
+
+
 
 
 }

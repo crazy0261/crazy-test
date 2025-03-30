@@ -11,8 +11,20 @@ import lombok.Data;
  */
 
 @Data
-public class ApiManagementReq extends PageParam {
+public class ApiManagementReq {
 
+  private Long applicationId;
+  private String apiType;
+  private String canProdExec;
+  private String caseCount;
+  private String invokeTimes;
+  private Long ownerId;
+  private String name;
+  private String path;
+  private String priority;
+  private Integer status;
+  private int current = 1;
+  private int pageSize = 10;
 
 
 }
