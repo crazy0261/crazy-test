@@ -1,6 +1,5 @@
 package com.example.crazytest.entity.req;
 
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -12,6 +11,6 @@ import lombok.Data;
 @Data
 public class TaskScheduleExecuteReq {
 
-  private Long apiId;
+  private Long id;
 
 }

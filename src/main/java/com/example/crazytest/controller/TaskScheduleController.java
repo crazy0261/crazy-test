@@ -74,7 +74,7 @@ public class TaskScheduleController {
   @PostMapping("/execute")
   @Operation(summary = "执行定时任务")
   public Result<Void> execute(@RequestBody TaskScheduleExecuteReq executeReq) throws IOException {
-    taskScheduleService.execute(executeReq.getApiId());
+    taskScheduleService.execute(executeReq.getId());
     return Result.success();
   }
 
