@@ -1,14 +1,18 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.TaskScheduleVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +32,15 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   @Autowired
   TaskScheduleRepositoryService repositoryService;
 
+
+  @Autowired
+  ApiCaseRepositoryService apiCaseRepositoryService;
+
   @Autowired
   UserService userService;
+
+  @Autowired
+  ApiCaseConvert caseConvert;
 
   @Override
   public IPage<TaskScheduleVO> list(String name, String testcaseType, String ownerName,
@@ -51,7 +62,9 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   @Transactional(rollbackFor = Exception.class)
   public Boolean save(TaskSchedule taskSchedule) {
     List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
-    AssertUtil.assertNotTrue(taskSchedules.isEmpty(), "任务名称已存在");
+    AssertUtil
+        .assertTrue(Objects.isNull(taskSchedule.getId()) && Objects.nonNull(taskSchedules),
+            "任务名称已存在");
 
     taskSchedule.setTenantId(
         Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
@@ -61,16 +74,27 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   }
 
   @Override
-  public TaskScheduleVO queryById(Long id) {
-    TaskSchedule taskSchedule = repositoryService.getById(id);
+  public TaskScheduleVO queryById(Long id) throws JsonProcessingException {
     TaskScheduleVO taskScheduleVO = new TaskScheduleVO();
+
+    TaskSchedule taskSchedule = repositoryService.getById(id);
+    Long apiCaseCount = apiCaseRepositoryService.countCase();
+    List<Long> apiCaseList = caseConvert.apiCaseIdTypeConvert(taskSchedule.getTestcaseList());
+
     BeanUtils.copyProperties(taskSchedule, taskScheduleVO);
     taskScheduleVO.setOwnerName(userService.getById(taskSchedule.getOwnerId()).getName());
+    taskScheduleVO.setApiCaseIds(apiCaseList);
+    taskScheduleVO.setIsAllCase(Objects.equals(apiCaseCount, (long) apiCaseList.size()));
     return taskScheduleVO;
   }
 
   @Override
   public Boolean delete(Long id) {
-    return repositoryService.removeById(id) ;
+    return repositoryService.removeById(id);
+  }
+
+  @Override
+  public Boolean execute(List<Long> ids) {
+    return null;
   }
 }

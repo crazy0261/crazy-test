@@ -1,6 +1,7 @@
 package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.TaskSchedule;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -14,5 +15,9 @@ import lombok.Data;
 public class TaskScheduleVO extends TaskSchedule {
 
   private String ownerName;
+
+  private Boolean isAllCase;
+
+  private List<Long> apiCaseIds;
 
 }

@@ -3,9 +3,11 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.req.TaskScheduleExecuteReq;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.TaskScheduleVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -56,7 +58,8 @@ public class TaskScheduleController {
 
   @GetMapping("/query")
   @Operation(summary = "详情")
-  public Result<TaskScheduleVO> save(@RequestParam(value = "id") Long id) {
+  public Result<TaskScheduleVO> save(@RequestParam(value = "id") Long id)
+      throws JsonProcessingException {
     return Result.success(taskScheduleService.queryById(id));
   }
 
@@ -64,6 +67,12 @@ public class TaskScheduleController {
   @Operation(summary = "删除定时任务")
   public Result<Boolean> delete(@RequestBody TaskSchedule taskSchedule) {
     return Result.success(taskScheduleService.delete(taskSchedule.getId()));
+  }
+
+  @PostMapping("/execute")
+  @Operation(summary = "执行定时任务")
+  public Result<Boolean> execute(@RequestBody TaskScheduleExecuteReq executeReq) {
+    return Result.success(taskScheduleService.execute(executeReq.getApiIds()));
   }
 
 }
