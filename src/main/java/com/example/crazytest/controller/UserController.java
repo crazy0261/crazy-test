@@ -96,5 +96,11 @@ public class UserController {
     return Result.success(userService.delete(userEntity.getId()));
   }
 
+  @GetMapping ("/list/all")
+  @Operation(summary = "当前企业所有用户")
+  public Result<List<UserResultEntity>> listAll() {
+    return Result.success(userService.listAll());
+  }
+
 
 }

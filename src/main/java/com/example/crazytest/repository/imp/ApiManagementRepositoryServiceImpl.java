@@ -10,6 +10,7 @@ import com.example.crazytest.mapper.ApiManagementMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.vo.ApiTypeVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,4 +113,43 @@ public class ApiManagementRepositoryServiceImpl extends
         .eq(ApiManagement::getIsDelete, Boolean.FALSE)
         .update();
   }
+
+  @Override
+  public Boolean batchUp(List<Long> ids, String remark) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getStatus, Boolean.FALSE)
+        .set(ApiManagement::getRemark, remark)
+        .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchDown(List<Long> ids, String remark) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getStatus, Boolean.TRUE)
+        .set(ApiManagement::getRemark, remark)
+        .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchProd(List<Long> ids, Integer canProdExec) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getCanProdExec, canProdExec)
+        .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchOUpdateOwner(List<Long> ids, Long ownerId) {
+    return this.lambdaUpdate()
+        .set(ApiManagement::getOwnerId, ownerId)
+        .in(ApiManagement::getId, ids)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
 }

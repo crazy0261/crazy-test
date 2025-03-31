@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.vo.ApiTypeVO;
 import java.util.List;
 
 /**
@@ -28,7 +29,13 @@ public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
   Boolean batchSetPriority(List<Long> ids, Integer priority);
 
+  Boolean batchUp(List<Long> ids, String remark);
 
+  Boolean batchDown(List<Long> ids, String remark);
+
+  Boolean batchProd(List<Long> ids, Integer canProdExec);
+
+  Boolean batchOUpdateOwner(List<Long> ids, Long ownerId);
 
 
 }

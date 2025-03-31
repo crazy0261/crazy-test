@@ -25,5 +25,13 @@ public interface ApiManagementService {
 
   Boolean batchSetPriority(ApiTypeVO apiTypeVO);
 
+  Boolean batchUp(ApiTypeVO apiTypeVO);
+
+  Boolean batchDown(ApiTypeVO apiTypeVO);
+
+  Boolean batchProd(ApiTypeVO apiTypeVO);
+
+  Boolean batchOUpdateOwner(ApiTypeVO apiTypeVO);
+
 
 }

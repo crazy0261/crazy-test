@@ -95,4 +95,24 @@ public class ApiManagementServiceImp implements ApiManagementService {
   public Boolean batchSetPriority(ApiTypeVO apiTypeVO) {
     return apiManageRepository.batchSetPriority(apiTypeVO.getApiIds(), apiTypeVO.getPriority());
   }
+
+  @Override
+  public Boolean batchUp(ApiTypeVO apiTypeVO) {
+    return apiManageRepository.batchUp(apiTypeVO.getApiIds(),apiTypeVO.getRemark());
+  }
+
+  @Override
+  public Boolean batchDown(ApiTypeVO apiTypeVO) {
+    return apiManageRepository.batchDown(apiTypeVO.getApiIds(),apiTypeVO.getRemark());
+  }
+
+  @Override
+  public Boolean batchProd(ApiTypeVO apiTypeVO) {
+    return apiManageRepository.batchProd(apiTypeVO.getApiIds(), apiTypeVO.getCanProdExec());
+  }
+
+  @Override
+  public Boolean batchOUpdateOwner(ApiTypeVO apiTypeVO) {
+    return apiManageRepository.batchOUpdateOwner(apiTypeVO.getApiIds(), apiTypeVO.getOwnerId());
+  }
 }

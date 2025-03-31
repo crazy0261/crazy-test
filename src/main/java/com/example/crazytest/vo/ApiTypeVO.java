@@ -18,5 +18,7 @@ public class ApiTypeVO {
   private String remark;
   private Long appId;
   private Integer priority;
+  private Integer canProdExec;
+  private Long ownerId;
 
 }

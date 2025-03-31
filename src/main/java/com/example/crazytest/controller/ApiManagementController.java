@@ -85,6 +85,30 @@ public class ApiManagementController {
     return Result.success(apiManagementService.batchSetPriority(apiTypeVO));
   }
 
+  @PostMapping("/batch/update/up")
+  @Operation(summary = "批量设置上架")
+  public Result<Boolean> batchUp(@RequestBody ApiTypeVO apiTypeVO) {
+    return Result.success(apiManagementService.batchUp(apiTypeVO));
+  }
+
+  @PostMapping("/batch/update/down")
+  @Operation(summary = "批量设置下架")
+  public Result<Boolean> batchDown(@RequestBody ApiTypeVO apiTypeVO) {
+    return Result.success(apiManagementService.batchDown(apiTypeVO));
+  }
+
+  @PostMapping("/batch/update/prod")
+  @Operation(summary = "批量设置/取消生产")
+  public Result<Boolean> batchProd(@RequestBody ApiTypeVO apiTypeVO) {
+    return Result.success(apiManagementService.batchProd(apiTypeVO));
+  }
+
+  @PostMapping("/batch/update/owner")
+  @Operation(summary = "批量设置负责人")
+  public Result<Boolean> batchOUpdateOwner(@RequestBody ApiTypeVO apiTypeVO) {
+    return Result.success(apiManagementService.batchOUpdateOwner(apiTypeVO));
+  }
+
   @PostMapping("/curl/import")
   @Operation(summary = "curl导入接口")
   public Result<Boolean> importCUrlImport(@RequestBody ImportApiVO imp) {

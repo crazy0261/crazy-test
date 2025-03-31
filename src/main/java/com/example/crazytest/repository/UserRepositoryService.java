@@ -25,4 +25,7 @@ public interface UserRepositoryService extends IService<User> {
 
   List<User> listAccount(String account);
 
+  List<User> listAllAccount();
+
+
 }

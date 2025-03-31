@@ -96,4 +96,11 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
         .list();
   }
 
+  @Override
+  public List<User> listAllAccount() {
+    return this.lambdaQuery()
+        .eq(User::getIsDelete, Boolean.FALSE)
+        .list();
+  }
+
 }

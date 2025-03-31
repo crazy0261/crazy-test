@@ -124,4 +124,16 @@ public class UserServiceImp implements UserService {
     List<User> userList = userRepositoryService.listAccount(account);
     return userList.isEmpty();
   }
+
+  @Override
+  public List<UserResultEntity> listAll() {
+    List<User> userList = userRepositoryService.listAllAccount();
+
+    return userList.stream()
+        .map(user -> {
+          UserResultEntity userResultEntity = new UserResultEntity();
+          BeanUtils.copyProperties(user, userResultEntity);
+          return userResultEntity;
+        }).collect(Collectors.toList());
+  }
 }
