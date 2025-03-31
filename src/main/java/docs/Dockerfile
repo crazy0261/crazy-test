@@ -15,7 +15,9 @@ WORKDIR /app
 # 假设你的项目构建生成的 JAR 文件名为 `crazy-test.jar`
 # 打包文件地址，由于手动代码打包则直接复制
 #COPY target/crazy-test.jar /app/crazy-test.jar
-COPY crazy-test-0.0.1-SNAPSHOT.jar /app/crazy-test.jar
+# COPY crazy-test-0.0.1-SNAPSHOT.jar /app/crazy-test.jar
+
+COPY ${JAR_FILE} /app/crazy-test.jar
 
 
 
@@ -26,3 +28,6 @@ EXPOSE 8080
 # 定义容器启动时执行的命令
 # 动态传递 JAVA_OPTS
 CMD ["sh", "-c", "java $JAVA_OPTS -jar crazy-test.jar"]
+
+# 构建命令
+#docker build -t crazy-test-image --build-arg JAR_FILE=target/crazy-test-0.0.1-SNAPSHOT.jar .
