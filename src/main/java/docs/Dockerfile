@@ -13,7 +13,12 @@ WORKDIR /app
 
 # 复制 Maven 构建的项目包（通常是 `*.jar` 文件）到容器中
 # 假设你的项目构建生成的 JAR 文件名为 `crazy-test.jar`
-COPY target/crazy-test.jar /app/crazy-test.jar
+# 打包文件地址，由于手动代码打包则直接复制
+#COPY target/crazy-test.jar /app/crazy-test.jar
+COPY crazy-test-0.0.1-SNAPSHOT.jar /app/crazy-test.jar
+
+
+
 
 # 暴露端口（根据你的 Java 应用配置的端口，通常是 8080）
 EXPOSE 8080
