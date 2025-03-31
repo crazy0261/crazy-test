@@ -7,7 +7,7 @@ import lombok.Data;
  * @author
  * @name Menghui
  * @date 2025/3/30 20:42
- * @DESRIPTION
+ * @DESRIPTION 批量处理参数
  */
 
 @Data
