@@ -1,5 +1,6 @@
 package com.example.crazytest.vo;
 
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -12,7 +13,7 @@ import lombok.Data;
 @Data
 public class ApiTypeVO {
 
-  private String apiIds;
+  private List<Long> apiIds;
   private String apiType;
   private String remark;
   private Long appId;

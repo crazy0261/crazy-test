@@ -78,29 +78,21 @@ public class ApiManagementServiceImp implements ApiManagementService {
 
   @Override
   public Boolean batchUpdateType(ApiTypeVO apiTypeVO) {
-    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
-        .collect(Collectors.toList());
-    return apiManageRepository.batchUpdateType(ids, apiTypeVO.getApiType());
+    return apiManageRepository.batchUpdateType(apiTypeVO.getApiIds(), apiTypeVO.getApiType());
   }
 
   @Override
   public Boolean batchDelete(ApiTypeVO apiTypeVO) {
-    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
-        .collect(Collectors.toList());
-    return apiManageRepository.batchDelete(ids, apiTypeVO.getRemark());
+    return apiManageRepository.batchDelete(apiTypeVO.getApiIds(), apiTypeVO.getRemark());
   }
 
   @Override
   public Boolean batchMove(ApiTypeVO apiTypeVO) {
-    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
-        .collect(Collectors.toList());
-    return apiManageRepository.batchMove(ids, apiTypeVO.getAppId());
+    return apiManageRepository.batchMove(apiTypeVO.getApiIds(), apiTypeVO.getAppId());
   }
 
   @Override
   public Boolean batchSetPriority(ApiTypeVO apiTypeVO) {
-    List<Long> ids = Arrays.stream(apiTypeVO.getApiIds().split(",")).map(Long::valueOf)
-        .collect(Collectors.toList());
-    return apiManageRepository.batchSetPriority(ids, apiTypeVO.getPriority());
+    return apiManageRepository.batchSetPriority(apiTypeVO.getApiIds(), apiTypeVO.getPriority());
   }
 }
