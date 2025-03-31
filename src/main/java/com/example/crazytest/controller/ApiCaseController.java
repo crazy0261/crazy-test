@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseResultService;
@@ -93,5 +94,23 @@ public class ApiCaseController {
   @Operation(summary = "删除用例")
   public Result<Boolean> delete(@RequestBody ApiDebugReq apiCaseReq) {
     return Result.success(apiCaseService.delete(apiCaseReq));
+  }
+
+  @PostMapping("/batch/owner")
+  @Operation(summary = "批量修改负责人")
+  public Result<Boolean> batchOwner(@RequestBody ApiCaseBatchReq batchReq) {
+    return Result.success(apiCaseService.batchOwner(batchReq));
+  }
+
+  @PostMapping("/batch/up")
+  @Operation(summary = "批量上架用例")
+  public Result<Boolean> batchUpdate(@RequestBody ApiCaseBatchReq batchReq) {
+    return Result.success(apiCaseService.batchUpdate(batchReq));
+  }
+
+  @PostMapping("/batch/down")
+  @Operation(summary = "批量下架架用例")
+  public Result<Boolean> batchDown(@RequestBody ApiCaseBatchReq batchReq) {
+    return Result.success(apiCaseService.batchDown(batchReq));
   }
 }

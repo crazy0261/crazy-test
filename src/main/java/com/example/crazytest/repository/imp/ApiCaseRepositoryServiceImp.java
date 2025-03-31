@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
@@ -52,11 +53,40 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   }
 
   @Override
-  public Boolean updateApiCase(ApiDebugReq apiCase) {
+  public Boolean updateApiCase(String remark, Long id) {
     return this.lambdaUpdate()
-        .set(ApiCase::getRemark, apiCase.getRemark())
+        .set(ApiCase::getRemark, remark)
         .set(ApiCase::getIsDelete, Boolean.TRUE)
-        .eq(ApiCase::getId, apiCase.getId())
+        .eq(ApiCase::getId, id)
+        .update();
+  }
+
+  @Override
+  public Boolean batchOwner(List<Long> ids, Long ownerId) {
+    return this.lambdaUpdate()
+        .set(ApiCase::getOwnerId, ownerId)
+        .in(ApiCase::getId, ids)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchUpdate(List<Long> ids, String remark) {
+    return this.lambdaUpdate()
+        .set(ApiCase::getStatus, Boolean.FALSE)
+        .set(ApiCase::getRemark, remark)
+        .in(ApiCase::getId, ids)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .update();
+  }
+
+  @Override
+  public Boolean batchDown(List<Long> ids, String remark) {
+    return this.lambdaUpdate()
+        .set(ApiCase::getStatus, Boolean.TRUE)
+        .set(ApiCase::getRemark, remark)
+        .in(ApiCase::getId, ids)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .update();
   }
 }

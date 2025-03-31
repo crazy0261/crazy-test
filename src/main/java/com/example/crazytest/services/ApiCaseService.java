@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
@@ -45,4 +46,9 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   Boolean delete(ApiDebugReq apiCaseReq);
 
+  Boolean batchOwner(ApiCaseBatchReq batchReq);
+
+  Boolean batchUpdate(ApiCaseBatchReq batchReq);
+
+  Boolean batchDown(ApiCaseBatchReq batchReq);
 }

@@ -15,6 +15,7 @@ import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.User;
+import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ConditionTypeEnum;
@@ -313,6 +314,21 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Override
   public Boolean delete(ApiDebugReq apiDebugReq) {
-    return apiCaseRepository.updateApiCase(apiDebugReq);
+    return apiCaseRepository.updateApiCase(apiDebugReq.getRemark(), apiDebugReq.getId());
+  }
+
+  @Override
+  public Boolean batchOwner(ApiCaseBatchReq batchReq) {
+    return apiCaseRepository.batchOwner(batchReq.getIds(), batchReq.getOwnerId());
+  }
+
+  @Override
+  public Boolean batchUpdate(ApiCaseBatchReq batchReq) {
+    return apiCaseRepository.batchUpdate(batchReq.getIds(), batchReq.getRemark());
+  }
+
+  @Override
+  public Boolean batchDown(ApiCaseBatchReq batchReq) {
+    return apiCaseRepository.batchDown(batchReq.getIds(), batchReq.getRemark());
   }
 }
