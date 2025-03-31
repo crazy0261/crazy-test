@@ -24,11 +24,11 @@ public class AutoMetaObjectHandler implements MetaObjectHandler {
     this.strictInsertFill(metaObject, "createById",
         () -> Optional.ofNullable(BaseContext.getUserId()).orElse(0L), Long.class);
     this.strictInsertFill(metaObject, "createByName",
-        () -> Optional.ofNullable(BaseContext.getUserName()).orElse(""), String.class);
+        () -> Optional.ofNullable(BaseContext.getUserName()).orElse("sys"), String.class);
     this.strictInsertFill(metaObject, "updateById",
         () -> Optional.ofNullable(BaseContext.getUserId()).orElse(0L), Long.class);
     this.strictInsertFill(metaObject, "updateByName",
-        () -> Optional.ofNullable(BaseContext.getUserName()).orElse(""), String.class);
+        () -> Optional.ofNullable(BaseContext.getUserName()).orElse("sys"), String.class);
   }
 
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.vo.TaskScheduleVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
 import java.util.List;
 
 public interface TaskScheduleService {
@@ -17,7 +18,9 @@ public interface TaskScheduleService {
 
   Boolean delete(Long id);
 
-  Boolean execute(List<Long> ids);
+  void execute(Long id) throws IOException;
+
+  List<Long> listAllEnable();
 
 
 }

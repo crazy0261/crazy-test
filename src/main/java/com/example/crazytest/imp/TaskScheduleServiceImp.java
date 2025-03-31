@@ -3,19 +3,29 @@ package com.example.crazytest.imp;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
+import com.example.crazytest.services.ApiCaseResultService;
+import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.CronUtil;
+import com.example.crazytest.utils.TimestampRandomIdGenerator;
+import com.example.crazytest.vo.ResultApiVO;
 import com.example.crazytest.vo.TaskScheduleVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +45,12 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Autowired
   ApiCaseRepositoryService apiCaseRepositoryService;
+
+  @Autowired
+  ApiCaseResultService apiCaseResultService;
+
+  @Autowired
+  ApiCaseService apiCaseService;
 
   @Autowired
   UserService userService;
@@ -62,8 +78,13 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   @Transactional(rollbackFor = Exception.class)
   public Boolean save(TaskSchedule taskSchedule) throws JsonProcessingException {
     List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
+
     AssertUtil.assertTrue(Objects.isNull(taskSchedule.getId()) && Objects.nonNull(taskSchedules),
         "任务名称已存在");
+    CronUtil.cronCheckRule(taskSchedule.getCron());
+
+    taskSchedule.setNextExecTime(CronUtil.getNextTime(taskSchedule.getCron()));
+
     String apiCaseCheckEnable = caseConvert.apiCaseCheckEnable(taskSchedule.getTestcaseList());
 
     taskSchedule.setTenantId(
@@ -95,7 +116,26 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   }
 
   @Override
-  public Boolean execute(List<Long> ids) {
-    return null;
+  @Async("taskThreadPool")
+  public void execute(Long id) throws IOException {
+    TaskSchedule taskSchedule = repositoryService.getById(id);
+    ApiDebugReq apiDebugReq = new ApiDebugReq();
+    apiDebugReq.setScheduleBatchId(TimestampRandomIdGenerator.generateId());
+    apiDebugReq.setMode(ExecModeEnum.AUTO.getDesc());
+    apiDebugReq.setEnvId(Long.valueOf(taskSchedule.getEnv()));
+    apiDebugReq.setScheduleId(taskSchedule.getId());
+
+    if (Objects.equals("API_CASE", taskSchedule.getTestcaseType())) {
+      ResultApiVO resultApi = apiCaseService.debug(apiDebugReq);
+      apiCaseResultService.save(apiDebugReq, resultApi);
+    } else {
+      // todo 场景用例
+    }
+  }
+
+  @Override
+  public List<Long> listAllEnable() {
+    List<TaskSchedule> taskSchedules = repositoryService.listAllEnable();
+    return taskSchedules.stream().map(TaskSchedule::getId).collect(Collectors.toList());
   }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ExecModeEnum {
 
-  SCHEDULE("schedule", "自动执行"),
+  AUTO("auto", "自动执行"),
   MANUAL("manual", "手动执行");
 
   private final String value;

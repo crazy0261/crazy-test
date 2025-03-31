@@ -44,4 +44,12 @@ public class TaskScheduleRepositoryServiceImpl extends
     return this.lambdaQuery().eq(TaskSchedule::getIsDelete, Boolean.FALSE)
         .eq(TaskSchedule::getName, name).list();
   }
+
+  @Override
+  public List<TaskSchedule> listAllEnable() {
+    return this.lambdaQuery()
+        .eq(TaskSchedule::getEnable, Boolean.TRUE)
+        .eq(TaskSchedule::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

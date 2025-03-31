@@ -63,10 +63,12 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .apiTestcaseId(apiDebugReq.getId())
         .caseOwnerId(apiCase.getOwnerId())
         .mode(Objects.isNull(apiDebugReq.getMode()) ? ExecModeEnum.MANUAL.getValue()
-            : ExecModeEnum.SCHEDULE.getValue())
+            : ExecModeEnum.AUTO.getValue())
         .status(resultApiVO.getAssertResultVo().isPass() ? ExecStatusEnum.SUCCESS.getValue()
             : ExecStatusEnum.FAIL.getValue())
         .debugResult(JSON.toJSONString(resultApiVO))
+        .scheduleId(apiDebugReq.getScheduleId())
+        .scheduleBatchId(apiDebugReq.getScheduleBatchId())
         .build();
     return apiCaseResultRepositoryService.save(apiCaseResult);
   }

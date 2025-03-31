@@ -1,5 +1,6 @@
 package com.example.crazytest.utils;
 
+import java.time.LocalDateTime;
 import org.springframework.scheduling.support.CronExpression;
 
 /**
@@ -30,4 +31,10 @@ public class CronUtil {
       AssertUtil.assertTrue(Boolean.TRUE, "Cron不符合规则,请检查!");
     }
   }
+
+  public static LocalDateTime getNextTime(String cronExpression) {
+    CronExpression cronExpression1 = CronExpression.parse(cronExpression);
+    return cronExpression1.next(LocalDateTime.now());
+  }
+
 }

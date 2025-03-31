@@ -19,12 +19,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class ThreadPoolConfig {
 
   @Bean
-  public Executor normalThreadPool() {
+  public Executor taskThreadPool() {
     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
     //设置核心线程数
-    executor.setCorePoolSize(50);
-    //设置核心线程数
-    executor.setMaxPoolSize(100);
+    executor.setCorePoolSize(10);
+    //设置最大线程数
+    executor.setMaxPoolSize(50);
     executor.setQueueCapacity(Integer.MAX_VALUE);
     // 设置线程活跃时间（秒）
     executor.setKeepAliveSeconds(60);

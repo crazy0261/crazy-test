@@ -12,6 +12,6 @@ import lombok.Data;
 @Data
 public class TaskScheduleExecuteReq {
 
-  private List<Long> apiIds;
+  private Long apiId;
 
 }

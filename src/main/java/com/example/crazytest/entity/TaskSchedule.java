@@ -56,6 +56,9 @@ public class TaskSchedule implements Serializable {
   @ApiModelProperty(value = "cron表达式")
   private String cron;
 
+  @ApiModelProperty(value = "下次执行时间")
+  private LocalDateTime nextExecTime;
+
   @ApiModelProperty(value = "状态，0启用，1禁用")
   private Boolean enable;
 

@@ -20,4 +20,6 @@ public interface TaskScheduleRepositoryService extends IService<TaskSchedule> {
 
   List<TaskSchedule> cheTaskSchedule(String name);
 
+  List<TaskSchedule> listAllEnable();
+
 }

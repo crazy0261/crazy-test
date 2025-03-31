@@ -10,6 +10,7 @@ import com.example.crazytest.vo.TaskScheduleVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,8 +73,9 @@ public class TaskScheduleController {
 
   @PostMapping("/execute")
   @Operation(summary = "执行定时任务")
-  public Result<Boolean> execute(@RequestBody TaskScheduleExecuteReq executeReq) {
-    return Result.success(taskScheduleService.execute(executeReq.getApiIds()));
+  public Result<Void> execute(@RequestBody TaskScheduleExecuteReq executeReq) throws IOException {
+    taskScheduleService.execute(executeReq.getApiId());
+    return Result.success();
   }
 
 }

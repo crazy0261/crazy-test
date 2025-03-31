@@ -1,6 +1,5 @@
 package com.example.crazytest.entity.req;
 
-import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -18,4 +17,6 @@ public class ApiDebugReq {
   private String inputParams;
   private String mode;
   private String remark;
+  private Long scheduleId;
+  private Long scheduleBatchId;
 }
