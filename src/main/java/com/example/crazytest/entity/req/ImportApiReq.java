@@ -1,4 +1,4 @@
-package com.example.crazytest.vo;
+package com.example.crazytest.entity.req;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  */
 
 @Data
-public class ImportApiVO {
+public class ImportApiReq {
 
   private Long appId;
   private String apiName;

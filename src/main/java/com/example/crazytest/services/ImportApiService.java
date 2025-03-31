@@ -1,14 +1,14 @@
 package com.example.crazytest.services;
 
-import com.example.crazytest.vo.ImportApiVO;
+import com.example.crazytest.entity.req.ImportApiReq;
 import io.swagger.v3.oas.models.Operation;
 import java.io.IOException;
 
 public interface ImportApiService {
 
-   Boolean importCurlApi(ImportApiVO importApi);
+   Boolean importCurlApi(ImportApiReq importApi);
 
-   void importSwaggerApi(ImportApiVO importApi) throws IOException;
+   void importSwaggerApi(ImportApiReq importApi) throws IOException;
 
    void operationCovert(Long appId, String method, String path, Operation operation) ;
 

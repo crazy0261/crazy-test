@@ -1,4 +1,4 @@
-package com.example.crazytest.vo;
+package com.example.crazytest.entity.req;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -16,7 +16,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApiCaseResultVo {
+public class ApiCaseResultReq {
 
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;

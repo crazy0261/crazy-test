@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.vo.ApiCaseVO;
-import com.example.crazytest.vo.AssertReqVo;
+import com.example.crazytest.vo.AssertVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
@@ -35,9 +35,9 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   ResultApiVO debug(ApiDebugReq apiDebugReq) throws IOException;
 
-  AssertResultVo assertResult(List<AssertReqVo> assertReqVos, JSONObject body) throws IOException;
+  AssertResultVo assertResult(List<AssertVO> assertVOS, JSONObject body) throws IOException;
 
-  Boolean checkAssertion(AssertReqVo assertReqVo, JSONObject body);
+  Boolean checkAssertion(AssertVO assertVO, JSONObject body);
 
   Boolean assertConditionResult(String condition, String expectValue, String actualValue);
 

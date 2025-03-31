@@ -35,7 +35,7 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
-import com.example.crazytest.vo.AssertReqVo;
+import com.example.crazytest.vo.AssertVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ParamsListVO;
 import com.example.crazytest.vo.ResultApiVO;
@@ -146,7 +146,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
     apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
     apiCaseVO.setAssertsArray(Objects.isNull(apiCase.getAsserts()) ? new ArrayList<>()
-        : JSON.parseArray(apiCase.getAsserts(), AssertReqVo.class));
+        : JSON.parseArray(apiCase.getAsserts(), AssertVO.class));
     return apiCaseVO;
 
   }
@@ -199,8 +199,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
 
     // 获取断言
-    List<AssertReqVo> assertsArray = Optional.ofNullable(apiCase.getAsserts())
-        .map(str -> JSON.parseArray(str, AssertReqVo.class)).orElse(Collections.emptyList());
+    List<AssertVO> assertsArray = Optional.ofNullable(apiCase.getAsserts())
+        .map(str -> JSON.parseArray(str, AssertVO.class)).orElse(Collections.emptyList());
 
     // 获取token
     String preParamsKey = preParams.keySet().stream().findFirst().orElse("");
@@ -254,7 +254,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   }
 
   @Override
-  public AssertResultVo assertResult(List<AssertReqVo> assertReqVos, JSONObject body) {
+  public AssertResultVo assertResult(List<AssertVO> assertVOS, JSONObject body) {
     AssertResultVo assertResult = new AssertResultVo();
     assertResult.setPass(Boolean.TRUE);
 
@@ -264,21 +264,21 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
       return assertResult;
     }
 
-    if (assertReqVos.isEmpty()) {
+    if (assertVOS.isEmpty()) {
       return assertResult;
     }
 
-    boolean allAssertionsPass = assertReqVos.stream()
-        .allMatch(assertReqVo -> checkAssertion(assertReqVo, body));
+    boolean allAssertionsPass = assertVOS.stream()
+        .allMatch(assertVO -> checkAssertion(assertVO, body));
 
     assertResult.setPass(allAssertionsPass);
     return assertResult;
   }
 
   @Override
-  public Boolean checkAssertion(AssertReqVo assertReqVo, JSONObject body) {
-    String jsonPath = assertReqVo.getJsonPath();
-    String expectedValue = assertReqVo.getExpectValue();
+  public Boolean checkAssertion(AssertVO assertVO, JSONObject body) {
+    String jsonPath = assertVO.getJsonPath();
+    String expectedValue = assertVO.getExpectValue();
     String actualValue;
 
     try {
@@ -293,7 +293,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
       return Boolean.FALSE;
     }
 
-    return assertConditionResult(assertReqVo.getCondition(), expectedValue, actualValue);
+    return assertConditionResult(assertVO.getCondition(), expectedValue, actualValue);
   }
 
   @Override

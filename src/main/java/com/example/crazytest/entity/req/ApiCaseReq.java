@@ -1,6 +1,6 @@
 package com.example.crazytest.entity.req;
 
-import com.example.crazytest.vo.AssertReqVo;
+import com.example.crazytest.vo.AssertVO;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import lombok.Data;
@@ -48,6 +48,6 @@ public class ApiCaseReq {
   private String requestParams;
 
   @ApiModelProperty(value = "断言")
-  private List<AssertReqVo> assertsArray;
+  private List<AssertVO> assertsArray;
 
 }

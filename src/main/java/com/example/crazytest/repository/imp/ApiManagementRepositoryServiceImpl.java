@@ -1,6 +1,5 @@
 package com.example.crazytest.repository.imp;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,7 +9,6 @@ import com.example.crazytest.mapper.ApiManagementMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.utils.BaseContext;
-import com.example.crazytest.vo.ApiTypeVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

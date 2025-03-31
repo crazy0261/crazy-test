@@ -3,13 +3,13 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
+import com.example.crazytest.entity.req.ImportApiReq;
 import com.example.crazytest.services.ImportApiService;
 import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
-import com.example.crazytest.vo.ApiTypeVO;
-import com.example.crazytest.vo.ImportApiVO;
+import com.example.crazytest.entity.req.ApiTypeReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
@@ -63,61 +63,61 @@ public class ApiManagementController {
 
   @PostMapping("/batch/update/type")
   @Operation(summary = "批量修改类型")
-  public Result<Boolean> batchUpdateType(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchUpdateType(apiTypeVO));
+  public Result<Boolean> batchUpdateType(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchUpdateType(apiTypeReq));
   }
 
   @PostMapping("/batch/update/delete")
   @Operation(summary = "批量删除")
-  public Result<Boolean> batchDelete(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchDelete(apiTypeVO));
+  public Result<Boolean> batchDelete(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchDelete(apiTypeReq));
   }
 
   @PostMapping("/batch/update/move")
   @Operation(summary = "批量移动")
-  public Result<Boolean> batchMove(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchMove(apiTypeVO));
+  public Result<Boolean> batchMove(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchMove(apiTypeReq));
   }
 
   @PostMapping("/batch/update/setPriority")
   @Operation(summary = "批量设置优先级")
-  public Result<Boolean> batchSetPriority(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchSetPriority(apiTypeVO));
+  public Result<Boolean> batchSetPriority(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchSetPriority(apiTypeReq));
   }
 
   @PostMapping("/batch/update/up")
   @Operation(summary = "批量设置上架")
-  public Result<Boolean> batchUp(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchUp(apiTypeVO));
+  public Result<Boolean> batchUp(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchUp(apiTypeReq));
   }
 
   @PostMapping("/batch/update/down")
   @Operation(summary = "批量设置下架")
-  public Result<Boolean> batchDown(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchDown(apiTypeVO));
+  public Result<Boolean> batchDown(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchDown(apiTypeReq));
   }
 
   @PostMapping("/batch/update/prod")
   @Operation(summary = "批量设置/取消生产")
-  public Result<Boolean> batchProd(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchProd(apiTypeVO));
+  public Result<Boolean> batchProd(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchProd(apiTypeReq));
   }
 
   @PostMapping("/batch/update/owner")
   @Operation(summary = "批量设置负责人")
-  public Result<Boolean> batchOUpdateOwner(@RequestBody ApiTypeVO apiTypeVO) {
-    return Result.success(apiManagementService.batchOUpdateOwner(apiTypeVO));
+  public Result<Boolean> batchOUpdateOwner(@RequestBody ApiTypeReq apiTypeReq) {
+    return Result.success(apiManagementService.batchOUpdateOwner(apiTypeReq));
   }
 
   @PostMapping("/curl/import")
   @Operation(summary = "curl导入接口")
-  public Result<Boolean> importCUrlImport(@RequestBody ImportApiVO imp) {
+  public Result<Boolean> importCUrlImport(@RequestBody ImportApiReq imp) {
     return Result.success(importerService.importCurlApi(imp));
   }
 
   @PostMapping("/swagger/import")
   @Operation(summary = "swagger导入接口")
-  public Result<Void> importSwaggerImport(@RequestBody ImportApiVO imp) throws IOException {
+  public Result<Void> importSwaggerImport(@RequestBody ImportApiReq imp) throws IOException {
     importerService.importSwaggerApi(imp);
     return Result.success();
   }

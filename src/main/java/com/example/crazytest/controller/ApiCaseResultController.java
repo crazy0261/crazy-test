@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCaseResult;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.Result;
-import com.example.crazytest.vo.ApiCaseResultVo;
+import com.example.crazytest.entity.req.ApiCaseResultReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -34,11 +34,11 @@ public class ApiCaseResultController {
 
   @GetMapping("/list")
   @Operation(summary = "查询接口执行结果列表")
-  public Result<List<ApiCaseResultVo>> list(
+  public Result<List<ApiCaseResultReq>> list(
       @RequestParam(value = "apiTestcaseId", required = true) String apiTestcaseId,
       @RequestParam(value = "current", required = true) Integer current,
       @RequestParam(value = "pageSize", required = true) Integer pageSize) {
-    IPage<ApiCaseResultVo> resultPage = apiCaseResultService.list(apiTestcaseId, current, pageSize);
+    IPage<ApiCaseResultReq> resultPage = apiCaseResultService.list(apiTestcaseId, current, pageSize);
     return Result.success(resultPage.getRecords(), resultPage.getTotal());
   }
 

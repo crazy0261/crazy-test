@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class AssertReqVo {
+public class AssertVO {
 
   private Long id;
 

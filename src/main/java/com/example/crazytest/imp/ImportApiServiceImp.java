@@ -4,11 +4,11 @@ import cn.hutool.json.JSONUtil;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.convert.ApiManagementConvert;
 import com.example.crazytest.entity.ApiManagement;
+import com.example.crazytest.entity.req.ImportApiReq;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.services.ImportApiService;
 import com.example.crazytest.utils.CUrlUtil;
 import com.example.crazytest.utils.RequestUtil;
-import com.example.crazytest.vo.ImportApiVO;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -33,7 +33,7 @@ public class ImportApiServiceImp implements ImportApiService {
   ApiManagementService apiManagementService;
 
   @Override
-  public Boolean importCurlApi(ImportApiVO importApi) {
+  public Boolean importCurlApi(ImportApiReq importApi) {
     Map<String, Object> curlMap = CUrlUtil.parse(importApi.getCurl());
 
     ApiManagement apiManagement = ApiManagementConvert
@@ -44,7 +44,7 @@ public class ImportApiServiceImp implements ImportApiService {
   }
 
   @Override
-  public void importSwaggerApi(ImportApiVO importApi) throws IOException {
+  public void importSwaggerApi(ImportApiReq importApi) throws IOException {
 
     OkHttpRequestConfig request = OkHttpRequestConfig.builder()
         .url(importApi.getSwaggerUrl())

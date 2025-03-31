@@ -1,4 +1,4 @@
-package com.example.crazytest.vo;
+package com.example.crazytest.entity.req;
 
 import java.util.List;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApiTypeVO {
+public class ApiTypeReq {
 
   private List<Long> apiIds;
   private String apiType;

@@ -11,11 +11,10 @@ import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.BaseContext;
-import com.example.crazytest.vo.ApiCaseResultVo;
+import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ResultApiVO;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +43,12 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   }
 
   @Override
-  public IPage<ApiCaseResultVo> list(String apiTestcaseId, Integer current, Integer pageSize) {
+  public IPage<ApiCaseResultReq> list(String apiTestcaseId, Integer current, Integer pageSize) {
     IPage<ApiCaseResult> apiCaseResult = apiCaseResultRepositoryService
         .list(apiTestcaseId, current, pageSize);
 
     return apiCaseResult.convert(caseResult -> {
-      ApiCaseResultVo apiCaseResultVo = new ApiCaseResultVo();
+      ApiCaseResultReq apiCaseResultVo = new ApiCaseResultReq();
       BeanUtils.copyProperties(caseResult, apiCaseResultVo);
       return apiCaseResultVo;
     });

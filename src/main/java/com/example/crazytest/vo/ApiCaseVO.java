@@ -37,6 +37,6 @@ public class ApiCaseVO extends ApiCase {
   private String ownerName;
 
   @ApiModelProperty(value = "断言")
-  public List<AssertReqVo> assertsArray;
+  public List<AssertVO> assertsArray;
 
 }

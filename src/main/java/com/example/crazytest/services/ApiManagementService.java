@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.req.ApiManagementReq;
-import com.example.crazytest.vo.ApiTypeVO;
+import com.example.crazytest.entity.req.ApiTypeReq;
 import java.util.List;
 
 public interface ApiManagementService {
@@ -17,21 +17,21 @@ public interface ApiManagementService {
 
   Boolean save(ApiManagement apiManagement);
 
-  Boolean batchUpdateType(ApiTypeVO apiTypeVO);
+  Boolean batchUpdateType(ApiTypeReq apiTypeReq);
 
-  Boolean batchDelete(ApiTypeVO apiTypeVO);
+  Boolean batchDelete(ApiTypeReq apiTypeReq);
 
-  Boolean batchMove(ApiTypeVO apiTypeVO);
+  Boolean batchMove(ApiTypeReq apiTypeReq);
 
-  Boolean batchSetPriority(ApiTypeVO apiTypeVO);
+  Boolean batchSetPriority(ApiTypeReq apiTypeReq);
 
-  Boolean batchUp(ApiTypeVO apiTypeVO);
+  Boolean batchUp(ApiTypeReq apiTypeReq);
 
-  Boolean batchDown(ApiTypeVO apiTypeVO);
+  Boolean batchDown(ApiTypeReq apiTypeReq);
 
-  Boolean batchProd(ApiTypeVO apiTypeVO);
+  Boolean batchProd(ApiTypeReq apiTypeReq);
 
-  Boolean batchOUpdateOwner(ApiTypeVO apiTypeVO);
+  Boolean batchOUpdateOwner(ApiTypeReq apiTypeReq);
 
 
 }

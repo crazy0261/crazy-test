@@ -11,8 +11,7 @@ import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ApiManagementReq;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.services.ApiManagementService;
-import com.example.crazytest.vo.ApiTypeVO;
-import java.util.Arrays;
+import com.example.crazytest.entity.req.ApiTypeReq;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -77,42 +76,42 @@ public class ApiManagementServiceImp implements ApiManagementService {
   }
 
   @Override
-  public Boolean batchUpdateType(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchUpdateType(apiTypeVO.getApiIds(), apiTypeVO.getApiType());
+  public Boolean batchUpdateType(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchUpdateType(apiTypeReq.getApiIds(), apiTypeReq.getApiType());
   }
 
   @Override
-  public Boolean batchDelete(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchDelete(apiTypeVO.getApiIds(), apiTypeVO.getRemark());
+  public Boolean batchDelete(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchDelete(apiTypeReq.getApiIds(), apiTypeReq.getRemark());
   }
 
   @Override
-  public Boolean batchMove(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchMove(apiTypeVO.getApiIds(), apiTypeVO.getAppId());
+  public Boolean batchMove(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchMove(apiTypeReq.getApiIds(), apiTypeReq.getAppId());
   }
 
   @Override
-  public Boolean batchSetPriority(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchSetPriority(apiTypeVO.getApiIds(), apiTypeVO.getPriority());
+  public Boolean batchSetPriority(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchSetPriority(apiTypeReq.getApiIds(), apiTypeReq.getPriority());
   }
 
   @Override
-  public Boolean batchUp(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchUp(apiTypeVO.getApiIds(),apiTypeVO.getRemark());
+  public Boolean batchUp(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchUp(apiTypeReq.getApiIds(), apiTypeReq.getRemark());
   }
 
   @Override
-  public Boolean batchDown(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchDown(apiTypeVO.getApiIds(),apiTypeVO.getRemark());
+  public Boolean batchDown(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchDown(apiTypeReq.getApiIds(), apiTypeReq.getRemark());
   }
 
   @Override
-  public Boolean batchProd(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchProd(apiTypeVO.getApiIds(), apiTypeVO.getCanProdExec());
+  public Boolean batchProd(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchProd(apiTypeReq.getApiIds(), apiTypeReq.getCanProdExec());
   }
 
   @Override
-  public Boolean batchOUpdateOwner(ApiTypeVO apiTypeVO) {
-    return apiManageRepository.batchOUpdateOwner(apiTypeVO.getApiIds(), apiTypeVO.getOwnerId());
+  public Boolean batchOUpdateOwner(ApiTypeReq apiTypeReq) {
+    return apiManageRepository.batchOUpdateOwner(apiTypeReq.getApiIds(), apiTypeReq.getOwnerId());
   }
 }
