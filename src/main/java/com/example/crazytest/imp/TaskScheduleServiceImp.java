@@ -60,16 +60,17 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean save(TaskSchedule taskSchedule) {
+  public Boolean save(TaskSchedule taskSchedule) throws JsonProcessingException {
     List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
-    AssertUtil
-        .assertTrue(Objects.isNull(taskSchedule.getId()) && Objects.nonNull(taskSchedules),
-            "任务名称已存在");
+    AssertUtil.assertTrue(Objects.isNull(taskSchedule.getId()) && Objects.nonNull(taskSchedules),
+        "任务名称已存在");
+    String apiCaseCheckEnable = caseConvert.apiCaseCheckEnable(taskSchedule.getTestcaseList());
 
     taskSchedule.setTenantId(
         Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
     taskSchedule
         .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
+    taskSchedule.setTestcaseList(apiCaseCheckEnable);
     return repositoryService.saveOrUpdate(taskSchedule);
   }
 

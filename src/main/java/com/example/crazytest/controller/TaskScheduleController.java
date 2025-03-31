@@ -52,7 +52,8 @@ public class TaskScheduleController {
 
   @PostMapping("/save")
   @Operation(summary = "保存定时任务")
-  public Result<Boolean> save(@RequestBody TaskSchedule taskSchedule) {
+  public Result<Boolean> save(@RequestBody TaskSchedule taskSchedule)
+      throws JsonProcessingException {
     return Result.success(taskScheduleService.save(taskSchedule));
   }
 

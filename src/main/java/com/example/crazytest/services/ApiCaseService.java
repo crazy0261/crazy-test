@@ -51,4 +51,7 @@ public interface ApiCaseService extends IService<ApiCase> {
   Boolean batchUpdate(ApiCaseBatchReq batchReq);
 
   Boolean batchDown(ApiCaseBatchReq batchReq);
+
+  List<Long> checkApiCaseEnable(List<Long> ids);
+
 }

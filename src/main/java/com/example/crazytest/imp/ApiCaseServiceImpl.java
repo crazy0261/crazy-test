@@ -331,4 +331,10 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   public Boolean batchDown(ApiCaseBatchReq batchReq) {
     return apiCaseRepository.batchDown(batchReq.getIds(), batchReq.getRemark());
   }
+
+  @Override
+  public List<Long> checkApiCaseEnable(List<Long> ids) {
+    List<ApiCase> apiCases = apiCaseRepository.checkApiCaseEnable(ids);
+    return apiCases.stream().map(ApiCase::getId).collect(Collectors.toList());
+  }
 }

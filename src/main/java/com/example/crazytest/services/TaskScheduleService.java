@@ -11,7 +11,7 @@ public interface TaskScheduleService {
   IPage<TaskScheduleVO> list(String name, String testcaseType, String ownerName, Integer enable,
       Integer current, Integer pageSize);
 
-  Boolean save(TaskSchedule taskSchedule);
+  Boolean save(TaskSchedule taskSchedule) throws JsonProcessingException;
 
   TaskScheduleVO queryById(Long id) throws JsonProcessingException;
 

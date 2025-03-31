@@ -94,4 +94,13 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .count();
   }
+
+  @Override
+  public List<ApiCase> checkApiCaseEnable(List<Long> ids) {
+    return this.lambdaQuery()
+        .in(ApiCase::getId, ids)
+        .in(ApiCase::getStatus, Boolean.FALSE)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }
