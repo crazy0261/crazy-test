@@ -8,6 +8,7 @@ import com.example.crazytest.mapper.TaskScheduleMapper;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.utils.BaseContext;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,7 @@ public class TaskScheduleRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(TaskSchedule::getEnable, Boolean.TRUE)
         .eq(TaskSchedule::getIsDelete, Boolean.FALSE)
+        .le(TaskSchedule::getNextExecTime, LocalDateTime.now())
         .list();
   }
 }
