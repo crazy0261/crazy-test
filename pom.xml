@@ -158,6 +158,14 @@
         </executions>
       </plugin>
     </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/java/resources</directory>
+        <includes>
+          <include>**/*.yml</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 
 </project>
