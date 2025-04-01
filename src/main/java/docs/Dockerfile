@@ -1,5 +1,5 @@
 # 使用官方的 OpenJDK 8 镜像作为基础镜像
-FROM openjdk:8-jdk-slim
+FROM java:8
 
 # 设定时区
 ENV TZ=Asia/Shanghai
@@ -7,11 +7,8 @@ ENV TZ=Asia/Shanghai
 # 设置工作目录
 WORKDIR /app
 
-# 复制 Maven 构建的项目包（通常是 `*.jar` 文件）到容器中
-# 假设你的项目构建生成的 JAR 文件名为 `crazy-test.jar`
-# 打包文件地址，由于手动代码打包则直接复制
 #COPY target/crazy-test.jar /app/crazy-test.jar
- COPY crazy-test-0.0.1-SNAPSHOT.jar /app/crazy-test.jar
+COPY crazy-test-0.0.1-SNAPSHOT.jar /app/app.jar
 
 #COPY ${JAR_FILE} /app/crazy-test.jar
 
@@ -20,12 +17,6 @@ EXPOSE 8080
 
 # 定义容器启动时执行的命令
 # 动态传递 JAVA_OPTS
-CMD ["sh", "-c", "java -Dspring.profiles.active=${SPRING_PROFILE} -jar crazy-test.jar"]
+#CMD ["sh", "-c", "java -Dspring.profiles.active=${SPRING_PROFILE} -jar crazy-test.jar"]
 
-# 构建命令
-# docker build -t msy:1.0 .
-# docker build -t crazy-test:latest --build-arg JAR_FILE=crazy-test-0.0.1-SNAPSHOT.jar .
-
-
-# y运行
-# docker run -d --name crazy-test -e SPRING_PROFILE=dev -p 8080:8080 crazy-test:latest
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

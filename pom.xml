@@ -146,7 +146,7 @@
         <version>${spring-boot.version}</version>
         <configuration>
           <mainClass>com.example.crazytest.CrazyTestApplication</mainClass>
-          <skip>true</skip>
+          <layout>JAR</layout>
         </configuration>
         <executions>
           <execution>
@@ -158,14 +158,6 @@
         </executions>
       </plugin>
     </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/java/resources</directory>
-        <includes>
-          <include>**/*.yml</include>
-        </includes>
-      </resource>
-    </resources>
   </build>
 
 </project>
