@@ -3,7 +3,7 @@ package com.example.crazytest.imp;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.enums.ExecStatusEnum;
@@ -38,13 +38,13 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   ApiCaseRepositoryService apiCaseRepository;
 
   @Override
-  public ApiCaseResult queryById(Long id) {
+  public ApiCaseRecord queryById(Long id) {
     return apiCaseResultRepositoryService.getById(id);
   }
 
   @Override
   public IPage<ApiCaseResultReq> list(String apiTestcaseId, Integer current, Integer pageSize) {
-    IPage<ApiCaseResult> apiCaseResult = apiCaseResultRepositoryService
+    IPage<ApiCaseRecord> apiCaseResult = apiCaseResultRepositoryService
         .list(apiTestcaseId, current, pageSize);
 
     return apiCaseResult.convert(caseResult -> {
@@ -58,7 +58,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   public boolean save(ApiDebugReq apiDebugReq, ResultApiVO resultApiVO) {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
 
-    ApiCaseResult apiCaseResult = ApiCaseResult.builder()
+    ApiCaseRecord apiCaseRecord = ApiCaseRecord.builder()
         .tenantId(BaseContext.getTenantId())
         .apiTestcaseId(apiDebugReq.getId())
         .caseOwnerId(apiCase.getOwnerId())
@@ -70,13 +70,13 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .scheduleId(apiDebugReq.getScheduleId())
         .scheduleBatchId(apiDebugReq.getScheduleBatchId())
         .build();
-    return apiCaseResultRepositoryService.save(apiCaseResult);
+    return apiCaseResultRepositoryService.save(apiCaseRecord);
   }
 
   @Override
   public List<Long> listResult(String tenantId, String recentExecResult) {
-    List<ApiCaseResult> apiCaseResults = apiCaseResultRepositoryService
+    List<ApiCaseRecord> apiCaseRecords = apiCaseResultRepositoryService
         .listResult(tenantId, recentExecResult);
-    return apiCaseResults.stream().map(ApiCaseResult::getApiTestcaseId).collect(Collectors.toList());
+    return apiCaseRecords.stream().map(ApiCaseRecord::getApiTestcaseId).collect(Collectors.toList());
   }
 }

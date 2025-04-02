@@ -1,6 +1,6 @@
 package com.example.crazytest.mapper;
 
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Menghui
  * @since 2025-03-23
  */
-public interface ApiCaseResultMapper extends BaseMapper<ApiCaseResult> {
+public interface ApiCaseResultMapper extends BaseMapper<ApiCaseRecord> {
 
 }

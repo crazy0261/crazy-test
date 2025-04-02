@@ -1,7 +1,7 @@
 package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ResultApiVO;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ApiCaseResultService {
 
-  ApiCaseResult queryById(Long id);
+  ApiCaseRecord queryById(Long id);
 
   IPage<ApiCaseResultReq> list(String apiTestcaseId, Integer current, Integer pageSize);
 

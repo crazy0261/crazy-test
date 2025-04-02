@@ -26,9 +26,9 @@ import lombok.experimental.Accessors;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("api_case_result")
-@ApiModel(value = "ApiCaseResult对象", description = "接口执行结果")
-public class ApiCaseResult implements Serializable {
+@TableName("api_case_record")
+@ApiModel(value = "ApiCaseRecord对象", description = "接口执行结果")
+public class ApiCaseRecord implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

@@ -2,14 +2,12 @@ package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.mapper.ApiCaseResultMapper;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,33 +20,33 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ApiCaseResultRepositoryServiceImpl extends
-    ServiceImpl<ApiCaseResultMapper, ApiCaseResult> implements
+    ServiceImpl<ApiCaseResultMapper, ApiCaseRecord> implements
     ApiCaseResultRepositoryService {
 
   @Override
-  public IPage<ApiCaseResult> list(String apiTestcaseId, Integer current, Integer pageSize) {
+  public IPage<ApiCaseRecord> list(String apiTestcaseId, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
-        .eq(ApiCaseResult::getApiTestcaseId, apiTestcaseId)
-        .orderByDesc(ApiCaseResult::getUpdateTime)
+        .eq(ApiCaseRecord::getApiTestcaseId, apiTestcaseId)
+        .orderByDesc(ApiCaseRecord::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
 
   @Override
-  public ApiCaseResult lastApiCaseResult(Long apiTestcaseId) {
+  public ApiCaseRecord lastApiCaseResult(Long apiTestcaseId) {
     return this.lambdaQuery()
-        .eq(ApiCaseResult::getApiTestcaseId, apiTestcaseId)
-        .orderByDesc(ApiCaseResult::getUpdateTime)
+        .eq(ApiCaseRecord::getApiTestcaseId, apiTestcaseId)
+        .orderByDesc(ApiCaseRecord::getUpdateTime)
         .last("limit 1")
         .one();
 
   }
 
   @Override
-  public List<ApiCaseResult> listResult(String tenantId, String recentExecResult) {
+  public List<ApiCaseRecord> listResult(String tenantId, String recentExecResult) {
     return this.lambdaQuery()
-        .eq(ApiCaseResult::getTenantId, tenantId)
-        .eq(Objects.nonNull(recentExecResult), ApiCaseResult::getStatus, recentExecResult)
+        .eq(ApiCaseRecord::getTenantId, tenantId)
+        .eq(Objects.nonNull(recentExecResult), ApiCaseRecord::getStatus, recentExecResult)
         .list();
   }
 }

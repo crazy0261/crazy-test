@@ -2,7 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
@@ -44,7 +44,7 @@ public class ApiCaseResultController {
 
   @GetMapping("/query")
   @Operation(summary = "查询接口执行详情")
-  public Result<ApiCaseResult> query(@RequestParam(value = "id", required = true) Long id) {
+  public Result<ApiCaseRecord> query(@RequestParam(value = "id", required = true) Long id) {
     return Result.success(apiCaseResultService.queryById(id));
   }
 

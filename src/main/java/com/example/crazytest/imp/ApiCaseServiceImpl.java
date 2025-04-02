@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.convert.GetInputParamConvert;
 import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.ApiCaseResult;
+import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
@@ -123,12 +123,12 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
       BeanUtils.copyProperties(apiCase, apiCaseVO);
       apiCaseRepository.getById(apiCase.getAppId());
 
-      ApiCaseResult apiCaseResult = apiCaseResultRepositoryService
+      ApiCaseRecord apiCaseRecord = apiCaseResultRepositoryService
           .lastApiCaseResult(apiCase.getId());
       apiCaseVO.setRecentExecResult(
-          ObjectUtils.isEmpty(apiCaseResult) ? null : apiCaseResult.getStatus());
+          ObjectUtils.isEmpty(apiCaseRecord) ? null : apiCaseRecord.getStatus());
       apiCaseVO.setRecentExecTime(
-          ObjectUtils.isEmpty(apiCaseResult) ? null : apiCaseResult.getUpdateTime());
+          ObjectUtils.isEmpty(apiCaseRecord) ? null : apiCaseRecord.getUpdateTime());
 
       User user = userService.getById(apiCase.getOwnerId());
       apiCaseVO.setAppName(applicationManagementService.getById(apiCase.getAppId()).getName());
