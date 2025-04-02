@@ -1,7 +1,6 @@
 package com.example.crazytest.job;
 
 import com.example.crazytest.entity.TestAccount;
-import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.TestAccountService;
 import com.xxl.job.core.biz.model.ReturnT;
@@ -12,6 +11,8 @@ import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@RestController
 public class TestAccountTokenJob {
 
   @Autowired
@@ -32,6 +34,7 @@ public class TestAccountTokenJob {
 
 
   @XxlJob("createAccountTokenJob")
+  @GetMapping("/test/job")
   public ReturnT<String> createAccountTokenJob() {
 
     List<TestAccount> testAccountList = testAccountService.listAllTestAccount();

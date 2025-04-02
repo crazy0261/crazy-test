@@ -1,6 +1,7 @@
 package com.example.crazytest.config;
 
 import com.example.crazytest.utils.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @DESRIPTION 全局一场捕获
  */
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -36,6 +38,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   @ResponseBody
   public Result<?> handleException(Exception e) {
+    log.error("Global Exception：", e);
     return Result.fail(500, e.getMessage());
   }
 

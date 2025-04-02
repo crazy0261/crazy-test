@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 public class AssertResultVo {
-  private boolean pass;
+  private Boolean pass;
   private List<String> message;
 
   public static AssertResultVo fail(){

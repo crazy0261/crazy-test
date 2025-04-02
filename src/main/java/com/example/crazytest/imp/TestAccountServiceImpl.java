@@ -5,13 +5,17 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.TestAccountService;
+import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.CronUtil;
+import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.vo.ApiCaseVO;
+import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import com.example.crazytest.vo.TestAccountVO;
 import java.io.IOException;
@@ -64,6 +68,9 @@ public class TestAccountServiceImpl implements TestAccountService {
   @Override
   public Boolean save(TestAccount testAccount) {
     CronUtil.cronCheckRule(testAccount.getCron());
+    boolean jsonPathCheck = JSONPathUtil.isJsonPathFormatCheck(testAccount.getJsonPath());
+    AssertUtil.assertNotTrue(jsonPathCheck, ResultEnum.JSON_PATH_FORMAT_FAIL.getMessage());
+
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
     testAccount.setTenantId(
@@ -90,13 +97,20 @@ public class TestAccountServiceImpl implements TestAccountService {
     apiDebugReq.setInputParams(testAccount.getInputParams());
 
     ResultApiVO result = apiCaseService.debug(apiDebugReq);
-    testAccount
-        .setGenTokenStatus(result.getAssertResultVo().isPass() ? "SUCCESS" : "Error");
-    testAccount.setToken(Optional.ofNullable(result.getResponse())
+    String tokenStatus = Optional.ofNullable(result.getAssertResultVo()).map(
+        AssertResultVo::getPass).map(pass -> Boolean.TRUE.equals(pass) ? "SUCCESS" : "Error")
+        .orElse("Error");
+    String token = Optional.ofNullable(result.getResponse())
         .map(json -> JSONPath.eval(json, testAccount.getJsonPath()))
-        .map(Object::toString).orElse(""));
-    testAccount.setFailReason(
-        !result.getAssertResultVo().isPass() ? result.getResponse().toJSONString() : "");
+        .map(Object::toString).orElse("");
+    String failReason = Optional.ofNullable(result.getAssertResultVo())
+        .map(AssertResultVo::getPass)
+        .map(pass -> Boolean.FALSE.equals(pass) ? result.getResponse().toJSONString() : "")
+        .orElse("");
+
+    testAccount.setGenTokenStatus(tokenStatus);
+    testAccount.setToken(token);
+    testAccount.setFailReason(failReason);
     save(testAccount);
   }
 

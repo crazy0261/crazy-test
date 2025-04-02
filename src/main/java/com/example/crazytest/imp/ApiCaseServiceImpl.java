@@ -1,5 +1,6 @@
 package com.example.crazytest.imp;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -33,6 +34,7 @@ import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
@@ -248,7 +250,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
         .response(body)
-        .assertResultVo(assertResult(assertsArray, body))
+        .assertResultVo(CollUtil.isNotEmpty(assertsArray) ? assertResult(assertsArray, body) : null)
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)
         .build();
@@ -281,12 +283,16 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     String jsonPath = assertVO.getJsonPath();
     String expectedValue = assertVO.getExpectValue();
     String actualValue;
+    boolean jsonPathCheck = JSONPathUtil.isJsonPathCheck(jsonPath);
+
+    if (!jsonPathCheck) {
+      return Boolean.FALSE;
+    }
 
     try {
       if (jsonPath.contains("size()")) {
-        String path = jsonPath.split("size\\(\\)")[0];
-        JSONArray jsonArray = JSON.parseArray(JSONPath.eval(body, path).toString());
-        actualValue = String.valueOf(jsonArray.size());
+        Object resultSize = JSONPathUtil.getJsonPathValue(body, jsonPath);
+        actualValue = Optional.ofNullable(resultSize).map(Object::toString).orElse("");
       } else {
         actualValue = JSONPath.eval(body, jsonPath).toString();
       }

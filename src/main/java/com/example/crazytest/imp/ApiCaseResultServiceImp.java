@@ -12,9 +12,11 @@ import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
+import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +66,9 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .caseOwnerId(apiCase.getOwnerId())
         .mode(Objects.isNull(apiDebugReq.getMode()) ? ExecModeEnum.MANUAL.getValue()
             : ExecModeEnum.AUTO.getValue())
-        .status(resultApiVO.getAssertResultVo().isPass() ? ExecStatusEnum.SUCCESS.getValue()
-            : ExecStatusEnum.FAIL.getValue())
+        .status(Optional.ofNullable(resultApiVO.getAssertResultVo()).map(
+            AssertResultVo::getPass).filter(pass -> pass)
+            .map(pass -> ExecStatusEnum.SUCCESS.getValue()).orElse(ExecStatusEnum.FAIL.getValue()))
         .debugResult(JSON.toJSONString(resultApiVO))
         .scheduleId(apiDebugReq.getScheduleId())
         .scheduleBatchId(apiDebugReq.getScheduleBatchId())
@@ -77,6 +80,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   public List<Long> listResult(String tenantId, String recentExecResult) {
     List<ApiCaseRecord> apiCaseRecords = apiCaseResultRepositoryService
         .listResult(tenantId, recentExecResult);
-    return apiCaseRecords.stream().map(ApiCaseRecord::getApiTestcaseId).collect(Collectors.toList());
+    return apiCaseRecords.stream().map(ApiCaseRecord::getApiTestcaseId)
+        .collect(Collectors.toList());
   }
 }
