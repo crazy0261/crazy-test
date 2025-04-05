@@ -19,7 +19,7 @@ public interface ApiCaseResultRepositoryService extends IService<ApiCaseRecord> 
 
   ApiCaseRecord lastApiCaseResult(Long apiTestcaseId);
 
-  List<ApiCaseRecord> listResult(String tenantId, String recentExecResult);
+  List<ApiCaseRecord> listResult(Long projectId, String recentExecResult);
 
 
 }

@@ -27,13 +27,13 @@ public class DomainInfoServiceImpl implements DomainInfoService {
   public IPage<DomainInfo> list(String name, String urlPath, int current, int pageSize) {
 
     return domainInfoRepositoryService
-        .list(BaseContext.getTenantId(), name, urlPath, current, pageSize);
+        .list(BaseContext.getSelectProjectId(), name, urlPath, current, pageSize);
   }
 
   @Override
   @Transactional(rollbackFor = Exception.class)
   public Boolean save(DomainInfo domainInfo) {
-    domainInfo.setTenantId(BaseContext.getTenantId());
+    domainInfo.setProjectId(BaseContext.getSelectProjectId());
     return domainInfoRepositoryService.saveOrUpdate(domainInfo);
   }
 
@@ -44,7 +44,7 @@ public class DomainInfoServiceImpl implements DomainInfoService {
 
   @Override
   public List<DomainInfo> getByNameList(String name) {
-    return domainInfoRepositoryService.getByNameList(BaseContext.getTenantId(), name);
+    return domainInfoRepositoryService.getByNameList(BaseContext.getSelectProjectId(), name);
   }
 
   @Override

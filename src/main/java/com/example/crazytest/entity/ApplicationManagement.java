@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("application_management")
+@TableName("application_info")
 @ApiModel(value = "ApplicationManagement对象", description = "应用管理")
 public class ApplicationManagement implements Serializable {
 
@@ -33,8 +33,8 @@ public class ApplicationManagement implements Serializable {
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
-  @ApiModelProperty(value = "租户")
-  private String tenantId;
+  @ApiModelProperty(value = "项目id")
+  private Long projectId;
 
   @ApiModelProperty(value = "应用名")
   private String name;

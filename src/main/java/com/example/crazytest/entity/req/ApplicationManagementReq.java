@@ -24,8 +24,8 @@ public class ApplicationManagementReq  {
   @ApiModelProperty(value = "应用描述")
   private String  remark;
 
-  @ApiModelProperty(value = "租户")
-  private String tenantId;
+  @ApiModelProperty(value = "项目id")
+  private Long projectId;
 
 
 }

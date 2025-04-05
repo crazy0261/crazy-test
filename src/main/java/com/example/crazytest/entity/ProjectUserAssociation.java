@@ -2,7 +2,6 @@ package com.example.crazytest.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -16,38 +15,41 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 域名信息表
+ * 项目用户关联表
  * </p>
  *
  * @author Menghui
- * @since 2025-03-21
+ * @since 2025-04-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("domain_info")
-@ApiModel(value = "DomainInfo对象", description = "域名信息表")
-public class DomainInfo implements Serializable {
+@TableName("project_user_association")
+@ApiModel(value = "ProjectUserAssociation对象", description = "项目用户关联表")
+public class ProjectUserAssociation implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @TableId(value = "id", type = IdType.AUTO)
-  private Long id;
+  private Integer id;
 
   @ApiModelProperty(value = "项目id")
   private Long projectId;
 
-  @ApiModelProperty(value = "域名名称")
-  private String name;
+  @ApiModelProperty(value = "用户id")
+  private Long userId;
 
-  @ApiModelProperty(value = "域名地址，或ip:端口号")
-  private String urlPath;
+  @ApiModelProperty(value = "状态 0启用 1停用")
+  private Integer status;
+
+  @ApiModelProperty(value = "删除 0未删除 1删除")
+  private Integer isDelete;
 
   @ApiModelProperty(value = "创建人id")
   @TableField(fill = FieldFill.INSERT)
-  private Long createById;
+  private Integer createById;
 
-  @ApiModelProperty(value = "创建人")
+  @ApiModelProperty(value = "创建人姓名")
   @TableField(fill = FieldFill.INSERT)
   private String createByName;
 
@@ -57,19 +59,14 @@ public class DomainInfo implements Serializable {
 
   @ApiModelProperty(value = "修改人id")
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  private Long updateById;
+  private Integer updateById;
 
-  @ApiModelProperty(value = "修改人")
+  @ApiModelProperty(value = "修改人姓名")
   @TableField(fill = FieldFill.INSERT_UPDATE)
   private String updateByName;
 
   @ApiModelProperty(value = "修改时间")
   @TableField(fill = FieldFill.INSERT_UPDATE)
   private LocalDateTime updateTime;
-
-  @ApiModelProperty(value = "是否删除")
-  @TableLogic
-  private Long isDelete;
-
 
 }

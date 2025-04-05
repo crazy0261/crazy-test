@@ -15,8 +15,8 @@ import java.util.List;
  */
 public interface DomainInfoRepositoryService extends IService<DomainInfo> {
 
-  IPage<DomainInfo> list(String tenantId, String name, String urlPath, int current, int pageSize);
+  IPage<DomainInfo> list(Long projectId, String name, String urlPath, int current, int pageSize);
 
-  List<DomainInfo> getByNameList(String tenantId, String name);
+  List<DomainInfo> getByNameList(Long projectId, String name);
 
 }

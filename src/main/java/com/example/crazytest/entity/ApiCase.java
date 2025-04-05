@@ -34,8 +34,8 @@ public class ApiCase implements Serializable {
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
-  @ApiModelProperty(value = "租户")
-  private String tenantId;
+  @ApiModelProperty(value = "项目")
+  private Long projectId;
 
   @ApiModelProperty(value = "应用id")
   private Long appId;

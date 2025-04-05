@@ -87,8 +87,8 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
     String apiCaseCheckEnable = caseConvert.apiCaseCheckEnable(taskSchedule.getTestcaseList());
 
-    taskSchedule.setTenantId(
-        Optional.ofNullable(taskSchedule.getTenantId()).orElse(BaseContext.getTenantId()));
+    taskSchedule.setProjectId(
+        Optional.ofNullable(taskSchedule.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     taskSchedule
         .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
     taskSchedule.setTestcaseList(apiCaseCheckEnable);

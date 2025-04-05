@@ -17,7 +17,7 @@ public interface ApplicationManagementRepositoryService extends IService<Applica
 
   IPage<ApplicationManagement> list(String name, Long ownerId, int current, int pageSize);
 
-  List<ApplicationManagement> listAllApplicationManagement(String tenantId);
+  List<ApplicationManagement> listAllApplicationManagement(Long projectId);
 
 
 }

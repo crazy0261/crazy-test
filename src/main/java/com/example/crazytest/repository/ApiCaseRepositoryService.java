@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
-  IPage<ApiCase> list(String tenantId, String name, Long appId, List<Long> pathIds, Boolean status,
+  IPage<ApiCase> list(Long projectId, String name, Long appId, List<Long> pathIds, Boolean status,
       List<Long> allIds, Long ownerId, Integer current, Integer pageSize);
 
-  List<ApiCase> allList(String tenantId);
+  List<ApiCase> allList(Long projectId);
 
   Boolean updateApiCase(String remark, Long id);
 

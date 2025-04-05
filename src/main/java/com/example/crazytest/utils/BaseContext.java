@@ -9,22 +9,12 @@ package com.example.crazytest.utils;
 
 public class BaseContext {
 
-  private static ThreadLocal<String> tenantId = new ThreadLocal<>();
   private static ThreadLocal<Long> userId = new ThreadLocal<>();
   private static ThreadLocal<String> userAccount = new ThreadLocal<>();
   private static ThreadLocal<String> userName = new ThreadLocal<>();
   private static ThreadLocal<String> traceId = new ThreadLocal<>();
   private static ThreadLocal<Long> selectProjectId = new ThreadLocal<>();
 
-
-  // todo 修改成读取数据库中租户信息  根据id  现在是处理默认值    目前这个地方不需要默认值
-  public static void setTenantId(String tenant) {
-    tenantId.set(tenant);
-  }
-
-  public static String getTenantId() {
-    return tenantId.get();
-  }
 
   public static void setUserId(Long user) {
     userId.set(user);
@@ -68,7 +58,6 @@ public class BaseContext {
   }
 
   public static void clear() {
-    tenantId.remove();
     userId.remove();
     userAccount.remove();
     userName.remove();

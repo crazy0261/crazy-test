@@ -15,5 +15,5 @@ public interface ApiCaseResultService {
 
   boolean save(ApiDebugReq apiDebugReq,ResultApiVO resultApiVO);
 
-  List<Long> listResult(String tenantId, String recentExecResult);
+  List<Long> listResult(Long projectId, String recentExecResult);
 }

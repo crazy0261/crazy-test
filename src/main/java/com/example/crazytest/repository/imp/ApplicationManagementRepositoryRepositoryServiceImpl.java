@@ -28,7 +28,7 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
   public IPage<ApplicationManagement> list(String name, Long ownerId, int current, int pageSize) {
     return this.lambdaQuery()
         .like(ObjectUtils.isNotNull(name), ApplicationManagement::getName, name)
-        .eq(ApplicationManagement::getTenantId, BaseContext.getTenantId())
+        .eq(ApplicationManagement::getProjectId, BaseContext.getSelectProjectId())
         .eq(ObjectUtils.isNotNull(ownerId), ApplicationManagement::getOwnerId, ownerId)
         .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApplicationManagement::getUpdateTime)
@@ -36,9 +36,9 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
   }
 
   @Override
-  public List<ApplicationManagement> listAllApplicationManagement(String tenantId) {
+  public List<ApplicationManagement> listAllApplicationManagement(Long projectId) {
     return this.lambdaQuery()
-        .eq(ApplicationManagement::getTenantId, tenantId)
+        .eq(ApplicationManagement::getProjectId, projectId)
         .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
         .list();
   }

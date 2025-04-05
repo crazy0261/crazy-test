@@ -114,10 +114,10 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     List<Long> pathIds = apiManagementService.getPaths(path);
 
     List<Long> allIds = StringUtils.isNotEmpty(recentExecResult) ? apiCaseResultService
-        .listResult(BaseContext.getTenantId(), recentExecResult) : null;
+        .listResult(BaseContext.getSelectProjectId(), recentExecResult) : null;
 
     IPage<ApiCase> apiCaseIPage = apiCaseRepository
-        .list(BaseContext.getTenantId(), name, appId, pathIds, status, allIds, ownerId,
+        .list(BaseContext.getSelectProjectId(), name, appId, pathIds, status, allIds, ownerId,
             current, pageSize);
 
     return apiCaseIPage.convert(apiCase -> {
@@ -157,7 +157,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   @Override
   @Transactional(rollbackFor = Exception.class)
   public boolean save(ApiCaseReq apiCaseReq) {
-    apiCaseReq.setTenantId(BaseContext.getTenantId());
+    apiCaseReq.setProjectId(BaseContext.getSelectProjectId());
     ApiCase apiCase = new ApiCase();
     BeanUtils.copyProperties(apiCaseReq, apiCase);
     apiCase
@@ -170,7 +170,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Override
   public List<Map<String, Object>> allList() {
-    List<ApiCase> apiCaseList = apiCaseRepository.allList(BaseContext.getTenantId());
+    List<ApiCase> apiCaseList = apiCaseRepository.allList(BaseContext.getSelectProjectId());
 
     return apiCaseList.stream().map(apiCase -> {
       Map<String, Object> map = new HashMap<>();

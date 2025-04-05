@@ -6,12 +6,14 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.UserRepositoryService;
+import com.example.crazytest.services.ProjectUserAssociationService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +33,9 @@ public class UserServiceImp implements UserService {
 
   @Autowired
   UserRepositoryService userRepositoryService;
+
+  @Autowired
+  ProjectUserAssociationService projectUserAssociationService;
 
   @Value("${user.resetPwd}")
   String password;
@@ -56,8 +61,6 @@ public class UserServiceImp implements UserService {
   @Override
   public Boolean save(User user) {
     user.setPassword(Objects.isNull(user.getPassword()) ? password : user.getPassword());
-    user.setTenantId(
-        Objects.isNull(user.getTenantId()) ? BaseContext.getTenantId() : user.getTenantId());
     Boolean checkAccount = checkUser(user.getAccount());
     AssertUtil.assertTrue(checkAccount, ResultEnum.USER_EXIST_FAIL.getMessage());
     return userRepositoryService.saveOrUpdate(user);
@@ -80,6 +83,9 @@ public class UserServiceImp implements UserService {
         ResultEnum.USER_STOP_STATUS.getMessage());
     AssertUtil.assertNotTrue(userEntity.getPassword().equals(password),
         ResultEnum.USER_PASSWORD_FAIL.getMessage());
+
+    userEntity.setSelectProject(Optional.ofNullable(userEntity.getSelectProject())
+        .orElseGet(()->projectUserAssociationService.getOne(userEntity.getId()).getProjectId()));
 
     return JWTUtil.crateToken(userEntity);
   }
@@ -104,7 +110,7 @@ public class UserServiceImp implements UserService {
 
     AssertUtil.assertTrue(user == null, ResultEnum.USER_NOT_FOUND.getMessage());
     assert user != null;
-    user.setSelectProject(selectProjectId);
+    user.setSelectProject(Long.getLong(selectProjectId));
     return userRepositoryService.updateSelectProjectId(user);
   }
 

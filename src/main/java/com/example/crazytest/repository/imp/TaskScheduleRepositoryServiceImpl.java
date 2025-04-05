@@ -30,7 +30,7 @@ public class TaskScheduleRepositoryServiceImpl extends
       Integer enable, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
-        .eq(TaskSchedule::getTenantId, BaseContext.getTenantId())
+        .eq(TaskSchedule::getProjectId, BaseContext.getSelectProjectId())
         .like(ObjectUtils.isNotNull(name), TaskSchedule::getName, name)
         .eq(ObjectUtils.isNotNull(testcaseType), TaskSchedule::getTestcaseType, testcaseType)
         .in(ObjectUtils.isNotNull(ownerId), TaskSchedule::getOwnerId, ownerId)

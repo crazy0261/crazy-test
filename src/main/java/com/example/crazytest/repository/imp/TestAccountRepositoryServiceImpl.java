@@ -25,11 +25,11 @@ public class TestAccountRepositoryServiceImpl extends
     TestAccountRepositoryService {
 
   @Override
-  public IPage<TestAccount> list(String tenantId, String name,
+  public IPage<TestAccount> list(Long projectId, String name,
       String genTokenStatus, int current, int pageSize) {
 
     return this.lambdaQuery()
-        .eq(TestAccount::getTenantId, tenantId)
+        .eq(TestAccount::getProjectId, projectId)
         .like(ObjectUtils.isNotNull(name), TestAccount::getName, name)
         .eq(ObjectUtils.isNotNull(genTokenStatus), TestAccount::getGenTokenStatus, genTokenStatus)
         .eq(TestAccount::getIsDelete, Boolean.FALSE)

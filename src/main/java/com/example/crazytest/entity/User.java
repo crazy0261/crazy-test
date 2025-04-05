@@ -30,9 +30,6 @@ public class User implements Serializable {
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
-  @ApiModelProperty(value = "租户id")
-  private String tenantId;
-
   @ApiModelProperty(value = "账号")
   private String account;
 
@@ -49,7 +46,7 @@ public class User implements Serializable {
   private String phone;
 
   @ApiModelProperty(value = "项目id")
-  private String selectProject;
+  private Long selectProject;
 
   @ApiModelProperty(value = "角色id")
   private Long roleId;

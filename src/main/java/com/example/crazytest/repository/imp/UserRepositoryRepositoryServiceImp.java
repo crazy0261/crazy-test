@@ -34,7 +34,6 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
         .like(StringUtils.isNotEmpty(account), User::getAccount, account)
         .like(StringUtils.isNotEmpty(name), User::getName, name)
         .eq(StringUtils.isNotEmpty(phone), User::getPhone, phone)
-        .eq(User::getTenantId, BaseContext.getTenantId())
         .eq(status != null, User::getStatus, status)
         .eq(User::getIsDelete, Boolean.FALSE)
         .orderByDesc(User::getUpdateTime);
@@ -84,7 +83,6 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
 
     return this.lambdaQuery()
         .like(StringUtils.isNotEmpty(name), User::getName, name)
-        .eq(User::getTenantId, BaseContext.getTenantId())
         .list();
   }
 

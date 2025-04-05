@@ -24,10 +24,10 @@ public class DomainInfoRepositoryServiceImpl extends
     DomainInfoRepositoryService {
 
   @Override
-  public IPage<DomainInfo> list(String tenantId, String name, String urlPath, int current,
+  public IPage<DomainInfo> list(Long projectId, String name, String urlPath, int current,
       int pageSize) {
     return this.lambdaQuery()
-        .eq(DomainInfo::getTenantId, tenantId)
+        .eq(DomainInfo::getProjectId, projectId)
         .like(ObjectUtils.isNotNull(name), DomainInfo::getName, name)
         .like(ObjectUtils.isNotNull(urlPath), DomainInfo::getUrlPath, urlPath)
         .eq(DomainInfo::getIsDelete, Boolean.FALSE)
@@ -36,9 +36,9 @@ public class DomainInfoRepositoryServiceImpl extends
   }
 
   @Override
-  public List<DomainInfo> getByNameList(String tenantId, String name) {
+  public List<DomainInfo> getByNameList(Long projectId, String name) {
     return this.lambdaQuery()
-        .eq(DomainInfo::getTenantId, tenantId)
+        .eq(DomainInfo::getProjectId, projectId)
         .like(ObjectUtils.isNotNull(name), DomainInfo::getName, name)
         .list();
   }

@@ -25,12 +25,12 @@ public class EnvConfigRepositoryServiceImpl extends
     EnvConfigRepositoryService {
 
   @Override
-  public IPage<EnvConfig> list(String tenantId, String appid, String name, List<String> domainId,
+  public IPage<EnvConfig> list(Long projectId, String appid, String name, List<String> domainId,
       int current, int pageSize) {
 
     return this.lambdaQuery()
         .like(ObjectUtils.isNotNull(name), EnvConfig::getName, name)
-        .eq(EnvConfig::getTenantId, tenantId)
+        .eq(EnvConfig::getProjectId, projectId)
         .eq(ObjectUtils.isNotNull(appid), EnvConfig::getAppId, appid)
         .in(EnvConfig::getDomainId, domainId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
@@ -59,7 +59,7 @@ public class EnvConfigRepositoryServiceImpl extends
   @Override
   public List<EnvConfig> listAll() {
     return this.lambdaQuery()
-        .eq(EnvConfig::getTenantId, BaseContext.getTenantId())
+        .eq(EnvConfig::getProjectId, BaseContext.getSelectProjectId())
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .list();
   }

@@ -50,9 +50,9 @@ public class TestAccountServiceImpl implements TestAccountService {
   public IPage<TestAccountVO> list(String name, String genTokenStatus, int current,
       int pageSize) {
 
-    String tenantId = BaseContext.getTenantId();
+    Long projectId = BaseContext.getSelectProjectId();
     IPage<TestAccount> testAccountPage = testAccountRepositoryService
-        .list(tenantId, name, genTokenStatus, current, pageSize);
+        .list(projectId, name, genTokenStatus, current, pageSize);
 
     return testAccountPage.convert(testAccount -> {
       TestAccountVO testAccountVo = new TestAccountVO();
@@ -73,8 +73,8 @@ public class TestAccountServiceImpl implements TestAccountService {
 
     CronExpression cron = CronExpression.parse(testAccount.getCron());
     testAccount.setNextExecTime(cron.next(LocalDateTime.now()));
-    testAccount.setTenantId(
-        Optional.ofNullable(testAccount.getTenantId()).orElse(BaseContext.getTenantId()));
+    testAccount.setProjectId(
+        Optional.ofNullable(testAccount.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     return testAccountRepositoryService.saveOrUpdate(testAccount);
   }
 

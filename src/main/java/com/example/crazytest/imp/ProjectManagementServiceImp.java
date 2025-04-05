@@ -29,13 +29,11 @@ public class ProjectManagementServiceImp implements ProjectManagementService {
 
   @Override
   public boolean save(ProjectManagement projectManagement) {
-    projectManagement.setTenantId(Optional.ofNullable(projectManagement.getTenantId())
-        .orElse(UUID.randomUUID().toString().replace("-", "").substring(0, 8)));
     return projectManagementService.saveOrUpdate(projectManagement);
   }
 
   @Override
   public Boolean delete(Long id) {
-    return projectManagementService.removeById(id) ;
+    return projectManagementService.removeById(id);
   }
 }

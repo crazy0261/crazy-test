@@ -48,7 +48,7 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   @Transactional(rollbackFor = Exception.class)
   public boolean save(ApplicationManagementReq applicationManagementReq) {
     ApplicationManagement appManagement = new ApplicationManagement();
-    applicationManagementReq.setTenantId(BaseContext.getTenantId());
+    applicationManagementReq.setProjectId(BaseContext.getSelectProjectId());
     BeanUtils.copyProperties(applicationManagementReq, appManagement);
 
     return applicationManagementRepositoryService.saveOrUpdate(appManagement);
@@ -62,7 +62,7 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   @Override
   public List<ApplicationManagement> listAllApplicationManagement() {
     return applicationManagementRepositoryService
-        .listAllApplicationManagement(BaseContext.getTenantId());
+        .listAllApplicationManagement(BaseContext.getSelectProjectId());
   }
 
 }

@@ -18,7 +18,7 @@ public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
   IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq);
 
-  List<ApiManagement> getPaths(String tenantId, String path);
+  List<ApiManagement> getPaths(Long projectId, String path);
 
   Boolean batchUpdateType(List<Long> ids, String apiType);
 

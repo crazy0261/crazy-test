@@ -33,7 +33,7 @@ public class JWTInterceptor implements HandlerInterceptor {
 
     // 放行
     if (Constants.EXCLUDE_PATH.contains(request.getRequestURI())) {
-      BaseContext.setTenantId(null);
+      BaseContext.setSelectProjectId(null);
       BaseContext.setUserAccount(null);
       BaseContext.setUserName(null);
       BaseContext.setUserId(null);
@@ -47,7 +47,7 @@ public class JWTInterceptor implements HandlerInterceptor {
         JWTUtil.getDecodeToken(token);
         User user = JWTUtil.getUserByToken(token);
         assert user != null;
-        BaseContext.setTenantId(user.getTenantId());
+        BaseContext.setSelectProjectId(user.getSelectProject());
         BaseContext.setUserAccount(user.getAccount());
         BaseContext.setUserName(user.getName());
         BaseContext.setUserId(user.getId());

@@ -61,7 +61,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
 
     ApiCaseRecord apiCaseRecord = ApiCaseRecord.builder()
-        .tenantId(BaseContext.getTenantId())
+        .projectId(BaseContext.getSelectProjectId())
         .apiTestcaseId(apiDebugReq.getId())
         .caseOwnerId(apiCase.getOwnerId())
         .mode(Objects.isNull(apiDebugReq.getMode()) ? ExecModeEnum.MANUAL.getValue()
@@ -77,9 +77,9 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   }
 
   @Override
-  public List<Long> listResult(String tenantId, String recentExecResult) {
+  public List<Long> listResult(Long projectId, String recentExecResult) {
     List<ApiCaseRecord> apiCaseRecords = apiCaseResultRepositoryService
-        .listResult(tenantId, recentExecResult);
+        .listResult(projectId, recentExecResult);
     return apiCaseRecords.stream().map(ApiCaseRecord::getApiTestcaseId)
         .collect(Collectors.toList());
   }

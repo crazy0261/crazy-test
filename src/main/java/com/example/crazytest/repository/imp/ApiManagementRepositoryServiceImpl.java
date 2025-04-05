@@ -33,7 +33,7 @@ public class ApiManagementRepositoryServiceImpl extends
   @Override
   public IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq) {
     return this.lambdaQuery()
-        .eq(ApiManagement::getTenantId, BaseContext.getTenantId())
+        .eq(ApiManagement::getPath, BaseContext.getSelectProjectId())
         .like(ObjectUtils.isNotNull(apiManagementReq.getName()), ApiManagement::getName,
             apiManagementReq.getName())
         .eq(ObjectUtils.isNotNull(apiManagementReq.getApiType()), ApiManagement::getApiType,
@@ -70,9 +70,9 @@ public class ApiManagementRepositoryServiceImpl extends
   }
 
   @Override
-  public List<ApiManagement> getPaths(String tenantId, String path) {
+  public List<ApiManagement> getPaths(Long projectId, String path) {
     return this.lambdaQuery()
-        .eq(ApiManagement::getTenantId, tenantId)
+        .eq(ApiManagement::getProjectId, projectId)
         .like(ObjectUtils.isNotNull(path), ApiManagement::getPath, path).list();
   }
 

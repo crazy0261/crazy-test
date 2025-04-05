@@ -43,9 +43,9 @@ public class ApiCaseResultRepositoryServiceImpl extends
   }
 
   @Override
-  public List<ApiCaseRecord> listResult(String tenantId, String recentExecResult) {
+  public List<ApiCaseRecord> listResult(Long projectId, String recentExecResult) {
     return this.lambdaQuery()
-        .eq(ApiCaseRecord::getTenantId, tenantId)
+        .eq(ApiCaseRecord::getProjectId, projectId)
         .eq(Objects.nonNull(recentExecResult), ApiCaseRecord::getStatus, recentExecResult)
         .list();
   }

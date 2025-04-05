@@ -26,11 +26,11 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   ApiCaseMapper apiCaseMapper;
 
   @Override
-  public IPage<ApiCase> list(String tenantId, String name, Long appId, List<Long> pathIds,
+  public IPage<ApiCase> list(Long projectId, String name, Long appId, List<Long> pathIds,
       Boolean status, List<Long> allIds, Long ownerId, Integer current, Integer pageSize) {
 
     return this.lambdaQuery()
-        .eq(ApiCase::getTenantId, tenantId)
+        .eq(ApiCase::getProjectId, projectId)
         .like(ObjectUtils.isNotNull(name), ApiCase::getName, name)
         .eq(ObjectUtils.isNotNull(appId), ApiCase::getAppId, appId)
         .in(ObjectUtils.isNotNull(pathIds), ApiCase::getApiId, pathIds)
@@ -43,9 +43,9 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   }
 
   @Override
-  public List<ApiCase> allList(String tenantId) {
+  public List<ApiCase> allList(Long projectId) {
     return this.lambdaQuery()
-        .eq(ApiCase::getTenantId, tenantId)
+        .eq(ApiCase::getProjectId, projectId)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .list();
   }

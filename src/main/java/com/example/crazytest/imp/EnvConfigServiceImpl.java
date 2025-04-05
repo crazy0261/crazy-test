@@ -48,7 +48,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
         .map(domainInfo -> String.valueOf(domainInfo.getId())).collect(Collectors.toList());
 
     IPage<EnvConfig> envConfigIPage = envConfigRepositoryService
-        .list(BaseContext.getTenantId(), appid, name, domainIds, current, pageSize);
+        .list(BaseContext.getSelectProjectId(), appid, name, domainIds, current, pageSize);
 
     return envConfigIPage.convert(envConfig -> {
       EnvConfigVO envConfigVo = new EnvConfigVO();
@@ -75,7 +75,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
     AssertUtil.assertTrue(ObjectUtils.isEmpty(envConfigs), "该应用下已存在该域名的环境配置");
 
     BeanUtils.copyProperties(envConfigReq, envConfig);
-    envConfig.setTenantId(BaseContext.getTenantId());
+    envConfig.setProjectId(BaseContext.getSelectProjectId());
     envConfig.setRequestHeaders(JSON.toJSONString(envConfigReq.getRequestHeaders()));
     envConfig.setEnvVariables(JSON.toJSONString(envConfigReq.getEnvVariables()));
 

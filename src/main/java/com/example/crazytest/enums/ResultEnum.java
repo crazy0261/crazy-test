@@ -15,6 +15,7 @@ public enum ResultEnum {
   USER_STOP_STATUS(400, "该用户已被停用"),
   USER_PASSWORD_FAIL(400, "密码错误"),
   JSON_PATH_FORMAT_FAIL(400, "JSON Path格式错误，请检查！"),
+  USER_PROJECT_NOT_FAIL(400, "项目不存在"),
   USER_EXIST_FAIL(400, "用户已存在");
 
   private final int code;

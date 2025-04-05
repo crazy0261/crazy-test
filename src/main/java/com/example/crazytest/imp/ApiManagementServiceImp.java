@@ -63,15 +63,15 @@ public class ApiManagementServiceImp implements ApiManagementService {
   @Override
   public List<Long> getPaths(String path) {
     List<ApiManagement> apiManagements = apiManageRepository
-        .getPaths(BaseContext.getTenantId(), path);
+        .getPaths(BaseContext.getSelectProjectId(), path);
     return apiManagements.stream().map(ApiManagement::getId).collect(Collectors.toList());
   }
 
   @Override
   public Boolean save(ApiManagement apiManagement) {
-    apiManagement.setTenantId(
-        Objects.nonNull(apiManagement.getTenantId()) ? apiManagement.getTenantId()
-            : BaseContext.getTenantId());
+    apiManagement.setProjectId(
+        Objects.nonNull(apiManagement.getProjectId()) ? apiManagement.getProjectId()
+            : BaseContext.getSelectProjectId());
     return apiManageRepository.saveOrUpdate(apiManagement);
   }
 

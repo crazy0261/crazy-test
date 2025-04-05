@@ -35,11 +35,8 @@ public class TaskSchedule implements Serializable {
   @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
-  @ApiModelProperty(value = "租户")
-  private String tenantId;
-
   @ApiModelProperty(value = "项目id")
-  private String projectId;
+  private Long projectId;
 
   @ApiModelProperty(value = "环境变量")
   private String env;

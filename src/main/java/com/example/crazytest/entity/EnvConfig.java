@@ -35,7 +35,7 @@ public class EnvConfig implements Serializable {
   private Long id;
 
   @ApiModelProperty(value = "租户")
-  private String tenantId;
+  private Long projectId;
 
   @ApiModelProperty(value = "应用id")
   private Long appId;
