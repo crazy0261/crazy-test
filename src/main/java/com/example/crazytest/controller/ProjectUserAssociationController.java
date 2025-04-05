@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2025-04-05
  */
 @RestController
-@RequestMapping("/project-user-association")
+@RequestMapping("/project/user/association")
 public class ProjectUserAssociationController {
 
 }
