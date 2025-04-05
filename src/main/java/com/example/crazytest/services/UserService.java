@@ -14,13 +14,15 @@ public interface UserService {
 
   Boolean resetPwd(String account);
 
+  void loginCheck(User userEntity, String password);
+
+  String updateToken(Long selectProject);
+
   String login(String account, String password);
 
   UserResultEntity currentUser(String account);
 
   User getById(Long id);
-
-  boolean updateSelectProjectId(String selectProjectId);
 
   List<Long> getNameList(String name);
 
@@ -29,6 +31,5 @@ public interface UserService {
   Boolean checkUser(String account);
 
   List<UserResultEntity> listAll();
-
 
 }

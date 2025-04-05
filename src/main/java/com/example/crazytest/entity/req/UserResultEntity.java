@@ -29,7 +29,7 @@ public class UserResultEntity {
   private String email;
 
   @ApiModelProperty(value = "项目id")
-  private String selectProject;
+  private Long selectProject;
 
   @ApiModelProperty(value = "角色id")
   private Long roleId;

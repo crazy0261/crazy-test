@@ -72,20 +72,38 @@ public class UserServiceImp implements UserService {
   }
 
   @Override
+  public void loginCheck(User userEntity, String password) {
+    AssertUtil.assertNotNull(userEntity, ResultEnum.USER_NOT_FOUND.getMessage());
+    AssertUtil.assertNotTrue(Boolean.FALSE.equals(userEntity.getIsDelete()),
+        ResultEnum.USER_STOP_STATUS.getMessage());
+    System.out.println(userEntity.getPassword());
+    System.out.println(password);
+    AssertUtil.assertNotTrue(Objects.equals(userEntity.getPassword(), password),
+        ResultEnum.USER_PASSWORD_FAIL.getMessage());
+  }
+
+  @Override
+  public String updateToken(Long selectProject) {
+    User userEntity = userRepositoryService.getUserData(BaseContext.getUserId());
+
+    userEntity.setSelectProject(selectProject);
+    userRepositoryService.updateById(userEntity);
+
+    return JWTUtil.crateToken(userEntity);
+  }
+
+  @Override
   public String login(String account, String password) {
 
     AssertUtil.assertNotTrue(StringUtils.isNotEmpty(account) && StringUtils.isNotEmpty(password),
         ResultEnum.BAD_REQUEST.getMessage());
     User userEntity = userRepositoryService.getUser(account);
-
-    AssertUtil.assertNotNull(userEntity, ResultEnum.USER_NOT_FOUND.getMessage());
-    AssertUtil.assertNotTrue(Boolean.FALSE.equals(userEntity.getIsDelete()),
-        ResultEnum.USER_STOP_STATUS.getMessage());
-    AssertUtil.assertNotTrue(userEntity.getPassword().equals(password),
-        ResultEnum.USER_PASSWORD_FAIL.getMessage());
+    loginCheck(userEntity, password);
 
     userEntity.setSelectProject(Optional.ofNullable(userEntity.getSelectProject())
-        .orElseGet(()->projectUserAssociationService.getOne(userEntity.getId()).getProjectId()));
+        .orElseGet(() -> projectUserAssociationService.getOne(userEntity.getId()).getProjectId()));
+
+    userRepositoryService.updateById(userEntity);
 
     return JWTUtil.crateToken(userEntity);
   }
@@ -101,17 +119,6 @@ public class UserServiceImp implements UserService {
   @Override
   public User getById(Long id) {
     return userRepositoryService.getById(id);
-  }
-
-  @Override
-  public boolean updateSelectProjectId(String selectProjectId) {
-    Long userId = BaseContext.getUserId();
-    User user = userRepositoryService.getUserData(userId);
-
-    AssertUtil.assertTrue(user == null, ResultEnum.USER_NOT_FOUND.getMessage());
-    assert user != null;
-    user.setSelectProject(Long.getLong(selectProjectId));
-    return userRepositoryService.updateSelectProjectId(user);
   }
 
   @Override

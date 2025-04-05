@@ -14,5 +14,6 @@ public class UserReq {
 
   String account;
   String password;
+  Long projectId;
 
 }

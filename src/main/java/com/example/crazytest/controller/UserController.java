@@ -65,6 +65,12 @@ public class UserController {
     return Result.success(userService.login(userReq.getAccount(), userReq.getPassword()));
   }
 
+  @PostMapping("/update/token")
+  @Operation(summary = "更新token")
+  public Result<String> updateToken(@RequestBody UserReq userReq) {
+    return Result.success(userService.updateToken(userReq.getProjectId()));
+  }
+
   @GetMapping("/currentUser")
   @Operation(summary = "获取当前用户信息")
   public Result<UserResultEntity> currentUser(@RequestParam String account) {
@@ -83,20 +89,13 @@ public class UserController {
     return Result.success(userService.resetPwd(account));
   }
 
-  @GetMapping("/update/projectId")
-  @Operation(summary = "更新用户项目id")
-  public Result<Boolean> updateSelectProjectId(
-      @RequestParam(value = "selectProject", required = false) String selectProjectId) {
-    return Result.success(userService.updateSelectProjectId(selectProjectId));
-  }
-
   @PostMapping("/del")
   @Operation(summary = "删除用户")
   public Result<Boolean> delete(@RequestBody User userEntity) {
     return Result.success(userService.delete(userEntity.getId()));
   }
 
-  @GetMapping ("/list/all")
+  @GetMapping("/list/all")
   @Operation(summary = "当前企业所有用户")
   public Result<List<UserResultEntity>> listAll() {
     return Result.success(userService.listAll());

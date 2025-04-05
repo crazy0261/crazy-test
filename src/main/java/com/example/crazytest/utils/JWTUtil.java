@@ -31,7 +31,7 @@ public class JWTUtil {
     map.put("typ", "JWT");
 
     return
-        JWT.create().withHeader(map).withClaim("id", user.getId())
+        JWT.create().withHeader(map).withClaim("userId", user.getId())
             .withClaim("account", user.getAccount())
             .withClaim("name", user.getName())
             .withClaim("select_project", user.getSelectProject())
@@ -63,7 +63,7 @@ public class JWTUtil {
       Map<String, Claim> claimMap = getDecodeToken(token).getClaims();
 
       User user = new User();
-      user.setId(claimMap.get("id").asLong());
+      user.setId(claimMap.get("userId").asLong());
       user.setAccount(claimMap.get("account").asString());
       user.setName(claimMap.get("name").asString());
       user.setSelectProject(claimMap.get("select_project").asLong());

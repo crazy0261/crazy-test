@@ -19,8 +19,6 @@ public interface UserRepositoryService extends IService<User> {
 
   User getUserData(Long id);
 
-  boolean updateSelectProjectId(User userEntity);
-
   List<User> getNameList(String name);
 
   List<User> listAccount(String account);

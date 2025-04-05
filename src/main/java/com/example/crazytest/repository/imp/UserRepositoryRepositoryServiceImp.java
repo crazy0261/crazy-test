@@ -66,19 +66,6 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
   }
 
   @Override
-  public boolean updateSelectProjectId(User userEntity) {
-    this.lambdaUpdate()
-        .set(User::getSelectProject, null)
-        .eq(User::getAccount, userEntity.getAccount())
-        .update();
-
-    return this.lambdaUpdate()
-        .set(User::getSelectProject, userEntity.getSelectProject())
-        .eq(User::getId, userEntity.getId())
-        .update();
-  }
-
-  @Override
   public List<User> getNameList(String name) {
 
     return this.lambdaQuery()
