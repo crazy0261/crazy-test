@@ -2,6 +2,7 @@ package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
+import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.vo.ProcessCaseVO;
@@ -19,6 +20,10 @@ public interface ProcessCaseService {
   Boolean batchUpdateUpCase(ProcessCaseBatchReq processCaseBatchReq);
 
   Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq);
+
+  Boolean copy(ProcessCase processCase);
+
+  Boolean delete(ProcessCase processCase);
 
 
 }

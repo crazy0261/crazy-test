@@ -3,6 +3,7 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
+import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.services.ProcessCaseService;
@@ -91,6 +92,18 @@ public class ProcessCaseController {
   @Operation(summary = "批量下架用例")
   public Result<Boolean> batchUpdateDownCase(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
     return Result.success(processCaseService.batchUpdateDownCase(processCaseBatchReq));
+  }
+
+  @PostMapping("/copy")
+  @Operation(summary = "复制用例")
+  public Result<Boolean> copy(@RequestBody ProcessCase processCase) {
+    return Result.success(processCaseService.copy(processCase));
+  }
+
+  @PostMapping("/delete")
+  @Operation(summary = "删除用例")
+  public Result<Boolean> delete(@RequestBody ProcessCase processCase) {
+    return Result.success(processCaseService.delete(processCase));
   }
 
 

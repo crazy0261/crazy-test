@@ -72,7 +72,6 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
         processCaseVO
             .setRecentExecTime(Optional.ofNullable(processCaseResult.getCreateTime()).orElse(null));
       });
-
       return processCaseVO;
     });
   }
@@ -110,5 +109,18 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   public Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq) {
     return processCaseRepositoryService
         .batchUpdateDownCase(processCaseBatchReq, BaseContext.getSelectProjectId());
+  }
+
+  @Override
+  public Boolean copy(ProcessCase processCase) {
+    ProcessCase processCaseData = processCaseRepositoryService.getById(processCase.getId());
+    processCaseData.setName(processCaseData.getName() + "-copy");
+    processCaseData.setId(null);
+    return processCaseRepositoryService.save(processCaseData);
+  }
+
+  @Override
+  public Boolean delete(ProcessCase processCase) {
+    return processCaseRepositoryService.removeById(processCase.getId());
   }
 }
