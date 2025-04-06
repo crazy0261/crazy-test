@@ -1,7 +1,8 @@
 package com.example.crazytest.imp;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseResult;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +56,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
             .list(BaseContext.getSelectProjectId(), result).stream()
             .map(ProcessCaseResult::getCaseId).collect(Collectors.toList()))
         .orElse(null);
+
+    if (StringUtils.isNotBlank(processCaseDTO.getRecentExecResult()) && CollUtil.isEmpty(ids)) {
+      return new Page<>();
+    }
 
     IPage<ProcessCase> listPage = processCaseRepositoryService
         .listPage(processCaseDTO, BaseContext.getSelectProjectId(), ids);
