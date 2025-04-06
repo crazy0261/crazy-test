@@ -99,4 +99,16 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     return processCaseRepositoryService
         .batchUpdateMove(processCaseBatchReq, BaseContext.getSelectProjectId());
   }
+
+  @Override
+  public Boolean batchUpdateUpCase(ProcessCaseBatchReq processCaseBatchReq) {
+    return processCaseRepositoryService
+        .batchUpdateUpCase(processCaseBatchReq, BaseContext.getSelectProjectId());
+  }
+
+  @Override
+  public Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq) {
+    return processCaseRepositoryService
+        .batchUpdateDownCase(processCaseBatchReq, BaseContext.getSelectProjectId());
+  }
 }

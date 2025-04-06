@@ -16,5 +16,9 @@ public interface ProcessCaseService {
 
   Boolean batchUpdateMove(ProcessCaseBatchReq processCaseBatchReq);
 
+  Boolean batchUpdateUpCase(ProcessCaseBatchReq processCaseBatchReq);
+
+  Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq);
+
 
 }

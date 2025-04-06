@@ -81,11 +81,17 @@ public class ProcessCaseController {
     return Result.success(processCaseService.batchUpdateMove(processCaseBatchReq));
   }
 
-//  @PostMapping("/batch/update/owner")
-//  @Operation(summary = "批量上/下架")
-//  public Result<Boolean> batchUpdateOwner(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
-//    return Result.success(processCaseService.batchUpdateOwner(processCaseBatchReq));
-//  }
+  @PostMapping("/batch/update/up")
+  @Operation(summary = "批量上架用例")
+  public Result<Boolean> batchUpdateUpCase(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
+    return Result.success(processCaseService.batchUpdateUpCase(processCaseBatchReq));
+  }
+
+  @PostMapping("/batch/update/down")
+  @Operation(summary = "批量下架用例")
+  public Result<Boolean> batchUpdateDownCase(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
+    return Result.success(processCaseService.batchUpdateDownCase(processCaseBatchReq));
+  }
 
 
 }

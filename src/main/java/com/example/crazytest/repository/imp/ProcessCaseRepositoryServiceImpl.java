@@ -63,4 +63,26 @@ public class ProcessCaseRepositoryServiceImpl extends
         .set(ProcessCase::getTreeKey, processCaseBatchReq.getTreeKey())
         .update();
   }
+
+  @Override
+  public Boolean batchUpdateUpCase(ProcessCaseBatchReq processCaseBatchReq, Long projectId) {
+    return this.lambdaUpdate()
+        .eq(ProcessCase::getProjectId, projectId)
+        .in(ProcessCase::getId, processCaseBatchReq.getCaseIds())
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .set(ProcessCase::getStatus, Boolean.FALSE)
+        .set(ProcessCase::getRemark, processCaseBatchReq.getRemark())
+        .update();
+  }
+
+  @Override
+  public Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq, Long projectId) {
+    return this.lambdaUpdate()
+        .eq(ProcessCase::getProjectId, projectId)
+        .in(ProcessCase::getId, processCaseBatchReq.getCaseIds())
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .set(ProcessCase::getStatus, Boolean.TRUE)
+        .set(ProcessCase::getRemark, processCaseBatchReq.getRemark())
+        .update();
+  }
 }

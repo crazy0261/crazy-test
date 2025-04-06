@@ -24,4 +24,8 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   Boolean batchUpdateMove(ProcessCaseBatchReq processCaseBatchReq, Long projectId);
 
+  Boolean batchUpdateUpCase(ProcessCaseBatchReq processCaseBatchReq, Long projectId);
+
+  Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq, Long projectId);
+
 }
