@@ -1,6 +1,7 @@
 package com.example.crazytest.imp;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.dto.ProcessCaseDTO;
@@ -17,6 +18,7 @@ import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseVO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -86,12 +88,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   public Boolean save(ProcessCaseReq processCaseReq) {
     ProcessCase processCase = new ProcessCase();
     BeanUtils.copyProperties(processCaseReq, processCase);
-    processCase.setProjectId(
-        Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
-    processCase
-        .setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
-    processCase.setNodes(Optional.ofNullable(processCase.getNodes()).orElse("[]"));
-    processCase.setEdges(Optional.ofNullable(processCase.getEdges()).orElse("[]"));
+    processCase.setProjectId(Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
+    processCase.setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
+    processCase.setNodes(Optional.ofNullable(processCaseReq.getNodes()).map(JSONArray::toJSONString).orElse("[]"));
+    processCase.setEdges(Optional.ofNullable(processCaseReq.getEdges()).map(JSONArray::toJSONString).orElse("[]"));
     return processCaseRepositoryService.saveOrUpdate(processCase);
   }
 

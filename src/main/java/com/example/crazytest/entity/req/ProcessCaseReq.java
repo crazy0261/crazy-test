@@ -1,5 +1,7 @@
 package com.example.crazytest.entity.req;
 
+import com.alibaba.fastjson.JSONObject;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -17,5 +19,8 @@ public class ProcessCaseReq {
   private String name;
   private Integer priority;
   private Integer isSubProcess;
+  List<JSONObject> nodes;
+  List<JSONObject> edges;
+
 
 }
