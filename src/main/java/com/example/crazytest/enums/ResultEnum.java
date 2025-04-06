@@ -16,6 +16,7 @@ public enum ResultEnum {
   USER_PASSWORD_FAIL(400, "密码错误"),
   JSON_PATH_FORMAT_FAIL(400, "JSON Path格式错误，请检查！"),
   USER_PROJECT_NOT_FAIL(400, "项目不存在"),
+  TREE_NODE_NOT_KEY_FAIL(400, "请先点击节点"),
   USER_EXIST_FAIL(400, "用户已存在");
 
   private final int code;

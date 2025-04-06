@@ -65,16 +65,16 @@ public class EnvConfig implements Serializable {
   private String createByName;
 
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  @ApiModelProperty(value = "更新时间")
-  private LocalDateTime updateTime;
-
-  @TableField(fill = FieldFill.INSERT_UPDATE)
   @ApiModelProperty(value = "修改者id")
   private Long updateById;
 
   @TableField(fill = FieldFill.INSERT_UPDATE)
   @ApiModelProperty(value = "更新者")
   private String updateByName;
+
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  @ApiModelProperty(value = "更新时间")
+  private LocalDateTime updateTime;
 
   @ApiModelProperty(value = "是否删除")
   @TableLogic

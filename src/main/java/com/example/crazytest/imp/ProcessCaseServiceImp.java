@@ -1,0 +1,68 @@
+package com.example.crazytest.imp;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.dto.ProcessCaseDTO;
+import com.example.crazytest.entity.ProcessCase;
+import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.enums.ResultEnum;
+import com.example.crazytest.repository.ProcessCaseRepositoryService;
+import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
+import com.example.crazytest.repository.UserRepositoryService;
+import com.example.crazytest.services.ProcessCaseService;
+import com.example.crazytest.utils.AssertUtil;
+import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.vo.ProcessCaseVO;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author
+ * @name Menghui
+ * @date 2025/4/6 13:40
+ * @DESRIPTION
+ */
+
+@Service
+public class ProcessCaseServiceImp implements ProcessCaseService {
+
+  @Autowired
+  ProcessCaseRepositoryService processCaseRepositoryService;
+
+  @Autowired
+  ProcessCaseResultRepositoryService processCaseResultRepositoryService;
+
+  @Autowired
+  UserRepositoryService userRepository;
+
+  @Override
+  public IPage<ProcessCaseVO> listPage(ProcessCaseDTO processCaseDTO) {
+    AssertUtil.assertTrue(Objects.isNull(processCaseDTO.getTreeKey()),
+        ResultEnum.TREE_NODE_NOT_KEY_FAIL.getMessage());
+
+    List<Long> ids = Optional.ofNullable(processCaseDTO.getRecentExecResult())
+        .map(result -> processCaseResultRepositoryService
+            .list(BaseContext.getSelectProjectId(), result).stream()
+            .map(ProcessCaseResult::getCaseId).collect(Collectors.toList()))
+        .orElse(null);
+
+    IPage<ProcessCase> listPage = processCaseRepositoryService
+        .listPage(processCaseDTO, BaseContext.getSelectProjectId(), ids);
+
+    return listPage.convert(processCase -> {
+      ProcessCaseResult processCaseResult = processCaseResultRepositoryService
+          .lastResult(BaseContext.getSelectProjectId(), processCase.getId());
+
+      ProcessCaseVO processCaseVO = new ProcessCaseVO();
+      BeanUtils.copyProperties(processCase, processCaseVO);
+      processCaseVO.setOwnerName(userRepository.getUserData(processCase.getOwnerId()).getName());
+      processCaseVO.setRecentExecResult(processCaseResult.getStatus());
+      processCaseVO.setRecentExecTime(processCaseResult.getCreateTime());
+      return processCaseVO;
+    });
+  }
+}
