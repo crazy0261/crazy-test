@@ -25,5 +25,6 @@ public interface ProcessCaseService {
 
   Boolean delete(ProcessCase processCase);
 
+  ProcessCase detail(Long id);
 
 }

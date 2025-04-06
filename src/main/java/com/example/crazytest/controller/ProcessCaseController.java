@@ -106,5 +106,11 @@ public class ProcessCaseController {
     return Result.success(processCaseService.delete(processCase));
   }
 
+  @GetMapping("/detail")
+  @Operation(summary = "用例详情")
+  public Result<ProcessCase> detail(@RequestParam(value = "id",required = false) Long id) {
+    return Result.success(processCaseService.detail(id));
+  }
+
 
 }

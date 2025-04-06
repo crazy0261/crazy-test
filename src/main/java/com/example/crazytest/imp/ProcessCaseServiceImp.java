@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +90,8 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
         Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     processCase
         .setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
+    processCase.setNodes(Optional.ofNullable(processCase.getNodes()).orElse("[]"));
+    processCase.setEdges(Optional.ofNullable(processCase.getEdges()).orElse("[]"));
     return processCaseRepositoryService.saveOrUpdate(processCase);
   }
 
@@ -129,5 +130,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   @Override
   public Boolean delete(ProcessCase processCase) {
     return processCaseRepositoryService.removeById(processCase.getId());
+  }
+
+  @Override
+  public ProcessCase detail(Long id) {
+    return processCaseRepositoryService.getById(id);
   }
 }
