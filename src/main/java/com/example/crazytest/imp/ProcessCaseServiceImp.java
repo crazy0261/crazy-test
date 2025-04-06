@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.enums.PriorityEnum;
 import com.example.crazytest.enums.ResultEnum;
@@ -66,8 +67,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
       processCaseVO.setPriorityDesc(PriorityEnum.getDescByCode(processCase.getPriority()));
       processCaseVO.setOwnerName(userRepository.getUserData(processCase.getOwnerId()).getName());
       Optional.ofNullable(processCaseResult).ifPresent(result -> {
-        processCaseVO.setRecentExecResult(Optional.ofNullable(processCaseResult.getStatus()).orElse(""));
-        processCaseVO.setRecentExecTime(Optional.ofNullable(processCaseResult.getCreateTime()).orElse(null));
+        processCaseVO
+            .setRecentExecResult(Optional.ofNullable(processCaseResult.getStatus()).orElse(""));
+        processCaseVO
+            .setRecentExecTime(Optional.ofNullable(processCaseResult.getCreateTime()).orElse(null));
       });
 
       return processCaseVO;
@@ -83,5 +86,17 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     processCase
         .setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
     return processCaseRepositoryService.saveOrUpdate(processCase);
+  }
+
+  @Override
+  public Boolean batchUpdateOwner(ProcessCaseBatchReq processCaseBatchReq) {
+    return processCaseRepositoryService
+        .batchUpdateOwner(processCaseBatchReq, BaseContext.getSelectProjectId());
+  }
+
+  @Override
+  public Boolean batchUpdateMove(ProcessCaseBatchReq processCaseBatchReq) {
+    return processCaseRepositoryService
+        .batchUpdateMove(processCaseBatchReq, BaseContext.getSelectProjectId());
   }
 }

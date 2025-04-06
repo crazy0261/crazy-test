@@ -3,6 +3,7 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
+import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.utils.Result;
@@ -67,6 +68,24 @@ public class ProcessCaseController {
   public Result<Boolean> save(@RequestBody ProcessCaseReq processCaseReq) {
     return Result.success(processCaseService.save(processCaseReq));
   }
+
+  @PostMapping("/batch/update/owner")
+  @Operation(summary = "批量修改负责人")
+  public Result<Boolean> batchUpdateOwner(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
+    return Result.success(processCaseService.batchUpdateOwner(processCaseBatchReq));
+  }
+
+  @PostMapping("/batch/update/move")
+  @Operation(summary = "批量移动场景用例")
+  public Result<Boolean> batchUpdateMove(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
+    return Result.success(processCaseService.batchUpdateOwner(processCaseBatchReq));
+  }
+
+//  @PostMapping("/batch/update/owner")
+//  @Operation(summary = "批量上/下架")
+//  public Result<Boolean> batchUpdateOwner(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
+//    return Result.success(processCaseService.batchUpdateOwner(processCaseBatchReq));
+//  }
 
 
 }

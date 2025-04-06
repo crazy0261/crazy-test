@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
+import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.mapper.ProcessCaseMapper;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,14 +29,37 @@ public class ProcessCaseRepositoryServiceImpl extends
   public IPage<ProcessCase> listPage(ProcessCaseDTO processCaseDTO, Long projectId,
       List<Long> ids) {
     return this.lambdaQuery()
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getTreeKey()), ProcessCase::getTreeKey, processCaseDTO.getTreeKey())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getTreeKey()), ProcessCase::getTreeKey,
+            processCaseDTO.getTreeKey())
         .eq(ProcessCase::getProjectId, projectId)
         .in(ObjectUtils.isNotNull(ids), ProcessCase::getId, ids)
-        .like(ObjectUtils.isNotNull(processCaseDTO.getName()), ProcessCase::getName, processCaseDTO.getName())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getOwnerId()), ProcessCase::getOwnerId, processCaseDTO.getOwnerId())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getIsSubProcess()), ProcessCase::getIsSubProcess, processCaseDTO.getIsSubProcess())
+        .like(ObjectUtils.isNotNull(processCaseDTO.getName()), ProcessCase::getName,
+            processCaseDTO.getName())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getOwnerId()), ProcessCase::getOwnerId,
+            processCaseDTO.getOwnerId())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getIsSubProcess()), ProcessCase::getIsSubProcess,
+            processCaseDTO.getIsSubProcess())
         .orderByDesc(ProcessCase::getUpdateTime)
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .page(new Page<>(processCaseDTO.getCurrent(), processCaseDTO.getPageSize()));
+  }
+
+  @Override
+  public Boolean batchUpdateOwner(ProcessCaseBatchReq processCaseBatchReq, Long projectId) {
+    return this.lambdaUpdate()
+        .eq(ProcessCase::getProjectId, projectId)
+        .in(ProcessCase::getId, processCaseBatchReq.getCaseIds())
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .set(ProcessCase::getOwnerId, processCaseBatchReq.getOwnerId())
+        .update();
+  }
+
+  @Override
+  public Boolean batchUpdateMove(ProcessCaseBatchReq processCaseBatchReq, Long projectId) {
+    return this.lambdaUpdate()
+        .eq(ProcessCase::getProjectId, projectId)
+        .in(ProcessCase::getId, processCaseBatchReq.getCaseIds())
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .update();
   }
 }
