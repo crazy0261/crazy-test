@@ -28,18 +28,12 @@ public class ProcessCaseRepositoryServiceImpl extends
   public IPage<ProcessCase> listPage(ProcessCaseDTO processCaseDTO, Long projectId,
       List<Long> ids) {
     return this.lambdaQuery()
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getTreeKey()), ProcessCase::getTreeKey,
-            processCaseDTO.getTreeKey())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getTreeKey()), ProcessCase::getTreeKey, processCaseDTO.getTreeKey())
         .eq(ProcessCase::getProjectId, projectId)
         .in(ObjectUtils.isNotNull(ids), ProcessCase::getId, ids)
-        .like(ObjectUtils.isNotNull(processCaseDTO.getName()), ProcessCase::getName,
-            processCaseDTO.getName())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getOwnerId()), ProcessCase::getOwnerId,
-            processCaseDTO.getOwnerId())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getRecentExecResult()), ProcessCase::getStatus,
-            processCaseDTO.getStatus())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getIsSubProcess()), ProcessCase::getIsSubProcess,
-            processCaseDTO.getIsSubProcess())
+        .like(ObjectUtils.isNotNull(processCaseDTO.getName()), ProcessCase::getName, processCaseDTO.getName())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getOwnerId()), ProcessCase::getOwnerId, processCaseDTO.getOwnerId())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getIsSubProcess()), ProcessCase::getIsSubProcess, processCaseDTO.getIsSubProcess())
         .orderByDesc(ProcessCase::getUpdateTime)
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .page(new Page<>(processCaseDTO.getCurrent(), processCaseDTO.getPageSize()));

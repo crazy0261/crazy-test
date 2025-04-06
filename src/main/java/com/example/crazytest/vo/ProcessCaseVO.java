@@ -15,6 +15,9 @@ import lombok.Data;
 @Data
 public class ProcessCaseVO extends ProcessCase {
 
+  @ApiModelProperty(value = "优先级描述")
+  private String priorityDesc;
+
   @ApiModelProperty(value = "负责人姓名")
   private String ownerName;
 

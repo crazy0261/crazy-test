@@ -3,6 +3,7 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
+import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.ProcessCaseVO;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,8 +59,14 @@ public class ProcessCaseController {
         .pageSize(pageSize)
         .build();
     IPage<ProcessCaseVO> listPage = processCaseService.listPage(processCaseDTO);
-
     return Result.success(listPage.getRecords(), listPage.getTotal());
   }
+
+  @PostMapping("/save")
+  @Operation(summary = "保存场景用例")
+  public Result<Boolean> save(@RequestBody ProcessCaseReq processCaseReq) {
+    return Result.success(processCaseService.save(processCaseReq));
+  }
+
 
 }

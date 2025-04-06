@@ -1,9 +1,12 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.req.ProcessCaseReq;
+import com.example.crazytest.enums.PriorityEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
@@ -59,10 +62,26 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
       ProcessCaseVO processCaseVO = new ProcessCaseVO();
       BeanUtils.copyProperties(processCase, processCaseVO);
+
+      processCaseVO.setPriorityDesc(PriorityEnum.getDescByCode(processCase.getPriority()));
       processCaseVO.setOwnerName(userRepository.getUserData(processCase.getOwnerId()).getName());
-      processCaseVO.setRecentExecResult(processCaseResult.getStatus());
-      processCaseVO.setRecentExecTime(processCaseResult.getCreateTime());
+      Optional.ofNullable(processCaseResult).ifPresent(result -> {
+        processCaseVO.setRecentExecResult(Optional.ofNullable(processCaseResult.getStatus()).orElse(""));
+        processCaseVO.setRecentExecTime(Optional.ofNullable(processCaseResult.getCreateTime()).orElse(null));
+      });
+
       return processCaseVO;
     });
+  }
+
+  @Override
+  public Boolean save(ProcessCaseReq processCaseReq) {
+    ProcessCase processCase = new ProcessCase();
+    BeanUtils.copyProperties(processCaseReq, processCase);
+    processCase.setProjectId(
+        Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
+    processCase
+        .setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
+    return processCaseRepositoryService.saveOrUpdate(processCase);
   }
 }
