@@ -78,7 +78,7 @@ public class ProcessCaseController {
   @PostMapping("/batch/update/move")
   @Operation(summary = "批量移动场景用例")
   public Result<Boolean> batchUpdateMove(@RequestBody ProcessCaseBatchReq processCaseBatchReq) {
-    return Result.success(processCaseService.batchUpdateOwner(processCaseBatchReq));
+    return Result.success(processCaseService.batchUpdateMove(processCaseBatchReq));
   }
 
 //  @PostMapping("/batch/update/owner")

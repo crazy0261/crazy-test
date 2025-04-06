@@ -60,6 +60,7 @@ public class ProcessCaseRepositoryServiceImpl extends
         .eq(ProcessCase::getProjectId, projectId)
         .in(ProcessCase::getId, processCaseBatchReq.getCaseIds())
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .set(ProcessCase::getTreeKey, processCaseBatchReq.getTreeKey())
         .update();
   }
 }

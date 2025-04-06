@@ -15,5 +15,6 @@ public class ProcessCaseBatchReq {
 
   List<Long> caseIds;
   private Long ownerId;
+  private String treeKey;
 
 }
