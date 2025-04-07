@@ -25,7 +25,8 @@ public class EnvConfigRepositoryServiceImpl extends
     EnvConfigRepositoryService {
 
   @Override
-  public IPage<EnvConfig> list(Long projectId, String appid, String name, String sort, List<String> domainId, int current, int pageSize) {
+  public IPage<EnvConfig> list(Long projectId, String appid, String name, String sort,
+      List<String> domainId, int current, int pageSize) {
 
     return this.lambdaQuery()
         .like(ObjectUtils.isNotNull(name), EnvConfig::getEnvName, name)
@@ -34,8 +35,8 @@ public class EnvConfigRepositoryServiceImpl extends
         .in(EnvConfig::getDomainId, domainId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .orderByAsc(EnvConfig::getAppId)
-        .orderByAsc(ObjectUtils.isNull(sort) || "ascend".equals(sort), EnvConfig::getEnvSort )
-        .orderByDesc(ObjectUtils.isNotNull(sort) && "descend".equals(sort), EnvConfig::getEnvSort )
+        .orderByAsc(ObjectUtils.isNull(sort) || "ascend".equals(sort), EnvConfig::getEnvSort)
+        .orderByDesc(ObjectUtils.isNotNull(sort) && "descend".equals(sort), EnvConfig::getEnvSort)
         .page(new Page<>(current, pageSize));
   }
 
@@ -45,8 +46,13 @@ public class EnvConfigRepositoryServiceImpl extends
   }
 
   @Override
-  public EnvConfig getByAppId(Long appId) {
-    return this.lambdaQuery().eq(EnvConfig::getAppId, appId).one();
+  public EnvConfig getByAppId(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .last("limit 1")
+        .one();
   }
 
   @Override
@@ -87,5 +93,16 @@ public class EnvConfigRepositoryServiceImpl extends
         .last("limit 1")
         .one()
         .getEnvSort();
+  }
+
+  @Override
+  public EnvConfig getEnvConfig(Long projectId, Long appId, Long envId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getEnvId, envId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .last("limit 1")
+        .one();
   }
 }

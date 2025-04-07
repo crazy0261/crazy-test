@@ -68,7 +68,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
 
   @Override
   public EnvConfig getByAppId(Long appId) {
-    return envConfigRepositoryService.getByAppId(appId);
+    return envConfigRepositoryService.getByAppId(BaseContext.getSelectProjectId(),appId);
   }
 
   @Override

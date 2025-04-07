@@ -23,5 +23,4 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
   Long countCase();
 
   List<ApiCase> checkApiCaseEnable(List<Long> ids);
-
 }

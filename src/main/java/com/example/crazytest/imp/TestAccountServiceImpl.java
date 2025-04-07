@@ -2,10 +2,12 @@ package com.example.crazytest.imp;
 
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ResultEnum;
+import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
@@ -44,6 +46,9 @@ public class TestAccountServiceImpl implements TestAccountService {
   EnvConfigRepositoryService envConfigRepositoryService;
 
   @Autowired
+  ApiCaseRepositoryService apiCodeRepositoryService;;
+
+  @Autowired
   ApiCaseService apiCaseService;
 
   @Override
@@ -57,10 +62,12 @@ public class TestAccountServiceImpl implements TestAccountService {
     return testAccountPage.convert(testAccount -> {
       TestAccountVO testAccountVo = new TestAccountVO();
       BeanUtils.copyProperties(testAccount, testAccountVo);
-      EnvConfig envConfig = envConfigRepositoryService.getEnvName(testAccount.getEnvId());
+
+      ApiCase apiCase =  apiCodeRepositoryService.getById(testAccount.getApiCaseId());
+      EnvConfig envConfig = envConfigRepositoryService.getEnvConfig(BaseContext.getSelectProjectId(),apiCase.getAppId(),testAccount.getEnvId());
       ApiCaseVO caseVO = apiCaseService.getById(testAccount.getApiCaseId());
       testAccountVo.setApiCaseName(caseVO.getName());
-      testAccountVo.setEnvName(envConfig.getEnvName());
+      testAccountVo.setEnvName(Optional.ofNullable(envConfig).map(EnvConfig::getEnvName).orElse(""));
       return testAccountVo;
     });
   }

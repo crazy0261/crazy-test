@@ -15,21 +15,23 @@ import java.util.List;
  */
 public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
-  IPage<EnvConfig> list(Long projectId, String appid, String name,String sort, List<String> domainId,
+  IPage<EnvConfig> list(Long projectId, String appid, String name, String sort,
+      List<String> domainId,
       int current, int pageSize);
 
   EnvConfig getEnvName(Long id);
 
-  EnvConfig getByAppId(Long appId);
+  EnvConfig getByAppId(Long projectId, Long appId);
 
   List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId);
 
   List<EnvConfig> listAll();
 
-  Integer getLastEnvId(Long projectId,Long appId);
+  Integer getLastEnvId(Long projectId, Long appId);
 
-  Integer getLastSortValue(Long projectId,Long appId);
+  Integer getLastSortValue(Long projectId, Long appId);
 
+  EnvConfig getEnvConfig(Long projectId, Long appId,Long envId);
 
 
 }
