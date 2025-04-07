@@ -88,7 +88,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
     envConfig.setEnvId(Objects.nonNull(envConfigReq.getId()) ? envConfigOne.getEnvId()
         : envConfigRepositoryService
             .getLastEnvId(BaseContext.getSelectProjectId(), envConfigReq.getAppId()) + 1);
-    envConfig.setEnvSort(Objects.nonNull(envConfigReq.getId()) ? envConfigOne.getEnvSort()
+    envConfig.setEnvSort(Objects.nonNull(envConfigReq.getId()) ? envConfigReq.getEnvSort()
         : envConfigRepositoryService
             .getLastSortValue(BaseContext.getSelectProjectId(), envConfigReq.getAppId()) + 1);
     envConfig.setProjectId(BaseContext.getSelectProjectId());
