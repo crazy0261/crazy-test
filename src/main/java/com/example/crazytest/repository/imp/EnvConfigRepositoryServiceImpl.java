@@ -25,16 +25,17 @@ public class EnvConfigRepositoryServiceImpl extends
     EnvConfigRepositoryService {
 
   @Override
-  public IPage<EnvConfig> list(Long projectId, String appid, String name, List<String> domainId,
-      int current, int pageSize) {
+  public IPage<EnvConfig> list(Long projectId, String appid, String name, String sort, List<String> domainId, int current, int pageSize) {
 
     return this.lambdaQuery()
-        .like(ObjectUtils.isNotNull(name), EnvConfig::getName, name)
+        .like(ObjectUtils.isNotNull(name), EnvConfig::getEnvName, name)
         .eq(EnvConfig::getProjectId, projectId)
         .eq(ObjectUtils.isNotNull(appid), EnvConfig::getAppId, appid)
         .in(EnvConfig::getDomainId, domainId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
-        .orderByDesc(EnvConfig::getUpdateTime)
+        .orderByAsc(EnvConfig::getAppId)
+        .orderByAsc(ObjectUtils.isNull(sort) || "ascend".equals(sort), EnvConfig::getEnvSort )
+        .orderByDesc(ObjectUtils.isNotNull(sort) && "descend".equals(sort), EnvConfig::getEnvSort )
         .page(new Page<>(current, pageSize));
   }
 
@@ -62,5 +63,29 @@ public class EnvConfigRepositoryServiceImpl extends
         .eq(EnvConfig::getProjectId, BaseContext.getSelectProjectId())
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .list();
+  }
+
+  @Override
+  public Integer getLastEnvId(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .orderByDesc(EnvConfig::getEnvId)
+        .last("limit 1")
+        .one()
+        .getEnvId();
+  }
+
+  @Override
+  public Integer getLastSortValue(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .orderByDesc(EnvConfig::getEnvSort)
+        .last("limit 1")
+        .one()
+        .getEnvSort();
   }
 }

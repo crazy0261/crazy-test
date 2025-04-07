@@ -17,7 +17,8 @@ public class EnvConfigReq {
   Long id;
   Long appId;
   Long domainId;
-  String name;
+  String envName;
+  Integer envSort;
   List<ParamsListVO> requestHeaders;
   List<ParamsListVO> envVariables;
 

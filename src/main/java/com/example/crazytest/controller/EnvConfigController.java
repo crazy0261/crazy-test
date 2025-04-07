@@ -39,12 +39,13 @@ public class EnvConfigController {
   @Operation(summary = "查询所有环境信息")
   public Result<List<EnvConfigVO>> list(
       @RequestParam(value = "appid", required = false) String appid,
-      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "envName", required = false) String envName,
       @RequestParam(value = "domainName", required = false) String domainName,
+      @RequestParam(value = "sort", required = false) String sort,
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
     IPage<EnvConfigVO> pageEnvInfoPage = envConfigService
-        .list(appid, name, domainName, current, pageSize);
+        .list(appid, envName, sort,domainName, current, pageSize);
     return Result.success(pageEnvInfoPage.getRecords(), pageEnvInfoPage.getTotal());
   }
 

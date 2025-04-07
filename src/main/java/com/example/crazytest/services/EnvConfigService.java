@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface EnvConfigService {
 
-  IPage<EnvConfigVO> list(String appid, String name, String domainName, int current, int pageSize);
+  IPage<EnvConfigVO> list(String appid, String name,String sort, String domainName, int current, int pageSize);
 
   EnvConfig getByAppId(Long appId);
 
@@ -19,5 +19,4 @@ public interface EnvConfigService {
   List<EnvConfig> listAll();
 
   Boolean delete(Long id);
-
 }

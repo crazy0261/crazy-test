@@ -40,8 +40,14 @@ public class EnvConfig implements Serializable {
   @ApiModelProperty(value = "应用id")
   private Long appId;
 
+  @ApiModelProperty(value = "环境id")
+  private Integer envId;
+
   @ApiModelProperty(value = "环境名")
-  private String name;
+  private String envName;
+
+  @ApiModelProperty(value = "环境顺序")
+  private Integer envSort;
 
   @ApiModelProperty(value = "域名id")
   private Long domainId;

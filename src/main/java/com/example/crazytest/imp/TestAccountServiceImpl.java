@@ -60,7 +60,7 @@ public class TestAccountServiceImpl implements TestAccountService {
       EnvConfig envConfig = envConfigRepositoryService.getEnvName(testAccount.getEnvId());
       ApiCaseVO caseVO = apiCaseService.getById(testAccount.getApiCaseId());
       testAccountVo.setApiCaseName(caseVO.getName());
-      testAccountVo.setEnvName(envConfig.getName());
+      testAccountVo.setEnvName(envConfig.getEnvName());
       return testAccountVo;
     });
   }
