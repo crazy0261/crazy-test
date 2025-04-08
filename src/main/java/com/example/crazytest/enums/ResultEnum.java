@@ -18,6 +18,8 @@ public enum ResultEnum {
   USER_PROJECT_NOT_FAIL(400, "项目不存在"),
   TREE_NODE_NOT_KEY_FAIL(400, "请先点击节点"),
   APP_ID_EXIST_FAIL(400, "该应用下已存在该域名的环境配置"),
+  DATA_SOURCE_NOT_EXIST(400, "数据源不存在"),
+  NAME_REPEAT(400, "名称已存在"),
   USER_EXIST_FAIL(400, "用户已存在");
 
   private final int code;
