@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EncryptInfo;
+import com.example.crazytest.entity.req.EncryptInfoReq;
 import com.example.crazytest.repository.EncryptInfoRepositoryService;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.utils.BaseContext;
+import java.util.Optional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,12 @@ public class EncryptInfoServiceImp implements EncryptInfoService {
   }
 
   @Override
-  public Boolean save(EncryptInfo encryptInfo) {
+  public Boolean save(EncryptInfoReq encryptInfoReq) {
+    EncryptInfo encryptInfo = new EncryptInfo();
+    BeanUtils.copyProperties(encryptInfoReq, encryptInfo);
+    encryptInfo.setProjectId(
+        Optional.ofNullable(encryptInfo.getProjectId()).orElse(BaseContext.getSelectProjectId()));
+    encryptInfo.setEncryptJson(Optional.ofNullable(encryptInfo.getEncryptJson()).orElse("{}"));
     return encryptInfoRepository.saveOrUpdate(encryptInfo);
   }
 

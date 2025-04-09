@@ -3,6 +3,7 @@ package com.example.crazytest.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EncryptInfo;
+import com.example.crazytest.entity.req.EncryptInfoReq;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +45,7 @@ public class EncryptInfoController {
 
   @PostMapping("/save")
   @Operation(summary = "保存加密参数")
-  public Result<Boolean> save(EncryptInfo encryptInfo) {
+  public Result<Boolean> save(@RequestBody EncryptInfoReq encryptInfo) {
     return Result.success(encryptInfoService.save(encryptInfo));
   }
 
