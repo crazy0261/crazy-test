@@ -11,6 +11,8 @@ public interface EncryptInfoService {
 
   Boolean save(EncryptInfoReq encryptInfo);
 
+  Boolean del(Long id);
+
   JSONObject getEncryptInfoEnv(Long id, Long envId);
 
 

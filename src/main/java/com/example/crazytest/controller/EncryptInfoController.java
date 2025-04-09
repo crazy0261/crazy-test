@@ -36,7 +36,8 @@ public class EncryptInfoController {
 
   @GetMapping("/list")
   @Operation(summary = "查询加密参数列表")
-  public Result<List<EncryptInfoVO>> list(@RequestParam(value = "name", required = false) String name,
+  public Result<List<EncryptInfoVO>> list(
+      @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "current", defaultValue = "1") Integer current,
       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
     IPage<EncryptInfoVO> encryptInfoPage = encryptInfoService.list(name, current, pageSize);
@@ -48,5 +49,12 @@ public class EncryptInfoController {
   public Result<Boolean> save(@RequestBody EncryptInfoReq encryptInfo) {
     return Result.success(encryptInfoService.save(encryptInfo));
   }
+
+  @PostMapping("/del")
+  @Operation(summary = "删除加密参数")
+  public Result<Boolean> del(@RequestBody EncryptInfoReq encryptInfo) {
+    return Result.success(encryptInfoService.del(encryptInfo.getId()));
+  }
+
 
 }

@@ -58,6 +58,11 @@ public class EncryptInfoServiceImp implements EncryptInfoService {
   }
 
   @Override
+  public Boolean del(Long id) {
+    return encryptInfoRepository.removeById(id);
+  }
+
+  @Override
   public JSONObject getEncryptInfoEnv(Long id, Long envId) {
     EncryptInfo encryptInfo = encryptInfoRepository
         .getEncryptInfoEnv(BaseContext.getSelectProjectId(), id);
