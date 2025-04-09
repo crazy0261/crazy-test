@@ -2,6 +2,11 @@ package com.example.crazytest.imp;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.HMac;
+import cn.hutool.crypto.digest.HmacAlgorithm;
+import cn.hutool.crypto.symmetric.AES;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -30,10 +35,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.services.DomainInfoService;
+import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.EncryptUtil;
 import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
@@ -105,6 +112,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Autowired
   ApiCaseResultRepositoryService apiCaseResultRepositoryService;
+
+  @Autowired
+  EncryptInfoService encryptInfoService;
 
 
   @Override
@@ -232,6 +242,19 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     JSONObject paramsJson = variablesUtil
         .formatParams(apiCase.getRequestParams(), envionmentVariables);
 
+    // 获取加密信息
+    JSONObject encryptJson = new JSONObject();
+    JSONObject encryptJsonParams = new JSONObject();
+    if (Objects.nonNull(apiCase.getSecretId())) {
+      encryptJson = encryptInfoService
+          .getEncryptInfoEnv(apiCase.getSecretId(), apiDebugReq.getEnvId());
+      headers.put("Authorization", encryptJson.getString("key"));
+
+      if (Objects.nonNull(paramsJson)) {
+        encryptJsonParams = encryptParam(encryptJson.getString("secret"), paramsJson);
+      }
+    }
+
     OkHttpRequestConfig request = OkHttpRequestConfig.builder()
         .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
         .method(apiManagement.getMethod())
@@ -246,10 +269,10 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     return ResultApiVO
         .builder()
-        .requestParams(paramsJson)
+        .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
-        .response(body)
+        .response(encryptJson.isEmpty() ? decryptRequestBody(encryptJson.getString("secret"), body) : body)
         .assertResultVo(CollUtil.isNotEmpty(assertsArray) ? assertResult(assertsArray, body) : null)
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)
@@ -342,5 +365,32 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   public List<Long> checkApiCaseEnable(List<Long> ids) {
     List<ApiCase> apiCases = apiCaseRepository.checkApiCaseEnable(ids);
     return apiCases.stream().map(ApiCase::getId).collect(Collectors.toList());
+  }
+
+  @Override
+  public JSONObject encryptParam(String secret, JSONObject params) {
+    JSONObject encryptJsonParams = new JSONObject();
+    if (Objects.isNull(params)) {
+      return new JSONObject();
+    }
+
+    Long timestamp = System.currentTimeMillis();
+    AES aes = EncryptUtil.encrypt(secret);
+    String encryptHex = aes.encryptHex(JSON.toJSONString(params));
+
+    HMac mac = new HMac(HmacAlgorithm.HmacMD5, secret.getBytes());
+    String signature = mac.digestHex(JSON.toJSONString(params) + timestamp);
+    encryptJsonParams.put("data", encryptHex);
+    encryptJsonParams.put("timestamp", timestamp);
+    encryptJsonParams.put("sign", signature);
+
+    return encryptJsonParams;
+  }
+
+  @Override
+  public JSONObject decryptRequestBody(String secret, JSONObject body) {
+    AES aes = SecureUtil.aes(secret.getBytes());
+    String data = aes.decryptStr(body.getString("data"), CharsetUtil.CHARSET_UTF_8);
+    return JSON.parseObject(data);
   }
 }

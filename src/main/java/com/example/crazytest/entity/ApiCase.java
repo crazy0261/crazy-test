@@ -65,7 +65,7 @@ public class ApiCase implements Serializable {
   private Long ownerId;
 
   @ApiModelProperty(value = "加密参数id")
-  private Integer secretId;
+  private Long secretId;
 
   @ApiModelProperty(value = "状态")
   private Boolean status;

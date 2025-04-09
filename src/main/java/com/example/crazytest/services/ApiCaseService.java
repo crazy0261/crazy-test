@@ -1,5 +1,6 @@
 package com.example.crazytest.services;
 
+import cn.hutool.crypto.symmetric.AES;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
@@ -53,5 +54,10 @@ public interface ApiCaseService extends IService<ApiCase> {
   Boolean batchDown(ApiCaseBatchReq batchReq);
 
   List<Long> checkApiCaseEnable(List<Long> ids);
+
+  JSONObject encryptParam(String secret, JSONObject params);
+
+  JSONObject decryptRequestBody(String secret, JSONObject body);
+
 
 }
