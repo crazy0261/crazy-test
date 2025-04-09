@@ -2,10 +2,10 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.EncryptInfo;
 import com.example.crazytest.entity.req.EncryptInfoReq;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.EncryptInfoVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -36,10 +36,10 @@ public class EncryptInfoController {
 
   @GetMapping("/list")
   @Operation(summary = "查询加密参数列表")
-  public Result<List<EncryptInfo>> list(@RequestParam(value = "name", required = false) String name,
+  public Result<List<EncryptInfoVO>> list(@RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "current", defaultValue = "1") Integer current,
       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-    IPage<EncryptInfo> encryptInfoPage = encryptInfoService.list(name, current, pageSize);
+    IPage<EncryptInfoVO> encryptInfoPage = encryptInfoService.list(name, current, pageSize);
     return Result.success(encryptInfoPage.getRecords(), encryptInfoPage.getTotal());
   }
 

@@ -1,6 +1,5 @@
 package com.example.crazytest.imp;
 
-import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,7 +18,6 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ParamsListVO;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +66,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
 
   @Override
   public EnvConfig getByAppId(Long appId) {
-    return envConfigRepositoryService.getByAppId(BaseContext.getSelectProjectId(),appId);
+    return envConfigRepositoryService.getByAppId(BaseContext.getSelectProjectId(), appId);
   }
 
   @Override
@@ -118,5 +116,10 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Override
   public Boolean delete(Long id) {
     return envConfigRepositoryService.removeById(id);
+  }
+
+  @Override
+  public List<EnvConfig> envAppList(Long appId) {
+    return envConfigRepositoryService.envAppList(BaseContext.getSelectProjectId(), appId);
   }
 }

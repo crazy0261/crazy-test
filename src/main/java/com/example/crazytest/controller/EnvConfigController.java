@@ -45,7 +45,7 @@ public class EnvConfigController {
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
     IPage<EnvConfigVO> pageEnvInfoPage = envConfigService
-        .list(appid, envName, sort,domainName, current, pageSize);
+        .list(appid, envName, sort, domainName, current, pageSize);
     return Result.success(pageEnvInfoPage.getRecords(), pageEnvInfoPage.getTotal());
   }
 
@@ -74,5 +74,11 @@ public class EnvConfigController {
     return Result.success(envConfigService.delete(envConfig.getId()));
   }
 
+
+  @GetMapping("/app/list")
+  @Operation(summary = "应用下所有环境")
+  public Result<List<EnvConfig>> envAppList(@RequestParam(value = "appId",required = false) Long appId) {
+    return Result.success(envConfigService.envAppList(appId));
+  }
 
 }

@@ -19,8 +19,6 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
       List<String> domainId,
       int current, int pageSize);
 
-  EnvConfig getEnvName(Long id);
-
   EnvConfig getByAppId(Long projectId, Long appId);
 
   List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId);
@@ -31,7 +29,9 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
   Integer getLastSortValue(Long projectId, Long appId);
 
-  EnvConfig getEnvConfig(Long projectId, Long appId,Long envId);
+  EnvConfig getEnvConfig(Long projectId, Long appId, Long envId);
+
+  List<EnvConfig> envAppList(Long projectId, Long appId);
 
 
 }

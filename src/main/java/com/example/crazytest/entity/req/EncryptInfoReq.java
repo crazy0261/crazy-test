@@ -1,5 +1,6 @@
 package com.example.crazytest.entity.req;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,11 +20,14 @@ public class EncryptInfoReq {
   @ApiModelProperty(value = "项目id")
   private Long projectId;
 
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
+
   @ApiModelProperty(value = "名称")
   private String name;
 
   @ApiModelProperty(value = "加密信息")
-  private JSONObject encryptJson;
+  private JSONArray encryptJson;
 
 
 }

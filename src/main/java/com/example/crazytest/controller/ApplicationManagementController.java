@@ -36,7 +36,7 @@ public class ApplicationManagementController {
   ApplicationManagementService appManagementService;
 
   @GetMapping("/list")
-  @Operation(summary = "查询所有应用")
+  @Operation(summary = "查询所有应用列表")
   public Result<List<ApplicationManagementVO>> list(
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "负责人", required = false) Long ownerId,

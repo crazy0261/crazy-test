@@ -40,6 +40,9 @@ public class EncryptInfo implements Serializable {
   @ApiModelProperty(value = "名称")
   private String name;
 
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
+
   @ApiModelProperty(value = "加密信息")
   private String encryptJson;
 

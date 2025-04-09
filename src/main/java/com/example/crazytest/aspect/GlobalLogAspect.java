@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -92,7 +93,7 @@ public class GlobalLogAspect {
         String paramsValue = signature.getParameterNames()[i];
         builder.append(paramsValue);
         builder.append(":");
-        builder.append(StringUtils.isNotEmpty(str.toString()) ? str : null);
+        builder.append(Optional.ofNullable(str).orElse(null));
         if (i != object.length - 1) {
           builder.append("-");
         }

@@ -9,6 +9,7 @@ import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.utils.BaseContext;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,11 +39,6 @@ public class EnvConfigRepositoryServiceImpl extends
         .orderByAsc(ObjectUtils.isNull(sort) || "ascend".equals(sort), EnvConfig::getEnvSort)
         .orderByDesc(ObjectUtils.isNotNull(sort) && "descend".equals(sort), EnvConfig::getEnvSort)
         .page(new Page<>(current, pageSize));
-  }
-
-  @Override
-  public EnvConfig getEnvName(Long id) {
-    return this.getById(id);
   }
 
   @Override
@@ -104,5 +100,14 @@ public class EnvConfigRepositoryServiceImpl extends
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .last("limit 1")
         .one();
+  }
+
+  @Override
+  public List<EnvConfig> envAppList(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(Objects.nonNull(appId),EnvConfig::getAppId, appId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

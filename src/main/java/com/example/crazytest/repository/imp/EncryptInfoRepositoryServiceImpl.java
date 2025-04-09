@@ -28,6 +28,7 @@ public class EncryptInfoRepositoryServiceImpl extends
         .eq(EncryptInfo::getProjectId, projectId)
         .like(Objects.nonNull(name), EncryptInfo::getName, name)
         .eq(EncryptInfo::getIsDelete, Boolean.FALSE)
+        .orderByDesc(EncryptInfo::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
 
