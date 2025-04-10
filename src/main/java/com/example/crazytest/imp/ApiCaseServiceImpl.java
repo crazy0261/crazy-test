@@ -28,6 +28,7 @@ import com.example.crazytest.enums.ConditionTypeEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
+import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
@@ -114,6 +115,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   ApiCaseResultRepositoryService apiCaseResultRepositoryService;
 
   @Autowired
+  ApiManageRepositoryService apiManageRepositoryService;
+
+  @Autowired
   EncryptInfoService encryptInfoService;
 
 
@@ -157,9 +161,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     BeanUtils.copyProperties(apiCase, apiCaseVO);
 
     EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
+    ApiManagement apiInfo = apiManageRepositoryService.getById(apiCase.getApiId());
     apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
     apiCaseVO.setAssertsArray(Objects.isNull(apiCase.getAsserts()) ? new ArrayList<>()
         : JSON.parseArray(apiCase.getAsserts(), AssertVO.class));
+    apiCaseVO.setParamsTemplate(apiInfo.getRequestParams());
     return apiCaseVO;
 
   }
