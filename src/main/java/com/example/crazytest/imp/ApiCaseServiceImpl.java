@@ -41,6 +41,7 @@ import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.DynamicVariableParserUtil;
 import com.example.crazytest.utils.EncryptUtil;
 import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.utils.RequestUtil;
@@ -206,7 +207,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
     // 环境变量
-    Map<String, String> envionmentVariables = new HashMap<>();
+    Map<String, String> envionmentVariables = DynamicVariableParserUtil.parseToMap();
 
     // 获取API path
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
