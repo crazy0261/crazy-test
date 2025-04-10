@@ -69,6 +69,7 @@ public class EncryptInfoServiceImp implements EncryptInfoService {
     EncryptInfo encryptInfo = encryptInfoRepository
         .getEncryptInfoEnv(BaseContext.getSelectProjectId(), id);
     JSONArray encryptArr = JSON.parseArray(encryptInfo.getEncryptJson());
+
     return encryptArr.stream()
         .map(json -> JSON.parseObject(json.toString()))
         .filter(json -> JSON.parseObject(json.toString()).getString("envId")

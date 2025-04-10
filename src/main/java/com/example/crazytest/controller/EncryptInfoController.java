@@ -58,7 +58,7 @@ public class EncryptInfoController {
   }
 
   @GetMapping("/app/Ids")
-  @Operation(summary = "删除加密参数")
+  @Operation(summary = "应用下加密列表")
   public Result<List<EncryptInfo>> appIds(@RequestParam(value = "appId") Long appId) {
     return Result.success(encryptInfoService.getAppIds(appId));
   }
