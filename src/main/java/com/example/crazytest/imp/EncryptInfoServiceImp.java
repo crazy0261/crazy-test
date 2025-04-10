@@ -1,6 +1,7 @@
 package com.example.crazytest.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApplicationManagement;
@@ -67,8 +68,13 @@ public class EncryptInfoServiceImp implements EncryptInfoService {
   public JSONObject getEncryptInfoEnv(Long id, Long envId) {
     EncryptInfo encryptInfo = encryptInfoRepository
         .getEncryptInfoEnv(BaseContext.getSelectProjectId(), id);
-    JSONObject encryptJson = JSON.parseObject(encryptInfo.getEncryptJson());
-    return encryptJson.getJSONObject(String.valueOf(envId));
+    JSONArray encryptArr = JSON.parseArray(encryptInfo.getEncryptJson());
+    return encryptArr.stream()
+        .map(json -> JSON.parseObject(json.toString()))
+        .filter(json -> JSON.parseObject(json.toString()).getString("envId")
+            .equals(String.valueOf(envId)))
+        .findFirst()
+        .orElse(new JSONObject());
   }
 
   @Override
