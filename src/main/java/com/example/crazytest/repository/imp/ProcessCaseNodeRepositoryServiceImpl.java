@@ -15,7 +15,16 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-06
  */
 @Service
-public class ProcessCaseNodeRepositoryServiceImpl extends ServiceImpl<ProcessCaseNodeMapper, ProcessCaseNode> implements
+public class ProcessCaseNodeRepositoryServiceImpl extends
+    ServiceImpl<ProcessCaseNodeMapper, ProcessCaseNode> implements
     ProcessCaseNodeRepositoryService {
 
+  @Override
+  public ProcessCaseNode detail(Long projectId, Long id) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseNode::getProjectId, projectId)
+        .eq(ProcessCaseNode::getId, id)
+        .eq(ProcessCaseNode::getIsDelete, Boolean.FALSE)
+        .one();
+  }
 }

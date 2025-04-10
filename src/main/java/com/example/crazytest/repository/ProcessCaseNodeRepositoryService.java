@@ -13,4 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProcessCaseNodeRepositoryService extends IService<ProcessCaseNode> {
 
+  ProcessCaseNode detail(Long projectId, Long id);
+
+
 }
