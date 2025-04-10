@@ -6,6 +6,8 @@ import com.example.crazytest.entity.EncryptInfo;
 import com.example.crazytest.mapper.EncryptInfoMapper;
 import com.example.crazytest.repository.EncryptInfoRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.crazytest.vo.EncryptInfoVO;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +41,14 @@ public class EncryptInfoRepositoryServiceImpl extends
         .eq(EncryptInfo::getId, id)
         .eq(EncryptInfo::getIsDelete, Boolean.FALSE)
         .one();
+  }
+
+  @Override
+  public List<EncryptInfo> getAppIds(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(EncryptInfo::getProjectId, projectId)
+        .eq(EncryptInfo::getAppId, appId)
+        .eq(EncryptInfo::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

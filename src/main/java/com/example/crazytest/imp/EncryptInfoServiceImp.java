@@ -11,6 +11,7 @@ import com.example.crazytest.repository.EncryptInfoRepositoryService;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.EncryptInfoVO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,11 @@ public class EncryptInfoServiceImp implements EncryptInfoService {
         .getEncryptInfoEnv(BaseContext.getSelectProjectId(), id);
     JSONObject encryptJson = JSON.parseObject(encryptInfo.getEncryptJson());
     return encryptJson.getJSONObject(String.valueOf(envId));
+  }
+
+  @Override
+  public List<EncryptInfo> getAppIds(Long appId) {
+    return encryptInfoRepository.getAppIds(BaseContext.getSelectProjectId(), appId);
   }
 
 }

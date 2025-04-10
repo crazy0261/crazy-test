@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.EncryptInfo;
 import com.example.crazytest.entity.req.EncryptInfoReq;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.utils.Result;
@@ -54,6 +55,12 @@ public class EncryptInfoController {
   @Operation(summary = "删除加密参数")
   public Result<Boolean> del(@RequestBody EncryptInfoReq encryptInfo) {
     return Result.success(encryptInfoService.del(encryptInfo.getId()));
+  }
+
+  @GetMapping("/app/Ids")
+  @Operation(summary = "删除加密参数")
+  public Result<List<EncryptInfo>> appIds(@RequestParam(value = "appId") Long appId) {
+    return Result.success(encryptInfoService.getAppIds(appId));
   }
 
 
