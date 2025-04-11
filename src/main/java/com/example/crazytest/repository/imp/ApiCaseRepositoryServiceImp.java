@@ -103,4 +103,15 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public Long getApiCaseList(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .select(ApiCase::getApiId)
+        .eq(ApiCase::getProjectId, projectId)
+        .eq(ApiCase::getAppId, appId)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .groupBy(ApiCase::getApiId)
+        .count();
+  }
 }

@@ -31,6 +31,9 @@ public class ApplicationManagementVO {
   @ApiModelProperty(value = "接口数")
   private Long apiCount;
 
+  @ApiModelProperty(value = "已覆盖接口数")
+  private Long coverApiCount;
+
   @ApiModelProperty(value = "创建时间")
   private LocalDateTime createTime;
 

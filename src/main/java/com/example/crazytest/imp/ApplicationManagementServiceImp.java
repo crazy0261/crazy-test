@@ -1,6 +1,9 @@
 package com.example.crazytest.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.ApiManagement;
+import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.ApplicationManagement;
@@ -10,6 +13,7 @@ import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.utils.BaseContext;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,9 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   @Autowired
   ApiManageRepositoryService apiManageRepositoryService;
 
+  @Autowired
+  ApiCaseRepositoryService apiCaseRepositoryService;
+
   @Override
   public IPage<ApplicationManagementVO> list(String name, Long ownerId, int current, int pageSize) {
     IPage<ApplicationManagement> applicationManagementList = applicationManagementRepositoryService
@@ -41,10 +48,15 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
 
     return applicationManagementList.convert(applicationManagement -> {
       ApplicationManagementVO applicationManagementVo = new ApplicationManagementVO();
+      Long apiCount = apiManageRepositoryService
+          .getApiCount(applicationManagement.getProjectId(), applicationManagement.getId());
       BeanUtils.copyProperties(applicationManagement, applicationManagementVo);
       applicationManagementVo.setOwnerName(
           userRepositoryService.getUserData(applicationManagement.getOwnerId()).getName());
-      applicationManagementVo.setApiCount(apiManageRepositoryService.getApiCount(applicationManagement.getProjectId(),applicationManagement.getId()));
+      applicationManagementVo.setApiCount(apiCount);
+      applicationManagementVo.setCoverApiCount(
+          getCoverApiCount(applicationManagement.getProjectId(), applicationManagement.getId(),
+              apiCount));
       return applicationManagementVo;
     });
   }
@@ -68,6 +80,12 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
   public List<ApplicationManagement> listAllApplicationManagement() {
     return applicationManagementRepositoryService
         .listAllApplicationManagement(BaseContext.getSelectProjectId());
+  }
+
+  @Override
+  public Long getCoverApiCount(Long projectId, Long appId, Long apiCount) {
+
+    return apiCount - apiCaseRepositoryService.getApiCaseList(projectId, appId);
   }
 
 }

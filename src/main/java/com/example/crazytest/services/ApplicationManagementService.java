@@ -17,4 +17,6 @@ public interface ApplicationManagementService {
 
   List<ApplicationManagement> listAllApplicationManagement();
 
+  Long getCoverApiCount(Long projectId, Long appId, Long apiCount);
+
 }
