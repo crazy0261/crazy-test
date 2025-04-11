@@ -14,7 +14,7 @@ public interface DataSourceConfigService {
 
   void checkDataSourceConfigReq(DataSourceConfigReq dataSourceConfigReq);
 
-  boolean del(Long id);
+  Boolean del(Long id) ;
 
 
 }

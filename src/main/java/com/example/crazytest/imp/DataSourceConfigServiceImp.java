@@ -100,7 +100,7 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
   }
 
   @Override
-  public boolean del(Long id) {
+  public Boolean del(Long id)  {
     return dataSourceConfigRepositoryService.removeById(id);
   }
 
