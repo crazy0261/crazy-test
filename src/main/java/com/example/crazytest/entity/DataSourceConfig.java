@@ -38,40 +38,16 @@ public class DataSourceConfig implements Serializable {
   private Long projectId;
 
   @ApiModelProperty(value = "名称")
-  private String Name;
+  private String name;
 
-  @ApiModelProperty(value = "环境id")
-  private Long envId;
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
 
-  @ApiModelProperty(value = "数据库名称")
-  private String dbName;
-
-  @ApiModelProperty(value = "数据库连接URL")
-  private String url;
-
-  @ApiModelProperty(value = "数据库账号")
-  private String username;
-
-  @ApiModelProperty(value = "数据库密码")
-  private String password;
-
-  @ApiModelProperty(value = "数据库驱动类")
-  private String driverClassName;
-
-  @ApiModelProperty(value = "最小连接池大小")
-  private int minPoolSize;
-
-  @ApiModelProperty(value = "最大连接池大小")
-  private int maxPoolSize;
-
-  @ApiModelProperty(value = "最大空闲时间")
-  private Long maxIdleTime;
+  @ApiModelProperty(value = "连接信息")
+  private String dataSourceJson;
 
   @ApiModelProperty(value = "备注")
   private String remark;
-
-  @ApiModelProperty(value = "空闲连接测试周期")
-  private Long idleConnectionTestPeriod;
 
   @ApiModelProperty(value = "创建者id")
   @TableField(fill = FieldFill.INSERT)

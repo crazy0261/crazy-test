@@ -2,10 +2,10 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.services.DataSourceConfigService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.DataSourceConfigVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -36,10 +36,10 @@ public class DataSourceConfigController {
 
   @GetMapping("/list")
   @Operation(summary = "查询数据库配置列表")
-  public Result<List<DataSourceConfig>> list(@RequestParam(required = false) String name,
+  public Result<List<DataSourceConfigVO>> list(@RequestParam(required = false) String name,
       @RequestParam(required = false, defaultValue = "1") Integer current,
       @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-    IPage<DataSourceConfig> page = dataSourceService.list(name, current, pageSize);
+    IPage<DataSourceConfigVO> page = dataSourceService.list(name, current, pageSize);
     return Result.success(page.getRecords(), page.getTotal());
   }
 

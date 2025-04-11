@@ -26,8 +26,8 @@ public class DataSourceConfigRepositoryServiceImpl extends
   public DataSourceConfig getDatabaseConfig(Long projectId, Long envId, String dbName) {
     return this.lambdaQuery()
         .eq(DataSourceConfig::getProjectId, projectId)
-        .eq(DataSourceConfig::getEnvId, envId)
-        .eq(DataSourceConfig::getDbName, dbName)
+//        .eq(DataSourceConfig::getEnvId, envId)
+//        .eq(DataSourceConfig::getDbName, dbName)
         .eq(DataSourceConfig::getIsDelete, Boolean.FALSE)
         .one();
   }

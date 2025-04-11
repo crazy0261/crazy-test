@@ -1,14 +1,14 @@
 package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
+import com.example.crazytest.vo.DataSourceConfigVO;
 
 public interface DataSourceConfigService {
 
   Boolean save(DataSourceConfigReq dataSourceConfigReq);
 
-  IPage<DataSourceConfig> list(String name, Integer current, Integer pageSize);
+  IPage<DataSourceConfigVO> list(String name, Integer current, Integer pageSize);
 
   boolean testConnection(DataSourceConfigReq dataSourceConfigReq);
 
