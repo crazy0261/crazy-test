@@ -28,6 +28,9 @@ public class ApplicationManagementVO {
   @ApiModelProperty(value = "负责人")
   private String ownerName;
 
+  @ApiModelProperty(value = "接口数")
+  private Long apiCount;
+
   @ApiModelProperty(value = "创建时间")
   private LocalDateTime createTime;
 

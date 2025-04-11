@@ -151,4 +151,13 @@ public class ApiManagementRepositoryServiceImpl extends
         .update();
   }
 
+  @Override
+  public Long getApiCount(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(ApiManagement::getProjectId, projectId)
+        .eq(ApiManagement::getApplicationId, appId)
+        .eq(ApiManagement::getIsDelete, Boolean.FALSE)
+        .count();
+  }
+
 }

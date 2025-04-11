@@ -36,5 +36,7 @@ public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
   Boolean batchOUpdateOwner(List<Long> ids, Long ownerId);
 
+  Long getApiCount(Long projectId, Long appId);
+
 
 }
