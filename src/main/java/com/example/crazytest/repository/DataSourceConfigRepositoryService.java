@@ -14,12 +14,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DataSourceConfigRepositoryService extends IService<DataSourceConfig> {
 
-  DataSourceConfig getDatabaseConfig(Long projectId, Long envId, String dbName);
+  DataSourceConfig getDatabaseConfig(Long projectId, Long appId);
 
   Long getCountByProjectIdNameCount(Long projectId, String name);
 
-  IPage<DataSourceConfig> list(Long projectId, String name,Integer current, Integer pageSize);
-
+  IPage<DataSourceConfig> list(Long projectId, String name, Integer current, Integer pageSize);
 
 
 }

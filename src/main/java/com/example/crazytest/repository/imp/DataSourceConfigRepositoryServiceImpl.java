@@ -23,11 +23,10 @@ public class DataSourceConfigRepositoryServiceImpl extends
     DataSourceConfigRepositoryService {
 
   @Override
-  public DataSourceConfig getDatabaseConfig(Long projectId, Long envId, String dbName) {
+  public DataSourceConfig getDatabaseConfig(Long projectId, Long appId) {
     return this.lambdaQuery()
         .eq(DataSourceConfig::getProjectId, projectId)
-//        .eq(DataSourceConfig::getEnvId, envId)
-//        .eq(DataSourceConfig::getDbName, dbName)
+        .eq(DataSourceConfig::getAppId, appId)
         .eq(DataSourceConfig::getIsDelete, Boolean.FALSE)
         .one();
   }

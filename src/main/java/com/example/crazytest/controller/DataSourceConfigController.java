@@ -2,7 +2,6 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.services.DataSourceConfigService;
 import com.example.crazytest.utils.Result;

@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Optional;
 import javax.sql.DataSource;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,12 +73,14 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
     DataSource dataSource = DataSourceUtil.createDataSource(dataSourceConfigReq);
 
     // 测试连接
-    try (
-        Connection connection = dataSource.getConnection();
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT 1")
-    ) {
-      return rs.next();
+    try {
+      assert dataSource != null;
+      try (Connection connection = dataSource.getConnection();
+          Statement stmt = connection.createStatement();
+          ResultSet rs = stmt.executeQuery("SELECT 1")
+      ) {
+        return rs.next();
+      }
     } catch (Exception e) {
       return Boolean.FALSE;
     }
@@ -85,21 +88,20 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
 
   @Override
   public void checkDataSourceConfigReq(DataSourceConfigReq dataSourceConfigReq) {
-//    DataSourceConfig dataSourceConfig = dataSourceConfigRepositoryService
-//        .getDatabaseConfig(BaseContext.getSelectProjectId(), dataSourceConfigReq.getEnvId(),
-//            dataSourceConfigReq.getDbName());
-//    Long count = dataSourceConfigRepositoryService
-//        .getCountByProjectIdNameCount(BaseContext.getSelectProjectId(),
-//            dataSourceConfigReq.getName());
+    DataSourceConfig dataSourceConfig = dataSourceConfigRepositoryService
+        .getDatabaseConfig(BaseContext.getSelectProjectId(),dataSourceConfigReq.getAppId());
+    Long count = dataSourceConfigRepositoryService
+        .getCountByProjectIdNameCount(BaseContext.getSelectProjectId(),
+            dataSourceConfigReq.getName());
 
-//    AssertUtil.assertTrue(ObjectUtils.isEmpty(dataSourceConfigReq.getId()) && count > 0,
-//        ResultEnum.NAME_REPEAT.getMessage());
-//    AssertUtil.assertTrue(ObjectUtils.isNotEmpty(dataSourceConfigReq.getId()) && ObjectUtils
-//            .notEqual(dataSourceConfigReq.getName(), dataSourceConfig.getName()),
-//        ResultEnum.NAME_REPEAT.getMessage());
-//    AssertUtil.assertTrue(ObjectUtils.isNotEmpty(dataSourceConfigReq.getId()) && ObjectUtils
-//            .notEqual(dataSourceConfig.getId(), dataSourceConfigReq.getId()) && count > 0,
-//        ResultEnum.DATA_SOURCE_NOT_EXIST.getMessage());
+    AssertUtil.assertTrue(ObjectUtils.isEmpty(dataSourceConfigReq.getId()) && count > 0,
+        ResultEnum.NAME_REPEAT.getMessage());
+    AssertUtil.assertTrue(ObjectUtils.isNotEmpty(dataSourceConfigReq.getId()) && ObjectUtils
+            .notEqual(dataSourceConfigReq.getName(), dataSourceConfig.getName()),
+        ResultEnum.NAME_REPEAT.getMessage());
+    AssertUtil.assertTrue(ObjectUtils.isNotEmpty(dataSourceConfigReq.getId()) && ObjectUtils
+            .notEqual(dataSourceConfig.getId(), dataSourceConfigReq.getId()) && count > 0,
+        ResultEnum.DATA_SOURCE_NOT_EXIST.getMessage());
   }
 
   @Override
