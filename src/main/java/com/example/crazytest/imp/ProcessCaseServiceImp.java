@@ -1,6 +1,7 @@
 package com.example.crazytest.imp;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -88,11 +89,17 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   public Boolean save(ProcessCaseReq processCaseReq) {
     ProcessCase processCase = new ProcessCase();
     BeanUtils.copyProperties(processCaseReq, processCase);
-    processCase.setInputParams(Optional.ofNullable(processCaseReq.getInputParams()).map(JSONObject::toString).orElse("{}"));
-    processCase.setProjectId(Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
-    processCase.setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
-    processCase.setNodes(Optional.ofNullable(processCaseReq.getNodes()).map(JSONArray::toJSONString).orElse("[]"));
-    processCase.setEdges(Optional.ofNullable(processCaseReq.getEdges()).map(JSONArray::toJSONString).orElse("[]"));
+    processCase.setInputParams(
+        Optional.ofNullable(processCaseReq.getInputParams()).map(JSONObject::toString)
+            .orElse("{}"));
+    processCase.setProjectId(
+        Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
+    processCase
+        .setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
+    processCase.setNodes(
+        Optional.ofNullable(processCaseReq.getNodes()).map(JSONArray::toJSONString).orElse("[]"));
+    processCase.setEdges(
+        Optional.ofNullable(processCaseReq.getEdges()).map(JSONArray::toJSONString).orElse("[]"));
     return processCaseRepositoryService.saveOrUpdate(processCase);
   }
 
@@ -134,7 +141,13 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   }
 
   @Override
-  public ProcessCase detail(Long id) {
-    return processCaseRepositoryService.getById(id);
+  public ProcessCaseVO detail(Long id) {
+    ProcessCaseVO processCaseVO = new ProcessCaseVO();
+    ProcessCase processCase = processCaseRepositoryService.getById(id);
+    BeanUtils.copyProperties(processCase, processCaseVO);
+    processCaseVO.setNodeArray(JSON.parseArray(processCase.getNodes(), JSONObject.class));
+    processCaseVO.setEdgesArray(JSON.parseArray(processCase.getEdges(), JSONObject.class));
+    processCaseVO.setInputParamsJson(JSON.parseObject(processCase.getInputParams()));
+    return processCaseVO;
   }
 }

@@ -18,6 +18,9 @@ public class ProcessCaseReq {
   @ApiModelProperty(value = "id")
   private Long id;
 
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
+
   @ApiModelProperty(value = "树节点")
   private String treeKey;
 
@@ -36,10 +39,10 @@ public class ProcessCaseReq {
   @ApiModelProperty(value = "入参")
   private JSONObject inputParams;
 
-  @ApiModelProperty(value = "子流程用例id")
+  @ApiModelProperty(value = "节点")
   private List<JSONObject> nodes;
 
-  @ApiModelProperty(value = "子流程用例id")
+  @ApiModelProperty(value = "边")
   private List<JSONObject> edges;
 
   @ApiModelProperty(value = "备注")

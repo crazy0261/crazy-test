@@ -1,5 +1,6 @@
 package com.example.crazytest.entity.req;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.crazytest.vo.AssertVO;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ApiCaseReq {
   private Integer priority;
 
   @ApiModelProperty(value = "用例变量，优先级高于环境变量")
-  private String envVariables;
+  private JSONObject envVariables;
 
   @ApiModelProperty(value = "请求头")
   private String requestHeaders;

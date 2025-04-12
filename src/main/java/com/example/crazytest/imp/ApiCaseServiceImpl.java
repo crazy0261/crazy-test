@@ -177,10 +177,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     apiCaseReq.setProjectId(BaseContext.getSelectProjectId());
     ApiCase apiCase = new ApiCase();
     BeanUtils.copyProperties(apiCaseReq, apiCase);
-    apiCase
-        .setOwnerId(Optional.ofNullable(apiCaseReq.getOwnerId()).orElse(BaseContext.getUserId()));
-    apiCase.setAsserts(
-        Optional.ofNullable(apiCaseReq.getAssertsArray()).map(JSON::toJSONString).orElse(""));
+    apiCase.setOwnerId(Optional.ofNullable(apiCaseReq.getOwnerId()).orElse(BaseContext.getUserId()));
+    apiCase.setAsserts(Optional.ofNullable(apiCaseReq.getAssertsArray()).map(JSON::toJSONString).orElse(""));
+    apiCase.setEnvVariables(Optional.ofNullable(apiCaseReq.getEnvVariables()).map(JSON::toString).orElse("{}"));
 
     return apiCaseRepository.saveOrUpdate(apiCase);
   }
