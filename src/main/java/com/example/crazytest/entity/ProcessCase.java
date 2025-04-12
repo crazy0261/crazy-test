@@ -37,6 +37,9 @@ public class ProcessCase implements Serializable {
   @ApiModelProperty(value = "项目id")
   private Long projectId;
 
+  @ApiModelProperty(value = "应用id")
+  private Long appId;
+
   @ApiModelProperty(value = "树节点key")
   private String treeKey;
 
@@ -51,9 +54,6 @@ public class ProcessCase implements Serializable {
 
   @ApiModelProperty(value = "用例入参")
   private String inputParams;
-
-  @ApiModelProperty(value = "用例出参")
-  private String outputParams;
 
   @ApiModelProperty(value = "节点")
   private String nodes;
