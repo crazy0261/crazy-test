@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class TestAccountEnvVO {
 
-  Long envId;
+  Long id;
   String name;
 
 }

@@ -63,10 +63,9 @@ public class TestAccountController {
     return Result.success();
   }
 
-  @GetMapping("/query/env")
-  @Operation(summary = "获取环境账号")
+  @GetMapping("/query/project")
+  @Operation(summary = "获取项目所有账号")
   public Result<List<TestAccountEnvVO>> queryEnvTestAccount() {
     return Result.success(testAccountService.getEnvTestAccount());
   }
-
 }
