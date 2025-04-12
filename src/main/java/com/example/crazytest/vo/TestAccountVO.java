@@ -19,9 +19,6 @@ public class TestAccountVO {
   @ApiModelProperty(value = "环境id")
   private Long envId;
 
-  @ApiModelProperty(value = "环境id")
-  private String envName;
-
   @ApiModelProperty(value = "名称")
   private String name;
 

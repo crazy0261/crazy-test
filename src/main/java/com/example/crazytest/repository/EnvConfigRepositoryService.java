@@ -29,7 +29,7 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
   Integer getLastSortValue(Long projectId, Long appId);
 
-  EnvConfig getEnvConfig(Long projectId, Long appId, Long envId);
+  EnvConfig getEnvConfig(Long projectId, Long appId);
 
   List<EnvConfig> envAppList(Long projectId, Long appId);
 

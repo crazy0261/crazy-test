@@ -19,4 +19,7 @@ public interface TestAccountRepositoryService extends IService<TestAccount> {
       int current, int pageSize);
 
   List<TestAccount> listAllTestAccount();
+
+  List<TestAccount> getProjectEnvTestAccount(Long projectId);
+
 }

@@ -2,6 +2,7 @@ package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TestAccount;
+import com.example.crazytest.vo.TestAccountEnvVO;
 import com.example.crazytest.vo.TestAccountVO;
 import java.io.IOException;
 import java.util.List;
@@ -21,5 +22,7 @@ public interface TestAccountService {
   void crateManualToken(Long id) throws IOException;
 
   TestAccount queryById(Long id);
+
+  List<TestAccountEnvVO> getEnvTestAccount();
 
 }

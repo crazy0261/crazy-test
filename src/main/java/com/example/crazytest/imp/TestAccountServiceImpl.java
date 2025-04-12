@@ -19,11 +19,13 @@ import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.vo.ApiCaseVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
+import com.example.crazytest.vo.TestAccountEnvVO;
 import com.example.crazytest.vo.TestAccountVO;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.support.CronExpression;
@@ -46,7 +48,8 @@ public class TestAccountServiceImpl implements TestAccountService {
   EnvConfigRepositoryService envConfigRepositoryService;
 
   @Autowired
-  ApiCaseRepositoryService apiCodeRepositoryService;;
+  ApiCaseRepositoryService apiCodeRepositoryService;
+  ;
 
   @Autowired
   ApiCaseService apiCaseService;
@@ -63,11 +66,8 @@ public class TestAccountServiceImpl implements TestAccountService {
       TestAccountVO testAccountVo = new TestAccountVO();
       BeanUtils.copyProperties(testAccount, testAccountVo);
 
-      ApiCase apiCase =  apiCodeRepositoryService.getById(testAccount.getApiCaseId());
-      EnvConfig envConfig = envConfigRepositoryService.getEnvConfig(BaseContext.getSelectProjectId(),apiCase.getAppId(),testAccount.getEnvId());
       ApiCaseVO caseVO = apiCaseService.getById(testAccount.getApiCaseId());
       testAccountVo.setApiCaseName(caseVO.getName());
-      testAccountVo.setEnvName(Optional.ofNullable(envConfig).map(EnvConfig::getEnvName).orElse(""));
       return testAccountVo;
     });
   }
@@ -100,7 +100,6 @@ public class TestAccountServiceImpl implements TestAccountService {
       throws IOException {
     ApiDebugReq apiDebugReq = new ApiDebugReq();
     apiDebugReq.setId(testAccount.getApiCaseId());
-    apiDebugReq.setEnvId(testAccount.getEnvId());
     apiDebugReq.setInputParams(testAccount.getInputParams());
 
     ResultApiVO result = apiCaseService.debug(apiDebugReq);
@@ -131,6 +130,18 @@ public class TestAccountServiceImpl implements TestAccountService {
   @Override
   public TestAccount queryById(Long id) {
     return testAccountRepositoryService.getById(id);
+  }
+
+  @Override
+  public List<TestAccountEnvVO> getEnvTestAccount() {
+    List<TestAccount> testAccounts = testAccountRepositoryService
+        .getProjectEnvTestAccount(BaseContext.getSelectProjectId());
+
+    return testAccounts.stream().map(testAccount -> {
+      TestAccountEnvVO testAccountEnvVO = new TestAccountEnvVO();
+      BeanUtils.copyProperties(testAccount, testAccountEnvVO);
+      return testAccountEnvVO;
+    }).collect(Collectors.toList());
   }
 }
 

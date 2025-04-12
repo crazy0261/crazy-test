@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.services.TestAccountService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.TestAccountEnvVO;
 import com.example.crazytest.vo.TestAccountVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,6 +61,12 @@ public class TestAccountController {
   public Result<Void> updateToken(@RequestBody TestAccount testAccount) throws IOException {
     testAccountService.crateManualToken(testAccount.getId());
     return Result.success();
+  }
+
+  @GetMapping("/query/env")
+  @Operation(summary = "获取环境账号")
+  public Result<List<TestAccountEnvVO>> queryEnvTestAccount() {
+    return Result.success(testAccountService.getEnvTestAccount());
   }
 
 }

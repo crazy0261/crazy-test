@@ -44,4 +44,12 @@ public class TestAccountRepositoryServiceImpl extends
         .eq(TestAccount::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public List<TestAccount> getProjectEnvTestAccount(Long projectId) {
+    return this.lambdaQuery()
+        .eq(TestAccount::getProjectId, projectId)
+        .eq(TestAccount::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }
