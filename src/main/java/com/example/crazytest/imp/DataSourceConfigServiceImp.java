@@ -110,7 +110,7 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
   }
 
   @Override
-  public DataSourceDTO getDataSourceDTO(Long id, Long envId) {
+  public DataSourceDTO getDataSource(Long id, Long envId) {
     return Optional.ofNullable(dataSourceConfigRepositoryService.getById(id))
         .map(DataSourceConfig::getDataSourceJson)
         .map(JSONArray::parseArray).flatMap(jsonArray -> jsonArray.stream()

@@ -17,7 +17,7 @@ public interface DataSourceConfigService {
 
   Boolean del(Long id);
 
-  DataSourceDTO getDataSourceDTO(Long id, Long envId);
+  DataSourceDTO getDataSource(Long id, Long envId);
 
 
 }
