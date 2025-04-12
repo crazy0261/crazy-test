@@ -1,9 +1,8 @@
 package com.example.crazytest.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ResultEnum;
@@ -100,7 +99,7 @@ public class TestAccountServiceImpl implements TestAccountService {
       throws IOException {
     ApiDebugReq apiDebugReq = new ApiDebugReq();
     apiDebugReq.setId(testAccount.getApiCaseId());
-    apiDebugReq.setInputParams(testAccount.getInputParams());
+    apiDebugReq.setInputParams(JSON.parseArray(testAccount.getInputParams()));
 
     ResultApiVO result = apiCaseService.debug(apiDebugReq);
     String tokenStatus = Optional.ofNullable(result.getAssertResultVo()).map(

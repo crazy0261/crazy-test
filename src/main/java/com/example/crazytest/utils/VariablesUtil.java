@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class VariablesUtil {
 
-  public Map<String, String> formatHeader(String envId, Map<String, String> variables,
+  public Map<String, String> formatHeader(Long envId, Map<String, String> variables,
       List<ParamsListVO> paramsArrList, EnvConfig envConfig, ApiCase apiCase) {
     List<ParamsListVO> headerEnv = Optional.ofNullable(envConfig)
         .map(item -> JSON.parseArray(item.getRequestHeaders(), ParamsListVO.class))
@@ -38,11 +38,10 @@ public class VariablesUtil {
         .orElse(new ArrayList<>());
     List<ParamsListVO> apiCaseVariables = Optional.ofNullable(apiCase)
         .map(item -> JSON.parseObject(item.getEnvVariables()))
-        .map(item -> item.getJSONObject(envId))
-        .map(item -> item.getJSONArray("envVariables"))
-        .map(item -> item.toJavaList(ParamsListVO.class))
+        .map(item -> item.getJSONObject(String.valueOf(envId)))
+        .map(item -> item.getJSONArray("params"))
+        .map(jsonArray -> jsonArray.toJavaList(ParamsListVO.class))
         .orElse(new ArrayList<>());
-
 
     // 合并变量
     Map<String, String> allVariables = Stream

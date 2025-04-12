@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
-import com.example.crazytest.convert.GetInputParamConvert;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.ApiManagement;
@@ -105,9 +104,6 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Autowired
   VariablesUtil variablesUtil;
-
-  @Autowired
-  GetInputParamConvert getInputParamConvert;
 
   @Autowired
   ApiCaseResultService apiCaseResultService;
@@ -212,8 +208,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
 
     // 前置参数
-    JSONObject preParams = JSON.parseObject(apiDebugReq.getInputParams());
-    JSONArray paramsArr = preParams.getJSONArray("envVariables");
+    JSONArray paramsArr = apiDebugReq.getInputParams();
     List<ParamsListVO> paramsArrList = Optional.ofNullable(paramsArr)
         .map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
 
@@ -222,18 +217,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .map(str -> JSON.parseArray(str, AssertVO.class)).orElse(Collections.emptyList());
 
     // 获取token
-    String preParamsKey = preParams.keySet().stream().findFirst().orElse("");
-    // 判断是测试账号通过请求
-    Object preParamsValue = preParams.get(preParamsKey);
-    boolean checkJson = preParamsValue instanceof JSONObject;
-    if (!checkJson) {
-      envionmentVariables.putAll(
-          getInputParamConvert.jsonMapConvert(JSON.parseObject(apiDebugReq.getInputParams())));
-    }
-    String accountId =
-        checkJson ? preParams.getJSONObject(preParamsKey).getString("testaccountID") : "";
+    Long accountId =apiDebugReq.getTestAccount();
 
-    if (StringUtils.isNotEmpty(accountId)) {
+    if (Objects.nonNull(accountId)) {
       TestAccount user = testAccountService.getById(accountId);
       AssertUtil.assertNotNull(user, "测试账号不存在,请检查！");
       AssertUtil.assertTrue(ObjectUtils.isEmpty(user.getToken()), "token为空或已过期，请检查！");
@@ -242,7 +228,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     // 请求头整理
     Map<String, String> headers = variablesUtil
-        .formatHeader(preParamsKey, envionmentVariables, paramsArrList, envConfig, apiCase);
+        .formatHeader(apiDebugReq.getEnvId(), envionmentVariables, paramsArrList, envConfig, apiCase);
 
     // 请求参数格式化
     JSONObject paramsJson = variablesUtil
