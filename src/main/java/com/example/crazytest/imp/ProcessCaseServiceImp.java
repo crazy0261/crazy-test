@@ -2,6 +2,7 @@ package com.example.crazytest.imp;
 
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.dto.ProcessCaseDTO;
@@ -87,6 +88,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   public Boolean save(ProcessCaseReq processCaseReq) {
     ProcessCase processCase = new ProcessCase();
     BeanUtils.copyProperties(processCaseReq, processCase);
+    processCase.setInputParams(Optional.ofNullable(processCaseReq.getInputParams()).map(JSONObject::toString).orElse("{}"));
     processCase.setProjectId(Optional.ofNullable(processCase.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     processCase.setOwnerId(Optional.ofNullable(processCase.getOwnerId()).orElse(BaseContext.getUserId()));
     processCase.setNodes(Optional.ofNullable(processCaseReq.getNodes()).map(JSONArray::toJSONString).orElse("[]"));

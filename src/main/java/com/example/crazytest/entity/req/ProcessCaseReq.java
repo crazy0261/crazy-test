@@ -16,17 +16,13 @@ import lombok.Data;
 public class ProcessCaseReq {
 
   @ApiModelProperty(value = "id")
-  private String id;
+  private Long id;
 
   @ApiModelProperty(value = "树节点")
   private String treeKey;
 
-
   @ApiModelProperty(value = "用例id")
   private Long caseId;
-
-  @ApiModelProperty(value = "应用id")
-  private Long appId;
 
   @ApiModelProperty(value = "节点名称")
   private String name;
@@ -38,7 +34,7 @@ public class ProcessCaseReq {
   private Integer isSubProcess;
 
   @ApiModelProperty(value = "入参")
-  private String inputParams;
+  private JSONObject inputParams;
 
   @ApiModelProperty(value = "子流程用例id")
   private List<JSONObject> nodes;
