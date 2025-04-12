@@ -1,6 +1,7 @@
 package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.dto.DataSourceDTO;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.vo.DataSourceConfigVO;
 
@@ -14,7 +15,9 @@ public interface DataSourceConfigService {
 
   void checkDataSourceConfigReq(DataSourceConfigReq dataSourceConfigReq);
 
-  Boolean del(Long id) ;
+  Boolean del(Long id);
+
+  DataSourceDTO getDataSourceDTO(Long id, Long envId);
 
 
 }

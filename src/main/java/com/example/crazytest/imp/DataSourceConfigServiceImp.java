@@ -1,7 +1,9 @@
 package com.example.crazytest.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.dto.DataSourceDTO;
 import com.example.crazytest.entity.ApplicationManagement;
 import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
@@ -16,6 +18,7 @@ import com.example.crazytest.vo.DataSourceConfigVO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,8 +103,20 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
   }
 
   @Override
-  public Boolean del(Long id)  {
+  public Boolean del(Long id) {
     return dataSourceConfigRepositoryService.removeById(id);
+  }
+
+  @Override
+  public DataSourceDTO getDataSourceDTO(Long id, Long envId) {
+    return Optional.ofNullable(dataSourceConfigRepositoryService.getById(id))
+        .map(DataSourceConfig::getDataSourceJson)
+        .map(JSONArray::parseArray).flatMap(jsonArray -> jsonArray.stream()
+            .map(json -> JSON.parseObject(json.toString()))
+            .filter(json -> json.containsKey(envId.toString()))
+            .map(json -> json.getJSONObject(envId.toString()))
+            .findFirst()
+            .map(json -> JSON.toJavaObject(json, DataSourceDTO.class))).orElse(null);
   }
 
 }
