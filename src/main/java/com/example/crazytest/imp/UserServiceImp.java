@@ -76,8 +76,6 @@ public class UserServiceImp implements UserService {
     AssertUtil.assertNotNull(userEntity, ResultEnum.USER_NOT_FOUND.getMessage());
     AssertUtil.assertNotTrue(Boolean.FALSE.equals(userEntity.getIsDelete()),
         ResultEnum.USER_STOP_STATUS.getMessage());
-    System.out.println(userEntity.getPassword());
-    System.out.println(password);
     AssertUtil.assertNotTrue(Objects.equals(userEntity.getPassword(), password),
         ResultEnum.USER_PASSWORD_FAIL.getMessage());
   }

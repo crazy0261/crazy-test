@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.example.crazytest.entity.ProcessCaseNode;
+import com.example.crazytest.entity.req.ProcessCaseNodeReq;
 import com.example.crazytest.services.ProcessCaseNodeService;
 import com.example.crazytest.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,8 +40,8 @@ public class ProcessCaseNodeController {
 
   @Operation(summary = "节点保存")
   @PostMapping("/save")
-  public Result<Boolean> save(@RequestBody ProcessCaseNode processCaseNode) {
-    return Result.success(processCaseNodeService.save(processCaseNode));
+  public Result<Boolean> save(@RequestBody ProcessCaseNodeReq processCaseNodeReq) {
+    return Result.success(processCaseNodeService.save(processCaseNodeReq));
   }
 
 }

@@ -38,4 +38,6 @@ public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
   Long getApiCount(Long projectId, Long appId);
 
+  List<ApiManagement> appApiList(Long projectId, Long appId);
+
 }

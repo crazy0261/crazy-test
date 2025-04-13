@@ -37,7 +37,8 @@ public class ProcessCaseRepositoryServiceImpl extends
             processCaseDTO.getName())
         .eq(ObjectUtils.isNotNull(processCaseDTO.getOwnerId()), ProcessCase::getOwnerId,
             processCaseDTO.getOwnerId())
-        .eq(ObjectUtils.isNotNull(processCaseDTO.getStatus()), ProcessCase::getStatus, processCaseDTO.getStatus())
+        .eq(ObjectUtils.isNotNull(processCaseDTO.getStatus()), ProcessCase::getStatus,
+            processCaseDTO.getStatus())
         .eq(ObjectUtils.isNotNull(processCaseDTO.getIsSubProcess()), ProcessCase::getIsSubProcess,
             processCaseDTO.getIsSubProcess())
         .orderByDesc(ProcessCase::getUpdateTime)
@@ -84,6 +85,16 @@ public class ProcessCaseRepositoryServiceImpl extends
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .set(ProcessCase::getStatus, Boolean.TRUE)
         .set(ProcessCase::getRemark, processCaseBatchReq.getRemark())
+        .update();
+  }
+
+  @Override
+  public void updateNodeAOrEdge(Long id, String nodes, String edge) {
+    this.lambdaUpdate()
+        .eq(ProcessCase::getId, id)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .set(ProcessCase::getNodes, nodes)
+        .set(ProcessCase::getEdges, edge)
         .update();
   }
 }

@@ -114,4 +114,9 @@ public class ApiManagementServiceImp implements ApiManagementService {
   public Boolean batchOUpdateOwner(ApiTypeReq apiTypeReq) {
     return apiManageRepository.batchOUpdateOwner(apiTypeReq.getApiIds(), apiTypeReq.getOwnerId());
   }
+
+  @Override
+  public List<ApiManagement> appApiList(Long appId) {
+    return apiManageRepository.appApiList(BaseContext.getSelectProjectId(),appId);
+  }
 }

@@ -27,4 +27,6 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   Boolean batchUpdateDownCase(ProcessCaseBatchReq processCaseBatchReq, Long projectId);
 
+  void updateNodeAOrEdge(Long id, String nodes, String edge);
+
 }

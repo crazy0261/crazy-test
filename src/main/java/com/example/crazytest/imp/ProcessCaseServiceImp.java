@@ -150,4 +150,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     processCaseVO.setInputParamsJson(JSON.parseObject(processCase.getInputParams()));
     return processCaseVO;
   }
+
+  @Override
+  public void updateNodeAOrEdge(Long id, List<JSONObject> nodes, List<JSONObject> edge) {
+    processCaseRepositoryService
+        .updateNodeAOrEdge(id, JSON.toJSONString(nodes), JSON.toJSONString(edge));
+  }
 }

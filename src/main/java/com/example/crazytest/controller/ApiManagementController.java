@@ -51,7 +51,7 @@ public class ApiManagementController {
 
   @GetMapping("/get/id")
   @Operation(summary = "根据id查询接口")
-  public Result<ApiManagement> getById(@RequestParam(required = true) Long id) {
+  public Result<ApiManagement> getById(@RequestParam(value = "id") Long id) {
     return Result.success(apiManagementService.getById(id));
   }
 
@@ -120,6 +120,12 @@ public class ApiManagementController {
   public Result<Void> importSwaggerImport(@RequestBody ImportApiReq imp) throws IOException {
     importerService.importSwaggerApi(imp);
     return Result.success();
+  }
+
+  @GetMapping("/app/list")
+  @Operation(summary = "应用下所有用例")
+  public Result<List<ApiManagement>> appApiList(@RequestParam Long appId) {
+    return Result.success(apiManagementService.appApiList(appId));
   }
 
 }

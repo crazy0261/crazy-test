@@ -33,5 +33,6 @@ public interface ApiManagementService {
 
   Boolean batchOUpdateOwner(ApiTypeReq apiTypeReq);
 
+  List<ApiManagement> appApiList(Long appId);
 
 }

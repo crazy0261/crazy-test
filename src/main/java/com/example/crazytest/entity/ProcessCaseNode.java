@@ -31,8 +31,7 @@ public class ProcessCaseNode implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @ApiModelProperty(value = "id")
-  @TableId(value = "id", type = IdType.AUTO)
-  private String id;
+  private Long id;
 
   @ApiModelProperty(value = "项目id")
   private Long projectId;
@@ -71,10 +70,10 @@ public class ProcessCaseNode implements Serializable {
   private String groovyScript;
 
   @ApiModelProperty(value = "加密参数id")
-  private Integer secretId;
+  private Long secretId;
 
   @ApiModelProperty(value = "数据源ID(仅SQL节点用到)")
-  private Integer dataSourceId;
+  private Long dataSourceId;
 
   @ApiModelProperty(value = "SQL脚本(仅SQL节点用到)")
   private String sqlScript;

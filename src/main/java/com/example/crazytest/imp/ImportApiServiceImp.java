@@ -14,6 +14,7 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,6 @@ public class ImportApiServiceImp implements ImportApiService {
 
     ApiManagement apiManagement = ApiManagementConvert
         .apiManagementToApiManagementConvert(operation.getSummary(), appId, method, path, null);
-
     apiManagementService.save(apiManagement);
 
   }

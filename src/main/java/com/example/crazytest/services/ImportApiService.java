@@ -6,12 +6,10 @@ import java.io.IOException;
 
 public interface ImportApiService {
 
-   Boolean importCurlApi(ImportApiReq importApi);
+  Boolean importCurlApi(ImportApiReq importApi);
 
-   void importSwaggerApi(ImportApiReq importApi) throws IOException;
+  void importSwaggerApi(ImportApiReq importApi) throws IOException;
 
-   void operationCovert(Long appId, String method, String path, Operation operation) ;
+  void operationCovert(Long appId, String method, String path, Operation operation);
 
-
-
-   }
+}
