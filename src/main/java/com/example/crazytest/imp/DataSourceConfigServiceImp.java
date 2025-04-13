@@ -18,6 +18,7 @@ import com.example.crazytest.vo.DataSourceConfigVO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.ObjectUtils;
@@ -119,6 +120,11 @@ public class DataSourceConfigServiceImp implements DataSourceConfigService {
             .map(json -> json.getJSONObject(envId.toString()))
             .findFirst()
             .map(json -> JSON.toJavaObject(json, DataSourceDTO.class))).orElse(null);
+  }
+
+  @Override
+  public List<DataSourceConfig> getAppList(Long appId) {
+    return dataSourceConfigRepositoryService.getAppList(BaseContext.getSelectProjectId(),appId);
   }
 
 }

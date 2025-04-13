@@ -2,8 +2,10 @@ package com.example.crazytest.services;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.DataSourceDTO;
+import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.vo.DataSourceConfigVO;
+import java.util.List;
 
 public interface DataSourceConfigService {
 
@@ -18,6 +20,8 @@ public interface DataSourceConfigService {
   Boolean del(Long id);
 
   DataSourceDTO getDataSource(Long id, Long envId);
+
+  List<DataSourceConfig>  getAppList(Long appId);
 
 
 }

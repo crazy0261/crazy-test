@@ -2,6 +2,7 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.services.DataSourceConfigService;
 import com.example.crazytest.utils.Result;
@@ -59,6 +60,12 @@ public class DataSourceConfigController {
   @Operation(summary = "删除数据库配置")
   public Result<Boolean> del(@RequestBody DataSourceConfigReq dataSourceConfigReq) {
     return Result.success(dataSourceService.del(dataSourceConfigReq.getId()));
+  }
+
+  @GetMapping("/app/list")
+  @Operation(summary = "当前应用下数据库")
+  public Result<List<DataSourceConfig>> getAppList(@RequestParam(value = "appId") Long appId) {
+    return Result.success(dataSourceService.getAppList(appId));
   }
 
 }

@@ -6,6 +6,7 @@ import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.mapper.DataSourceConfigMapper;
 import com.example.crazytest.repository.DataSourceConfigRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,14 @@ public class DataSourceConfigRepositoryServiceImpl extends
         .orderByDesc(DataSourceConfig::getUpdateTime)
         .page(new Page<>(current, pageSize));
 
+  }
+
+  @Override
+  public List<DataSourceConfig> getAppList(Long projectId, Long appId) {
+    return this.lambdaQuery()
+        .eq(DataSourceConfig::getProjectId, projectId)
+        .eq(DataSourceConfig::getAppId, appId)
+        .eq(DataSourceConfig::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

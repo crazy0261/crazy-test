@@ -3,6 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DataSourceConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -19,6 +20,9 @@ public interface DataSourceConfigRepositoryService extends IService<DataSourceCo
   Long getCountByProjectIdNameCount(Long projectId, String name);
 
   IPage<DataSourceConfig> list(Long projectId, String name, Integer current, Integer pageSize);
+
+  List<DataSourceConfig> getAppList(Long projectId,Long appId);
+
 
 
 }

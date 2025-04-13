@@ -5,6 +5,7 @@ import com.example.crazytest.entity.ProcessCaseNode;
 import com.example.crazytest.entity.req.ProcessCaseNodeReq;
 import com.example.crazytest.services.ProcessCaseNodeService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.ProcessCaseNodeVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ProcessCaseNodeController {
 
   @Operation(summary = "查询详情")
   @GetMapping("/detail")
-  public Result<ProcessCaseNode> detail(@RequestParam(value = "id") Long id) {
+  public Result<ProcessCaseNodeVO> detail(@RequestParam(value = "id") Long id) {
     return Result.success(processCaseNodeService.detail(id));
   }
 
