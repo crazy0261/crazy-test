@@ -108,9 +108,14 @@ public class ProcessCaseController {
 
   @GetMapping("/detail")
   @Operation(summary = "用例详情")
-  public Result<ProcessCaseVO> detail(@RequestParam(value = "id",required = false) Long id) {
+  public Result<ProcessCaseVO> detail(@RequestParam(value = "id", required = false) Long id) {
     return Result.success(processCaseService.detail(id));
   }
 
+  @GetMapping("/sub")
+  @Operation(summary = "当前项目下子流程")
+  public Result<List<ProcessCase>> getIsSubProcess() {
+    return Result.success(processCaseService.getIsSubProcess());
+  }
 
 }

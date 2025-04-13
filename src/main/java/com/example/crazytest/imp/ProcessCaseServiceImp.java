@@ -156,4 +156,9 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     processCaseRepositoryService
         .updateNodeAOrEdge(id, JSON.toJSONString(nodes), JSON.toJSONString(edge));
   }
+
+  @Override
+  public List<ProcessCase> getIsSubProcess() {
+    return processCaseRepositoryService.getIsSubProcess(BaseContext.getSelectProjectId());
+  }
 }

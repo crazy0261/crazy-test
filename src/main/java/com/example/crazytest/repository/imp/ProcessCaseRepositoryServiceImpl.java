@@ -97,4 +97,13 @@ public class ProcessCaseRepositoryServiceImpl extends
         .set(ProcessCase::getEdges, edge)
         .update();
   }
+
+  @Override
+  public List<ProcessCase> getIsSubProcess(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ProcessCase::getProjectId, projectId)
+        .eq(ProcessCase::getIsSubProcess, Boolean.TRUE)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

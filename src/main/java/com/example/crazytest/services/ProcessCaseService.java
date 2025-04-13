@@ -31,4 +31,6 @@ public interface ProcessCaseService {
 
   void updateNodeAOrEdge(Long id, List<JSONObject> nodes, List<JSONObject> edge);
 
+  List<ProcessCase> getIsSubProcess();
+
 }

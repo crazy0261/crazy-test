@@ -29,4 +29,6 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   void updateNodeAOrEdge(Long id, String nodes, String edge);
 
+  List<ProcessCase> getIsSubProcess(Long projectId);
+
 }
