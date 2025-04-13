@@ -4,14 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
+import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
+import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
+import com.example.crazytest.vo.ApiCaseResultVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import java.util.List;
@@ -38,6 +41,12 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   @Autowired
   ApiCaseRepositoryService apiCaseRepository;
+
+  @Autowired
+  ApiCaseRepositoryService apiCaseService;
+
+  @Autowired
+  UserRepositoryService userRepository;
 
   @Override
   public ApiCaseRecord queryById(Long id) {
@@ -82,5 +91,85 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .listResult(projectId, recentExecResult);
     return apiCaseRecords.stream().map(ApiCaseRecord::getApiTestcaseId)
         .collect(Collectors.toList());
+  }
+
+  /**
+   * 获取最近一次执行结果
+   * @param scheduleBatchId
+   * @return
+   */
+  @Override
+  public List<Long> lastExecResult(Long scheduleBatchId) {
+    List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
+        .lastExecResult(BaseContext.getSelectProjectId(), scheduleBatchId);
+
+    return apiCaseRecordList.stream().map(ApiCaseRecord::getId)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * 根据任务id获取结果详情
+   * @param apiCaseResultIds
+   * @param current
+   * @param pageSize
+   * @return
+   */
+  @Override
+  public IPage<ApiCaseRecord> resultList(List<Long> apiCaseResultIds, Integer current,
+      Integer pageSize) {
+    return apiCaseResultRepositoryService
+        .resultList(BaseContext.getSelectProjectId(), apiCaseResultIds, current, pageSize);
+  }
+
+  /**
+   * 获取任务列表详情
+   * @param scheduleBatchId
+   * @param current
+   * @param pageSize
+   * @return
+   */
+  @Override
+  public IPage<ApiCaseResultVO> getApiResultDetail(Long scheduleBatchId, Integer current,
+      Integer pageSize) {
+    List<Long> ids = lastExecResult(scheduleBatchId);
+    IPage<ApiCaseRecord> apiCaseRecordIPage = resultList(ids, current, pageSize);
+
+    return apiCaseRecordIPage.convert(apiCaseRecord -> {
+      ApiCaseResultVO apiCaseRecordVO = new ApiCaseResultVO();
+      BeanUtils.copyProperties(apiCaseRecord, apiCaseRecordVO);
+
+      ApiCase apiCase = apiCaseService.getById(apiCaseRecord.getApiTestcaseId());
+      List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
+          .getResultChildren(BaseContext.getSelectProjectId(), scheduleBatchId,
+              apiCaseRecord.getApiTestcaseId(), apiCaseRecord.getId());
+      User user = userRepository.getById(apiCase.getOwnerId());
+
+      List<ApiCaseResultVO> apiCaseRecordChildren = getApiCaseRecordChildrenCovert(
+          apiCaseRecordList, user.getName(), apiCase.getName());
+
+      apiCaseRecordVO.setOwnerName(user.getName());
+      apiCaseRecordVO.setCaseName(apiCase.getName());
+      apiCaseRecordVO.setChildren(apiCaseRecordChildren);
+      return apiCaseRecordVO;
+    });
+  }
+
+  /**
+   * 获取用例执行结果详情 整理子集
+   * @param apiCaseRecordList
+   * @param ownerName
+   * @param caseName
+   * @return
+   */
+  @Override
+  public List<ApiCaseResultVO> getApiCaseRecordChildrenCovert(List<ApiCaseRecord> apiCaseRecordList,
+      String ownerName, String caseName) {
+    return apiCaseRecordList.stream().map(apiCaseRecord -> {
+      ApiCaseResultVO apiCaseResultVO = new ApiCaseResultVO();
+      BeanUtils.copyProperties(apiCaseRecord, apiCaseResultVO);
+      apiCaseResultVO.setOwnerName(ownerName);
+      apiCaseResultVO.setCaseName(caseName);
+      return apiCaseResultVO;
+    }).collect(Collectors.toList());
   }
 }
