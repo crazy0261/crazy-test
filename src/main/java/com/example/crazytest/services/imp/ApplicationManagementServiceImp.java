@@ -1,8 +1,6 @@
-package com.example.crazytest.imp;
+package com.example.crazytest.services.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.vo.ApplicationManagementVO;
@@ -13,7 +11,6 @@ import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApplicationManagementService;
 import com.example.crazytest.utils.BaseContext;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

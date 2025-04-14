@@ -1,4 +1,4 @@
-package com.example.crazytest.imp;
+package com.example.crazytest.services.imp;
 
 import com.example.crazytest.entity.ProjectUserAssociation;
 import com.example.crazytest.enums.ResultEnum;
