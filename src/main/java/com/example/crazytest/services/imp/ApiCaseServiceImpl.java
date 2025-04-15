@@ -206,7 +206,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     // 环境变量-公共/私有
     Map<String, String> inputParamsVariables = Optional.ofNullable(apiDebugReq.getInputParams())
-        .map(item -> item.stream().collect(Collectors.toMap(ParamsListVO::getKey,ParamsListVO::getValue)))
+        .map(item -> item.stream()
+            .collect(Collectors.toMap(ParamsListVO::getKey, ParamsListVO::getValue)))
         .orElse(Collections.emptyMap());
 
     Map<String, String> envionmentVariables = DynamicVariableParserUtil.parseToMap();
@@ -254,7 +255,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
         .method(apiManagement.getMethod())
         .headers(headers)
-        .params(paramsJson)
+        .params(Objects.nonNull(apiDebugReq.getTestAccountInParam()) ? apiDebugReq
+            .getTestAccountInParam() : paramsJson)
         .build();
 
     long startTime = System.currentTimeMillis();

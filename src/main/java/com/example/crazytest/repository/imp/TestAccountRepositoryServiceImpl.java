@@ -52,4 +52,13 @@ public class TestAccountRepositoryServiceImpl extends
         .eq(TestAccount::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public TestAccount enable(Long id) {
+    return this.lambdaQuery()
+        .eq(TestAccount::getId, id)
+        .eq(TestAccount::getGenTokenStatus, "SUCCESS")
+        .eq(TestAccount::getIsDelete, Boolean.FALSE)
+        .one();
+  }
 }

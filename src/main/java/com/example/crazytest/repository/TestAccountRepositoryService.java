@@ -22,4 +22,6 @@ public interface TestAccountRepositoryService extends IService<TestAccount> {
 
   List<TestAccount> getProjectEnvTestAccount(Long projectId);
 
+  TestAccount enable(Long id);
+
 }

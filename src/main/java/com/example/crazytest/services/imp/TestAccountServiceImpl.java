@@ -99,7 +99,7 @@ public class TestAccountServiceImpl implements TestAccountService {
       throws IOException {
     ApiDebugReq apiDebugReq = new ApiDebugReq();
     apiDebugReq.setId(testAccount.getApiCaseId());
-    apiDebugReq.setInputParams(JSON.parseArray(testAccount.getInputParams()));
+    apiDebugReq.setTestAccountInParam(JSON.parseObject(testAccount.getInputParams()));
 
     ResultApiVO result = apiCaseService.debug(apiDebugReq);
     String tokenStatus = Optional.ofNullable(result.getAssertResultVo()).map(
