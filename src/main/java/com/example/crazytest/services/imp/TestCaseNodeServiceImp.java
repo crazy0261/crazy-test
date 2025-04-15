@@ -14,7 +14,6 @@ import com.example.crazytest.services.NodeService;
 import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +50,13 @@ public class TestCaseNodeServiceImp implements NodeService {
     JSONObject outParamJson = JSON.parseObject(processCaseNode.getOutputParams());
 
     Map<String, String> envParameter = context.getEnvParameter();
-    Map<String, String> outParamMap = new HashMap<>();
     outParamJson.forEach((key, value) -> {
       if (JSONPathUtil.isJsonPathCheck(value.toString())) {
-        outParamMap.put(key, Objects.requireNonNull(
+        envParameter.put(key, Objects.requireNonNull(
             JSONPathUtil.getJsonPathValue(outParamJson, value.toString())).toString());
       }
     });
 
-    envParameter.putAll(outParamMap);
     context.setEnvParameter(envParameter);
 
     result.setStatus(

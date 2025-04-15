@@ -23,5 +23,4 @@ public interface DataSourceConfigService {
 
   List<DataSourceConfig>  getAppList(Long appId);
 
-
 }

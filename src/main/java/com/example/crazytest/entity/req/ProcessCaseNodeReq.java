@@ -40,7 +40,7 @@ public class ProcessCaseNodeReq {
   private String requestParams;
 
   @ApiModelProperty(value = "断言")
-  List<AssertVO> assertArray;
+  List<AssertVO> assertsArray;
 
   @ApiModelProperty(value = "入参")
   private String inputParams;

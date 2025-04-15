@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataSourceUtil {
 
+  private DataSourceUtil() {
+  }
+
   public static DataSource createDataSource(DataSourceConfigReq dataSourceConfigReq) {
     HikariConfig hikariConfig = new HikariConfig();
     try {
@@ -34,7 +37,6 @@ public class DataSourceUtil {
       AssertUtil.assertTrue(Boolean.TRUE, ResultEnum.DATA_SOURCE_NOT_EXIST.getMessage());
       return null;
     }
-
   }
 
 }

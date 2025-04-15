@@ -51,7 +51,7 @@ public class ProcessCaseNodeServiceImp implements ProcessCaseNodeService {
     ProcessCaseNode processCaseNode = new ProcessCaseNode();
     BeanUtils.copyProperties(processCaseNodeReq, processCaseNode);
     processCaseNode.setProjectId(BaseContext.getSelectProjectId());
-    processCaseNode.setAssertList(Optional.ofNullable(processCaseNodeReq.getAssertArray()).map(
+    processCaseNode.setAssertList(Optional.ofNullable(processCaseNodeReq.getAssertsArray()).map(
         JSONArray::toJSONString).orElse("[]"));
 
     processCaseService

@@ -5,10 +5,11 @@ import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.enums.NodeTypeEnum;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public interface NodeService {
 
   NodeTypeEnum getSupportedType();
 
-  ExecutionResult execute(Node node, ExecutionProcessContext context) throws IOException;
+  ExecutionResult execute(Node node, ExecutionProcessContext context) throws SQLException, IOException;
 }
