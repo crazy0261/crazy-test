@@ -4,6 +4,7 @@ package com.example.crazytest.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.services.ProcessCaseService;
@@ -116,6 +117,12 @@ public class ProcessCaseController {
   @Operation(summary = "当前项目下子流程")
   public Result<List<ProcessCase>> getIsSubProcess() {
     return Result.success(processCaseService.getIsSubProcess());
+  }
+
+  @GetMapping("/debug")
+  @Operation(summary = "场景用例调试")
+  public Result<Long> debug(@RequestBody ApiDebugReq apiDebugReq) {
+    return Result.success(processCaseService.debug(apiDebugReq));
   }
 
 }

@@ -1,5 +1,6 @@
 package com.example.crazytest.repository;
 
+import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseResult;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
@@ -17,5 +18,8 @@ public interface ProcessCaseResultRepositoryService extends IService<ProcessCase
   List<ProcessCaseResult> list(Long projectId, String status);
 
   ProcessCaseResult lastResult(Long projectId, Long caseId);
+
+  void updateNodes(Long id, String nodes, String status);
+
 
 }

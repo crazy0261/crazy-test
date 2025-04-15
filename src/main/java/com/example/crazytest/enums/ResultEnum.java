@@ -20,7 +20,11 @@ public enum ResultEnum {
   APP_ID_EXIST_FAIL(400, "该应用下已存在该域名的环境配置"),
   DATA_SOURCE_NOT_EXIST(400, "数据源不存在"),
   NAME_REPEAT(400, "名称已存在"),
-  USER_EXIST_FAIL(400, "用户已存在");
+  USER_EXIST_FAIL(400, "用户已存在"),
+  API_CASE_NOT_FAIL(400, "用例不存在"),
+  PROCESS_CASE_NOT_FAIL(400, "场景用例不存在"),
+  START_NODE_NOT_EXIST(400, "流程节点必须有开始节点");
+
 
   private final int code;
   private final String message;

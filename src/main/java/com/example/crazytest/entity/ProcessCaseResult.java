@@ -36,6 +36,9 @@ public class ProcessCaseResult implements Serializable {
   @ApiModelProperty(value = "项目id")
   private Long projectId;
 
+  @ApiModelProperty(value = "应用Id")
+  private Long appId;
+
   @ApiModelProperty(value = "定时任务Id")
   private Long scheduleId;
 

@@ -1,6 +1,7 @@
 package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseResult;
 import com.example.crazytest.mapper.ProcessCaseResultMapper;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
@@ -39,5 +40,14 @@ public class ProcessCaseResultRepositoryServiceImpl extends
         .orderByDesc(ProcessCaseResult::getUpdateTime)
         .last("limit 1")
         .one();
+  }
+
+  @Override
+  public void updateNodes(Long id, String nodes, String status) {
+    this.lambdaUpdate()
+        .eq(ProcessCaseResult::getId, id)
+        .set(ProcessCaseResult::getNodes, nodes)
+        .set(ProcessCaseResult::getStatus, status)
+        .update();
   }
 }

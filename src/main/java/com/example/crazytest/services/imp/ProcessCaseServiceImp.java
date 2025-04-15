@@ -6,16 +6,21 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
+import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.enums.PriorityEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
+import com.example.crazytest.services.FlowEngineService;
+import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
@@ -47,6 +52,12 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   @Autowired
   UserRepositoryService userRepository;
+
+  @Autowired
+  FlowEngineService flowEngineService;
+
+  @Autowired
+  ProcessCaseResultService processCaseResultService;
 
   @Override
   public IPage<ProcessCaseVO> listPage(ProcessCaseDTO processCaseDTO) {
@@ -86,7 +97,16 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   }
 
   @Override
+  public void checkNodeStartType(List<JSONObject> nodes) {
+    Boolean isStartNode = nodes.stream()
+        .anyMatch(node -> node.getString("type").equals(NodeTypeEnum.START_NODE.getTypeName()));
+    AssertUtil.assertTrue(isStartNode, ResultEnum.START_NODE_NOT_EXIST.getMessage());
+  }
+
+  @Override
   public Boolean save(ProcessCaseReq processCaseReq) {
+    checkNodeStartType(processCaseReq.getNodes());
+
     ProcessCase processCase = new ProcessCase();
     BeanUtils.copyProperties(processCaseReq, processCase);
     processCase.setInputParams(
@@ -160,5 +180,22 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   @Override
   public List<ProcessCase> getIsSubProcess() {
     return processCaseRepositoryService.getIsSubProcess(BaseContext.getSelectProjectId());
+  }
+
+  @Override
+  public Long debug(ApiDebugReq apiDebugReq) {
+    ExecutionProcessContext context = new ExecutionProcessContext();
+    ProcessCase processCase = processCaseRepositoryService.getById(apiDebugReq.getId());
+    AssertUtil.assertNotNull(processCase, ResultEnum.PROCESS_CASE_NOT_FAIL.getMessage());
+
+    context.setId(apiDebugReq.getId());
+    context.setApiDebugReq(apiDebugReq);
+    context.setProjectId(processCase.getProjectId());
+
+    flowEngineService.executeFlow(processCase.getNodes(), processCase.getEdges(), context);
+
+    long resultId = processCaseResultService.insert(processCase, context);
+    context.setResultId(resultId);
+    return resultId;
   }
 }
