@@ -38,7 +38,6 @@ public class DynamicVariableParserUtil {
       String key = "${" + entry.getKey() + "}";
       String value = entry.getValue().get();
       resultMap.put(key, value);
-
     }
     return resultMap;
   }

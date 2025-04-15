@@ -3,10 +3,11 @@ package com.example.crazytest.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.crazytest.entity.ApiCase;
+import com.alibaba.fastjson.TypeReference;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.vo.ParamsListVO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +16,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,46 +28,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class VariablesUtil {
 
-  public Map<String, String> formatHeader(Long envId, Map<String, String> variables,
-      List<ParamsListVO> paramsArrList, EnvConfig envConfig, ApiCase apiCase) {
+  public Map<String, String> formatHeader(Map<String, String> variables, EnvConfig envConfig,
+      String requestHeader) {
     List<ParamsListVO> headerEnv = Optional.ofNullable(envConfig)
         .map(item -> JSON.parseArray(item.getRequestHeaders(), ParamsListVO.class))
         .orElse(new ArrayList<>());
-    List<ParamsListVO> envVariables = Optional.ofNullable(envConfig)
-        .map(item -> JSON.parseArray(item.getEnvVariables(), ParamsListVO.class))
-        .orElse(new ArrayList<>());
-    List<ParamsListVO> apiCaseVariables = Optional.ofNullable(apiCase)
-        .map(item -> JSON.parseObject(item.getEnvVariables()))
-        .map(item -> item.getJSONObject(String.valueOf(envId)))
-        .map(item -> item.getJSONArray("params"))
-        .map(jsonArray -> jsonArray.toJavaList(ParamsListVO.class))
-        .orElse(new ArrayList<>());
 
-    // 合并变量
-    Map<String, String> allVariables = Stream
-        .concat(envVariables.stream(), apiCaseVariables.stream())
-        .collect(Collectors.toMap(
-            ParamsListVO::getKey,
-            ParamsListVO::getValue,
-            (oldValue, newValue) -> newValue
-        ));
+    // 应用 请求头
+    Map<String, String> envConfigMap = Optional.of(headerEnv).map(List::stream)
+        .orElseGet(Stream::empty)
+        .collect(Collectors.toMap(ParamsListVO::getKey, ParamsListVO::getValue));
 
-    // 自定义请求参数
-    Map<String, String> paramsMap = paramsArrList.stream().collect(Collectors.toMap(
-        ParamsListVO::getKey,
-        ParamsListVO::getValue,
-        (oldValue, newValue) -> newValue
-    ));
+    // 请求中请求头
+    Map<String, String> headerMap = Optional.ofNullable(requestHeader)
+        .map(item -> JSON.parseObject(item, new TypeReference<Map<String, String>>() {
+        }))
+        .orElse(new HashMap<>());
 
-    allVariables.putAll(variables);
-    allVariables.putAll(paramsMap);
+    envConfigMap.putAll(headerMap);
+    envConfigMap.replaceAll((key, value) -> replaceStr(value, variables));
 
-    // 请求头
-    return headerEnv.stream()
-        .collect(Collectors.toMap(
-            ParamsListVO::getKey,
-            item -> replaceStr(item.getValue(), allVariables),
-            (oldValue, newValue) -> newValue));
+    return envConfigMap;
   }
 
 

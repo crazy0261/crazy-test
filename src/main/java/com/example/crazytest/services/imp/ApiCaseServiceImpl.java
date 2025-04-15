@@ -8,7 +8,6 @@ import cn.hutool.crypto.digest.HMac;
 import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.crypto.symmetric.AES;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +23,7 @@ import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ConditionTypeEnum;
+import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
@@ -173,9 +173,12 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     apiCaseReq.setProjectId(BaseContext.getSelectProjectId());
     ApiCase apiCase = new ApiCase();
     BeanUtils.copyProperties(apiCaseReq, apiCase);
-    apiCase.setOwnerId(Optional.ofNullable(apiCaseReq.getOwnerId()).orElse(BaseContext.getUserId()));
-    apiCase.setAsserts(Optional.ofNullable(apiCaseReq.getAssertsArray()).map(JSON::toJSONString).orElse(""));
-    apiCase.setEnvVariables(Optional.ofNullable(apiCaseReq.getEnvVariables()).map(JSON::toString).orElse("{}"));
+    apiCase
+        .setOwnerId(Optional.ofNullable(apiCaseReq.getOwnerId()).orElse(BaseContext.getUserId()));
+    apiCase.setAsserts(
+        Optional.ofNullable(apiCaseReq.getAssertsArray()).map(JSON::toJSONString).orElse(""));
+    apiCase.setEnvVariables(
+        Optional.ofNullable(apiCaseReq.getEnvVariables()).map(JSON::toString).orElse("{}"));
 
     return apiCaseRepository.saveOrUpdate(apiCase);
   }
@@ -195,29 +198,29 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   @Override
   public ResultApiVO debug(ApiDebugReq apiDebugReq) throws IOException {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
-    AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), "用例不存在");
+    AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), ResultEnum.API_CASE_NOT_FAIL.getMessage());
 
     // 获取域名
     EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
-    // 环境变量
+    // 环境变量-公共/私有
+    Map<String, String> inputParamsVariables = Optional.ofNullable(apiDebugReq.getInputParams())
+        .map(item -> item.stream().collect(Collectors.toMap(ParamsListVO::getKey,ParamsListVO::getValue)))
+        .orElse(Collections.emptyMap());
+
     Map<String, String> envionmentVariables = DynamicVariableParserUtil.parseToMap();
+    envionmentVariables.putAll(inputParamsVariables);
 
     // 获取API path
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
-
-    // 前置参数
-    JSONArray paramsArr = apiDebugReq.getInputParams();
-    List<ParamsListVO> paramsArrList = Optional.ofNullable(paramsArr)
-        .map(item -> item.toJavaList(ParamsListVO.class)).orElse(new ArrayList<>());
 
     // 获取断言
     List<AssertVO> assertsArray = Optional.ofNullable(apiCase.getAsserts())
         .map(str -> JSON.parseArray(str, AssertVO.class)).orElse(Collections.emptyList());
 
     // 获取token
-    Long accountId =apiDebugReq.getTestAccount();
+    Long accountId = apiDebugReq.getTestAccount();
 
     if (Objects.nonNull(accountId)) {
       TestAccount user = testAccountService.getById(accountId);
@@ -228,7 +231,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     // 请求头整理
     Map<String, String> headers = variablesUtil
-        .formatHeader(apiDebugReq.getEnvId(), envionmentVariables, paramsArrList, envConfig, apiCase);
+        .formatHeader(envionmentVariables, envConfig, apiCase.getRequestHeaders());
 
     // 请求参数格式化
     JSONObject paramsJson = variablesUtil
@@ -264,7 +267,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
-        .response(encryptJson.isEmpty() ? decryptRequestBody(encryptJson.getString("secret"), body) : body)
+        .response(encryptJson.isEmpty() ? decryptRequestBody(encryptJson.getString("secret"), body)
+            : body)
         .assertResultVo(CollUtil.isNotEmpty(assertsArray) ? assertResult(assertsArray, body) : null)
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)

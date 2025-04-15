@@ -1,6 +1,7 @@
 package com.example.crazytest.entity.req;
 
-import com.alibaba.fastjson.JSONArray;
+import com.example.crazytest.vo.ParamsListVO;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -16,7 +17,7 @@ public class ApiDebugReq {
   private Long id;
   private Long envId;
   private Long testAccount;
-  private JSONArray inputParams;
+  private List<ParamsListVO> inputParams;
   private String mode;
   private String remark;
   private Long scheduleId;
