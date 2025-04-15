@@ -3,6 +3,7 @@ package com.example.crazytest.services.imp;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
+import com.example.crazytest.enums.NodeStatusEnum;
 import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.services.NodeService;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class EndNodeServiceImp implements NodeService {
 
   @Override
   public ExecutionResult execute(Node node, ExecutionProcessContext context) {
-    return null;
+    ExecutionResult result = new ExecutionResult();
+    result.setStatus(NodeStatusEnum.SUCCESS);
+    return result;
   }
 }
