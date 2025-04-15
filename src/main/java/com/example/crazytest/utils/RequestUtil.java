@@ -3,12 +3,16 @@ package com.example.crazytest.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.factory.OkHttpClientFactory;
+import com.example.crazytest.vo.ParamsListVO;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -67,7 +71,6 @@ public class RequestUtil {
       requestBuilder.header(entry.getKey(), entry.getValue());
     }
 
-
     // 发送请求
     return client.newCall(requestBuilder.build()).execute() ;
 
@@ -104,6 +107,42 @@ public class RequestUtil {
     }
     matcher.appendTail(result);
     return result.toString();
+  }
+
+  /**
+   * 构建请求参数
+   * @param url
+   * @param method
+   * @param headers
+   * @param params
+   * @return
+   */
+  public static OkHttpRequestConfig requestConfig(String url, String method, Map<String, String> headers,
+      JSONObject params) {
+
+    return OkHttpRequestConfig.builder()
+        .url(url)
+        .method(method)
+        .headers(headers)
+        .params(params)
+        .build();
+  }
+
+  /**
+   * 获取环境变量
+   * @param inputParams
+   * @return
+   */
+
+  public static Map<String, String> envVariablesPutAll(List<ParamsListVO> inputParams) {
+    Map<String, String> envVariables = DynamicVariableParserUtil.parseToMap();
+
+    Map<String, String> inputParamsVariables = Optional.ofNullable(inputParams)
+        .map(item -> item.stream()
+            .collect(Collectors.toMap(ParamsListVO::getKey, ParamsListVO::getValue)))
+        .orElse(Collections.emptyMap());
+    envVariables.putAll(inputParamsVariables);
+    return envVariables;
   }
 
 }

@@ -4,10 +4,11 @@ import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.enums.NodeTypeEnum;
+import java.io.IOException;
 
 public interface NodeService {
 
   NodeTypeEnum getSupportedType();
 
-  ExecutionResult execute(Node node, ExecutionProcessContext context);
+  ExecutionResult execute(Node node, ExecutionProcessContext context) throws IOException;
 }

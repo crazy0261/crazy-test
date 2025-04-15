@@ -40,7 +40,6 @@ import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
-import com.example.crazytest.utils.DynamicVariableParserUtil;
 import com.example.crazytest.utils.EncryptUtil;
 import com.example.crazytest.utils.JSONPathUtil;
 import com.example.crazytest.utils.RequestUtil;
@@ -48,7 +47,6 @@ import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.ApiCaseVO;
 import com.example.crazytest.vo.AssertVO;
 import com.example.crazytest.vo.AssertResultVo;
-import com.example.crazytest.vo.ParamsListVO;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -157,9 +155,9 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     ApiCaseVO apiCaseVO = new ApiCaseVO();
     BeanUtils.copyProperties(apiCase, apiCaseVO);
 
-    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
+//    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
     ApiManagement apiInfo = apiManageRepositoryService.getById(apiCase.getApiId());
-    apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
+//    apiCaseVO.setDomainUrl(domainInfoService.getById(envConfig.getDomainId()).getUrlPath());
     apiCaseVO.setAssertsArray(Objects.isNull(apiCase.getAsserts()) ? new ArrayList<>()
         : JSON.parseArray(apiCase.getAsserts(), AssertVO.class));
     apiCaseVO.setParamsTemplate(apiInfo.getRequestParams());
@@ -201,16 +199,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), ResultEnum.API_CASE_NOT_FAIL.getMessage());
 
     // 获取域名
-    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId());
+    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId(), apiDebugReq.getEnvId());
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
-    // 环境变量-公共/私有
-    Map<String, String> inputParamsVariables = Optional.ofNullable(apiDebugReq.getInputParams())
-        .map(item -> item.stream().collect(Collectors.toMap(ParamsListVO::getKey,ParamsListVO::getValue)))
-        .orElse(Collections.emptyMap());
-
-    Map<String, String> envionmentVariables = DynamicVariableParserUtil.parseToMap();
-    envionmentVariables.putAll(inputParamsVariables);
+    // 全局参数整合
+    Map<String, String> envionmentVariables = RequestUtil.envVariablesPutAll(apiDebugReq.getInputParams());
 
     // 获取API path
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
@@ -250,13 +243,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
       }
     }
 
-    OkHttpRequestConfig request = OkHttpRequestConfig.builder()
-        .url(domainInfo.getUrlPath().concat(apiManagement.getPath()))
-        .method(apiManagement.getMethod())
-        .headers(headers)
-        .params(Objects.nonNull(apiDebugReq.getTestAccountInParam()) ? apiDebugReq
-            .getTestAccountInParam() : paramsJson)
-        .build();
+    OkHttpRequestConfig request =
+        RequestUtil.requestConfig(domainInfo.getUrlPath().concat(apiManagement.getPath()),
+            apiManagement.getMethod(), headers,
+            Objects.nonNull(apiDebugReq.getTestAccountInParam()) ? apiDebugReq
+                .getTestAccountInParam() : paramsJson);
 
     long startTime = System.currentTimeMillis();
     Response response = RequestUtil.sendRequest(request);

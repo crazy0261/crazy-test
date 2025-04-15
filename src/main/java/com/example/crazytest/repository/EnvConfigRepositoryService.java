@@ -19,7 +19,7 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
       List<String> domainId,
       int current, int pageSize);
 
-  EnvConfig getByAppId(Long projectId, Long appId);
+  EnvConfig getByAppId(Long projectId, Long appId, Long envId);
 
   List<EnvConfig> getEnvConfigByAppIdAndDomainId(Long appId, Long domainId);
 

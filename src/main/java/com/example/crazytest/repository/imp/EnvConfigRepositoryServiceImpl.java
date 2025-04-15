@@ -42,10 +42,11 @@ public class EnvConfigRepositoryServiceImpl extends
   }
 
   @Override
-  public EnvConfig getByAppId(Long projectId, Long appId) {
+  public EnvConfig getByAppId(Long projectId, Long appId, Long envId) {
     return this.lambdaQuery()
         .eq(EnvConfig::getAppId, appId)
         .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getEnvId, envId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .last("limit 1")
         .one();

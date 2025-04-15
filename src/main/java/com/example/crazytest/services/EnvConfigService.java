@@ -11,7 +11,7 @@ public interface EnvConfigService {
   IPage<EnvConfigVO> list(String appid, String name, String sort, String domainName, int current,
       int pageSize);
 
-  EnvConfig getByAppId(Long appId);
+  EnvConfig getByAppId(Long appId,Long envId);
 
   Boolean save(EnvConfigReq envConfigReq);
 
