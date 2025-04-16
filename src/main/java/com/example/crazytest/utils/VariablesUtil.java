@@ -71,7 +71,7 @@ public class VariablesUtil {
   }
 
   /**
-   * 替换字符串 ${xxx} 为变量值 xxx 替换多个
+   * 替换字符串 ${xxx} 为变量值 xxx 替换多个 批量
    *
    * @param value
    * @param variables
@@ -138,6 +138,5 @@ public class VariablesUtil {
       }
     }
   }
-
 
 }

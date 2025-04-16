@@ -25,6 +25,7 @@
     <fastjson.version>1.2.47</fastjson.version>
     <okhttp.version>4.9.3</okhttp.version>
     <xxl-job-core.version>2.4.0</xxl-job-core.version>
+    <groovy-all.version>3.0.9</groovy-all.version>
   </properties>
 
   <dependencies>
@@ -112,6 +113,11 @@
       <groupId>io.swagger.parser.v3</groupId>
       <artifactId>swagger-parser</artifactId>
       <version>${swagger-parser.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${groovy-all.version}</version> <!-- 请根据需要选择合适的版本 -->
     </dependency>
 
 
