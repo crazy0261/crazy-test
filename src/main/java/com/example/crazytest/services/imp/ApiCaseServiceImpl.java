@@ -9,7 +9,6 @@ import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.crypto.symmetric.AES;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPath;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.entity.ApiCase;
@@ -203,7 +202,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
     // 全局参数整合
-    Map<String, String> envionmentVariables = RequestUtil.envVariablesPutAll(apiDebugReq.getInputParams());
+    Map<String, String> envionmentVariables = RequestUtil
+        .envVariablesPutAll(apiDebugReq.getInputParams());
 
     // 获取API path
     ApiManagement apiManagement = apiManagementService.getById(apiCase.getApiId());
@@ -301,12 +301,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     }
 
     try {
-      if (jsonPath.contains("size()")) {
-        Object resultSize = JSONPathUtil.getJsonPathValue(body, jsonPath);
-        actualValue = Optional.ofNullable(resultSize).map(Object::toString).orElse("");
-      } else {
-        actualValue = JSONPath.eval(body, jsonPath).toString();
-      }
+      actualValue = JSONPathUtil.isJsonPathValue(body, jsonPath);
     } catch (Exception e) {
       return Boolean.FALSE;
     }

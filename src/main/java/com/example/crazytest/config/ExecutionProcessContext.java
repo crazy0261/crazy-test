@@ -2,6 +2,7 @@ package com.example.crazytest.config;
 
 import com.example.crazytest.entity.Edge;
 import com.example.crazytest.entity.Node;
+import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import java.util.List;
 import java.util.Map;
@@ -20,18 +21,13 @@ public class ExecutionProcessContext {
   Long id;
   Long resultId;
   Long projectId;
+  Node currentNode;
+  private String mode;
+  ApiDebugReq apiDebugReq;
+  ProcessCase processCase;
   private Long scheduleId;
   private Long scheduleBatchId;
-  private String mode;
-  Node currentNode;
-
   Map<String, Node> nodeMap;
   Map<String, List<Edge>> edgeMap;
-
-  ApiDebugReq apiDebugReq;
-
-  String token;
   Map<String, String> envParameter;
-
-
 }

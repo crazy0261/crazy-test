@@ -3,6 +3,7 @@ package com.example.crazytest.entity.req;
 import com.alibaba.fastjson.JSONObject;
 import com.example.crazytest.vo.ParamsListVO;
 import java.util.List;
+import java.util.Map;
 import lombok.Data;
 
 /**
@@ -24,4 +25,5 @@ public class ApiDebugReq {
   private String remark;
   private Long scheduleId;
   private Long scheduleBatchId;
+  Map<String, String> envSubParameter;
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @author
  * @name Menghui
  * @date 2025/4/14 21:32
- * @DESRIPTION
+ * @DESRIPTION node和边转换工具
  */
 
 @Slf4j
@@ -25,7 +25,7 @@ public class JsonParserUtil {
       return objectMapper.readValue(json, new TypeReference<List<Node>>() {});
     } catch (Exception e) {
       log.error("Failed to parse nodes JSON", e);
-      throw new RuntimeException("Failed to parse nodes JSON", e);
+      throw new RuntimeException("node转换异常：", e);
     }
   }
 
@@ -33,8 +33,8 @@ public class JsonParserUtil {
     try {
       return objectMapper.readValue(json, new TypeReference<List<Edge>>() {});
     } catch (Exception e) {
-      log.error("Failed to parse edges JSON", e);
-      throw new RuntimeException("Failed to parse edges JSON", e);
+      log.error("转换边", e);
+      throw new RuntimeException("edge边转换异常：", e);
     }
   }
 }

@@ -12,7 +12,9 @@ import com.example.crazytest.factory.NodeServiceFactory;
 import com.example.crazytest.repository.ProcessCaseNodeResultRepositoryService;
 import com.example.crazytest.services.FlowExecutorService;
 import com.example.crazytest.services.NodeService;
+import com.example.crazytest.services.ProcessCaseExecService;
 import com.example.crazytest.services.ProcessCaseResultService;
+import com.example.crazytest.utils.CommonUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +39,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FlowExecutorServiceImp implements FlowExecutorService {
 
-  private static final String DEFAULT_HANDLE = "4";
-  private static final long NODE_TIMEOUT_MINUTES = 5;
-
   private final NodeServiceFactory serviceFactory;
 
   @Autowired
@@ -47,6 +46,9 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
   @Autowired
   ProcessCaseNodeResultRepositoryService processCaseNodeResultRepositoryService;
+
+  @Autowired
+  ProcessCaseExecService processCaseExecService;
 
   /**
    * 执行流程
@@ -72,7 +74,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
     while (currentNode != null) {
       context.setCurrentNode(currentNode);
 
-      if (isTimeout(startTime)) {
+      if (processCaseExecService.isTimeout(startTime)) {
         handleTimeout(context.getResultId(), nodeMap, context);
       }
 
@@ -133,7 +135,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   public Node findNextNode(Node currentNode, Map<String, List<Edge>> edgeMap,
       Map<String, Node> nodeMap) {
     return edgeMap.getOrDefault(currentNode.getId(), Collections.emptyList()).stream()
-        .filter(edge -> DEFAULT_HANDLE.equals(edge.getSourceHandle()))
+        .filter(edge -> CommonUtil.DEFAULT_HANDLE.equals(edge.getSourceHandle()))
         .filter(edge -> edge.getLabel() == null || "true".equals(edge.getLabel()))
         .findFirst()
         .map(Edge::getTarget)
@@ -166,17 +168,6 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
         .filter(n -> n.getType().equals(NodeTypeEnum.START_NODE))
         .findFirst()
         .orElse(null);
-  }
-
-  /**
-   * 判断是否超时
-   *
-   * @param startTime
-   * @return
-   */
-  @Override
-  public boolean isTimeout(long startTime) {
-    return System.currentTimeMillis() - startTime > NODE_TIMEOUT_MINUTES * 60 * 1000;
   }
 
   /**

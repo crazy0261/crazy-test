@@ -21,8 +21,6 @@ public interface FlowExecutorService {
 
   Node findStartNode(List<Node> nodes);
 
-  boolean isTimeout(long startTime);
-
   void handleTimeout(long resultId, Map<String, Node> nodeMap, ExecutionProcessContext context);
 
   void handleFailedNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result, ExecutionProcessContext context);

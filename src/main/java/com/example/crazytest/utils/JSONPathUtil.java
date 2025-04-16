@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -12,12 +14,13 @@ import org.apache.commons.lang3.StringUtils;
  * @author
  * @name Menghui
  * @date 2025/4/2 21:07
- * @DESRIPTION json path 格式校验
+ * @DESRIPTION json path 格式校验 获取值
  */
 
 public class JSONPathUtil {
 
-  private JSONPathUtil(){}
+  private JSONPathUtil() {
+  }
 
   /**
    * 判断jsonPath是否是jsonPath校验
@@ -33,6 +36,22 @@ public class JSONPathUtil {
       return isJsonPathSizeCheck(jsonPath);
     }
     return isJsonPathFormatCheck(jsonPath);
+  }
+
+  /**
+   * 判断jsonPath是否是jsonPath 及返回值
+   *
+   * @param body
+   * @param jsonPath
+   * @return
+   */
+  public static String isJsonPathValue(JSONObject body, String jsonPath) {
+
+    return Optional.ofNullable(jsonPath).filter(JSONPathUtil::isJsonPathCheck)
+        .map(path -> path.endsWith(".size()") ? Objects
+            .requireNonNull(getJsonPathSizeValue(body, jsonPath)).toString()
+            : JSONPath.eval(body, jsonPath).toString())
+        .orElse("");
   }
 
   /**
@@ -71,11 +90,12 @@ public class JSONPathUtil {
 
   /**
    * 获取jsonPath的值
+   *
    * @param body
    * @param jsonPath
    * @return
    */
-  public static Object getJsonPathValue(JSONObject body, String jsonPath) {
+  public static Object getJsonPathSizeValue(JSONObject body, String jsonPath) {
     try {
       String path = jsonPath.replaceAll("\\.size\\(\\)$", "");
       JSONArray jsonArray = JSON.parseArray(JSONPath.eval(body, path).toString());

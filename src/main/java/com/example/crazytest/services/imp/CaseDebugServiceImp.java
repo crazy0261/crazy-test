@@ -78,6 +78,7 @@ public class CaseDebugServiceImp implements CaseDebugService {
     Map<String, String> envVariables = RequestUtil.envVariablesPutAll(apiDebugReq.getInputParams());
     Map<String, String> envParameter = context.getEnvParameter();
     envParameter.putAll(envVariables);
+    context.setEnvParameter(envParameter);
 
     // 请求头整理
     Map<String, String> headers = variablesUtil

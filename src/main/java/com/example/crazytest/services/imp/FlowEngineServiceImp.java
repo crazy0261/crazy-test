@@ -23,8 +23,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlowEngineServiceImp implements FlowEngineService {
 
-  private static final long TOTAL_TIMEOUT_MINUTES = 5;
-
   @Autowired
   JsonParserUtil jsonParser;
   @Autowired
