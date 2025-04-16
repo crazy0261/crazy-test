@@ -26,7 +26,6 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +58,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
   @Autowired
   ProcessCaseResultService processCaseResultService;
 
+  /**
+   * 分页查询
+   * @param processCaseDTO
+   * @return
+   */
   @Override
   public IPage<ProcessCaseVO> listPage(ProcessCaseDTO processCaseDTO) {
 
@@ -94,6 +98,10 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     });
   }
 
+  /**
+   * 检验是否有开始节点
+   * @param nodes
+   */
   @Override
   public void checkNodeStartType(List<JSONObject> nodes) {
     Boolean isStartNode = nodes.stream()
@@ -169,6 +177,12 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     return processCaseVO;
   }
 
+  /**
+   * 更新节点或边
+   * @param id
+   * @param nodes
+   * @param edge
+   */
   @Override
   public void updateNodeAOrEdge(Long id, List<JSONObject> nodes, List<JSONObject> edge) {
     processCaseRepositoryService
@@ -180,6 +194,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     return processCaseRepositoryService.getIsSubProcess(BaseContext.getSelectProjectId());
   }
 
+  /**
+   * 执行流程
+   * @param apiDebugReq
+   * @return
+   */
   @Override
   public Long debug(ApiDebugReq apiDebugReq) {
     ExecutionProcessContext context = new ExecutionProcessContext();

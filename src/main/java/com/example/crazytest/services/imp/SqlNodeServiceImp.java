@@ -19,6 +19,7 @@ import com.example.crazytest.services.NodeService;
 import com.example.crazytest.utils.DataSourceExecUtil;
 import com.example.crazytest.utils.DataSourceUtil;
 import com.example.crazytest.utils.JSONPathUtil;
+import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.AssertVO;
 import java.io.IOException;
@@ -75,7 +76,10 @@ public class SqlNodeServiceImp implements NodeService {
     BeanUtils.copyProperties(dto, dataSourceConfigReq);
 
     DataSource dataSource = DataSourceUtil.createDataSource(dataSourceConfigReq);
-    String sql = processCaseNode.getSqlScript().toUpperCase();
+
+    String sqlStr = VariablesUtil
+        .replacePlaceholders(processCaseNode.getSqlScript(), context.getEnvParameter());
+    String sql = sqlStr.toUpperCase();
     if (!sql.startsWith("SELECT")) {
       result.setStatus(NodeStatusEnum.FAILED);
       result.setSqlExecResult(ResultEnum.SQL_NOT_SELECT.getMessage());
@@ -87,8 +91,8 @@ public class SqlNodeServiceImp implements NodeService {
 
     try (Connection connection = dataSource.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(sql.contains("LIMIT") ? processCaseNode.getSqlScript()
-            : processCaseNode.getSqlScript().concat(" LIMIT 100"));
+        ResultSet rs = stmt
+            .executeQuery(sql.contains("LIMIT") ? sqlStr : sqlStr.concat(" LIMIT 100"));
     ) {
       Object resultSet = DataSourceExecUtil
           .parseResultSet(rs, DataSourceExecUtil::defaultRowMapper);
@@ -105,20 +109,20 @@ public class SqlNodeServiceImp implements NodeService {
       result.setStatus(Boolean.TRUE.equals(assertResultVo.getPass()) ? NodeStatusEnum.SUCCESS
           : NodeStatusEnum.FAILED);
 
-
-      Map<String,String> envParameter = context.getEnvParameter();
+      Map<String, String> envParameter = context.getEnvParameter();
       JSONObject outParam = Optional.ofNullable(processCaseNode.getOutputParams()).map(
           JSON::parseObject).orElse(new JSONObject());
 
       outParam.forEach((key, value) -> {
         if (JSONPathUtil.isJsonPathCheck(value.toString())) {
           envParameter.put(key, Objects.requireNonNull(
-              JSONPathUtil.getJsonPathValue(JSON.parseObject(resultSet.toString()), value.toString())).toString());
+              JSONPathUtil
+                  .getJsonPathValue(JSON.parseObject(resultSet.toString()), value.toString()))
+              .toString());
         }
       });
 
       context.setEnvParameter(envParameter);
-
     } catch (SQLException | IOException e) {
       result.setStatus(NodeStatusEnum.FAILED);
     }

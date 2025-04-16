@@ -52,10 +52,10 @@ public class VariablesUtil {
   }
 
 
-  // 替换字符串
-  private String replaceStr(String value, Map<String, String> variables) {
-    if (Objects.isNull(value)) {
-      return "";
+  // 替换字符串 ${xxx} 为变量值 xxx
+  private static String replaceStr(String value, Map<String, String> variables) {
+    if (Objects.isNull(value) || Objects.isNull(variables)) {
+      return value;
     }
 
     // 正则匹配
@@ -67,10 +67,47 @@ public class VariablesUtil {
     }
 
     String variablesValue = variables.getOrDefault(matcher.group(1), "");
-    return value.replaceAll("\\$\\{([^}]+)}", variablesValue);
+    return value.replaceAll(matcher.group(0), variablesValue);
+  }
+
+  /**
+   * 替换字符串 ${xxx} 为变量值 xxx 替换多个
+   *
+   * @param value
+   * @param variables
+   * @return
+   */
+  public static String replacePlaceholders(String value, Map<String, String> variables) {
+    StringBuilder result = new StringBuilder();
+
+    if (Objects.isNull(value) || Objects.isNull(variables)) {
+      return value;
+    }
+
+    Pattern pattern = Pattern.compile("\\$\\{([^}]+)}");
+    Matcher matcher = pattern.matcher(value);
+
+    int lastIndex = 0;
+    while (matcher.find()) {
+      result.append(value, lastIndex, matcher.start());
+      String beforeReplacement = matcher.group(1);
+      String afterReplacement = variables.getOrDefault(beforeReplacement, "");
+      result.append(afterReplacement);
+
+      lastIndex = matcher.end();
+    }
+    result.append(value, lastIndex, value.length());
+    return result.toString();
   }
 
 
+  /**
+   * 请求参数替换
+   *
+   * @param requestParam
+   * @param variables
+   * @return
+   */
   public JSONObject formatParams(String requestParam, Map<String, String> variables) {
     JSONObject jsonObject = JSON.parseObject(requestParam);
     replaceParamStr(jsonObject, variables);
