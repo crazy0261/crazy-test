@@ -3,7 +3,6 @@ package com.example.crazytest.services.imp;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.Edge;
 import com.example.crazytest.entity.Node;
-import com.example.crazytest.enums.NodeStatusEnum;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.FlowEngineService;
 import com.example.crazytest.services.FlowExecutorService;
@@ -34,20 +33,13 @@ public class FlowEngineServiceImp implements FlowEngineService {
   ApiCaseService apiCaseService;
 
   @Override
-  @Async
+  @Async("ThreadPoolConfig")
   public void executeFlow(String nodesJson, String edgesJson,
       ExecutionProcessContext context) {
 
     List<Node> nodes = jsonParser.parseNodes(nodesJson);
     List<Edge> edges = jsonParser.parseEdges(edgesJson);
     flowExecutor.execute(nodes, edges, context);
-  }
-
-  @Override
-  public void handleGlobalTimeout(List<Node> nodes) {
-    nodes.stream()
-        .filter(n -> n.getData().getColor().equals(NodeStatusEnum.PENDING.getColor()))
-        .forEach(n -> n.updateStatus(NodeStatusEnum.TIMEOUT));
   }
 
 }

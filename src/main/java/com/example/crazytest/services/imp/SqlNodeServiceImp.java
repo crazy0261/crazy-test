@@ -9,7 +9,6 @@ import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNode;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.enums.NodeStatusEnum;
-import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.DataSourceConfigRepositoryService;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
@@ -30,7 +29,6 @@ import java.sql.Statement;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.beans.BeanUtils;
@@ -58,11 +56,6 @@ public class SqlNodeServiceImp implements NodeService {
 
   @Autowired
   ApiCaseService apiCaseService;
-
-  @Override
-  public NodeTypeEnum getSupportedType() {
-    return NodeTypeEnum.START_NODE;
-  }
 
   @Override
   public ExecutionResult execute(Node node, ExecutionProcessContext context) throws SQLException {

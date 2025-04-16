@@ -8,7 +8,6 @@ import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.enums.NodeStatusEnum;
-import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.services.NodeService;
 import java.util.Collections;
@@ -30,11 +29,6 @@ public class PreStepNodeServiceImp implements NodeService {
 
   @Autowired
   ProcessCaseRepositoryService processCaseRepositoryService;
-
-  @Override
-  public NodeTypeEnum getSupportedType() {
-    return null;
-  }
 
   @Override
   public ExecutionResult execute(Node node, ExecutionProcessContext context) {

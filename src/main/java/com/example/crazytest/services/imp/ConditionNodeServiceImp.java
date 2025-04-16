@@ -5,7 +5,6 @@ import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNode;
 import com.example.crazytest.enums.NodeStatusEnum;
-import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.utils.GroovyExecUtil;
@@ -25,11 +24,6 @@ public class ConditionNodeServiceImp implements NodeService {
 
   @Autowired
   ProcessCaseNodeRepositoryService processCaseNodeRepositoryService;
-
-  @Override
-  public NodeTypeEnum getSupportedType() {
-    return null;
-  }
 
   @Override
   public ExecutionResult execute(Node node, ExecutionProcessContext context) {

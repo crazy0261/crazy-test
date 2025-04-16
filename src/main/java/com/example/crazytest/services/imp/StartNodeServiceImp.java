@@ -6,7 +6,6 @@ import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.NodeStatusEnum;
-import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.NodeService;
@@ -31,11 +30,6 @@ public class StartNodeServiceImp implements NodeService {
 
   @Autowired
   TestAccountRepositoryService repositoryService;
-
-  @Override
-  public NodeTypeEnum getSupportedType() {
-    return null;
-  }
 
   @Override
   public ExecutionResult execute(Node node, ExecutionProcessContext context) {

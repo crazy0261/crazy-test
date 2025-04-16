@@ -9,7 +9,5 @@ import java.sql.SQLException;
 
 public interface NodeService {
 
-  NodeTypeEnum getSupportedType();
-
   ExecutionResult execute(Node node, ExecutionProcessContext context) throws SQLException, IOException;
 }
