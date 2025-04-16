@@ -14,7 +14,6 @@ import com.example.crazytest.services.FlowExecutorService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.services.ProcessCaseExecService;
 import com.example.crazytest.services.ProcessCaseResultService;
-import com.example.crazytest.utils.CommonUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +67,6 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
     context.setEdgeMap(edgeMap);
 
     long startTime = System.currentTimeMillis();
-
     Node currentNode = findStartNode(nodes);
 
     while (currentNode != null) {
@@ -85,7 +83,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
         break;
       }
 
-      currentNode = findNextNode(currentNode, edgeMap, nodeMap);
+      currentNode = findNextNode(currentNode, edgeMap, nodeMap,context);
       result.setNextNodeId(Optional.ofNullable(currentNode).map(Node::getId).orElse(""));
       saveNodeResult(result, context);
     }
@@ -133,10 +131,14 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
    */
   @Override
   public Node findNextNode(Node currentNode, Map<String, List<Edge>> edgeMap,
-      Map<String, Node> nodeMap) {
+      Map<String, Node> nodeMap,ExecutionProcessContext context) {
     return edgeMap.getOrDefault(currentNode.getId(), Collections.emptyList()).stream()
-        .filter(edge -> CommonUtil.DEFAULT_HANDLE.equals(edge.getSourceHandle()))
-        .filter(edge -> edge.getLabel() == null || "true".equals(edge.getLabel()))
+        .filter(edge -> {
+          if (Objects.equals(edge.getLabel(),context.getConditionOutKey())){
+            return true;
+          }
+          return Objects.isNull(edge.getLabel()) ;
+        })
         .findFirst()
         .map(Edge::getTarget)
         .map(nodeMap::get)

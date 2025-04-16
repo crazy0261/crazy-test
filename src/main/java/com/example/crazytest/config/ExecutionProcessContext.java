@@ -27,6 +27,7 @@ public class ExecutionProcessContext {
   ProcessCase processCase;
   private Long scheduleId;
   private Long scheduleBatchId;
+  String conditionOutKey;
   Map<String, Node> nodeMap;
   Map<String, List<Edge>> edgeMap;
   Map<String, String> envParameter;

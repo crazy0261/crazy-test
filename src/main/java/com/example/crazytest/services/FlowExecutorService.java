@@ -15,7 +15,7 @@ public interface FlowExecutorService {
 
   void currentNodeRunning(Long id,Map<String, Node> nodeMap, String currentNode);
 
-  Node findNextNode(Node currentNode, Map<String, List<Edge>> edgeMap, Map<String, Node> nodeMap);
+  Node findNextNode(Node currentNode, Map<String, List<Edge>> edgeMap, Map<String, Node> nodeMap,ExecutionProcessContext context);
 
   void markRemainingAsFailed(Map<String, Node> nodeMap, String type);
 

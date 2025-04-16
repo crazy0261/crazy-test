@@ -3,7 +3,6 @@ package com.example.crazytest.services;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
-import com.example.crazytest.enums.NodeTypeEnum;
 import java.io.IOException;
 import java.sql.SQLException;
 
