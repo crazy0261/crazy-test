@@ -1,4 +1,4 @@
-package com.example.crazytest.entity.req;
+package com.example.crazytest.dto;
 
 import com.example.crazytest.utils.PageParam;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-public class ApiManagementReq {
+public class ApiManagementDTO {
 
   private Long applicationId;
   private String apiType;

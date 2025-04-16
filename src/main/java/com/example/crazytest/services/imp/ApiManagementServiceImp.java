@@ -8,7 +8,7 @@ import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ApiManagementVO;
 import com.example.crazytest.entity.ApiManagement;
-import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.dto.ApiManagementDTO;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.entity.req.ApiTypeReq;
@@ -39,8 +39,8 @@ public class ApiManagementServiceImp implements ApiManagementService {
   UserService userService;
 
   @Override
-  public IPage<ApiManagementVO> listAll(ApiManagementReq apiManagementReq) {
-    IPage<ApiManagement> apiManagePage = apiManageRepository.listAll(apiManagementReq);
+  public IPage<ApiManagementVO> listAll(ApiManagementDTO apiManagementDTO) {
+    IPage<ApiManagement> apiManagePage = apiManageRepository.listAll(apiManagementDTO);
 
     return apiManagePage.convert(apiManagement -> {
       ApiManagementVO apiManageVo = new ApiManagementVO();

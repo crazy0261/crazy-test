@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.ApiManagement;
-import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.dto.ApiManagementDTO;
 import com.example.crazytest.mapper.ApiManagementMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.repository.ApiManageRepositoryService;
@@ -32,41 +32,41 @@ public class ApiManagementRepositoryServiceImpl extends
 
 
   @Override
-  public IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq) {
+  public IPage<ApiManagement> listAll(ApiManagementDTO apiManagementDTO) {
     return this.lambdaQuery()
         .eq(ApiManagement::getProjectId, BaseContext.getSelectProjectId())
-        .like(Objects.nonNull(apiManagementReq.getName()), ApiManagement::getName,
-            apiManagementReq.getName())
-        .eq(Objects.nonNull(apiManagementReq.getApiType()), ApiManagement::getApiType,
-            apiManagementReq.getApiType())
-        .eq(Objects.nonNull(apiManagementReq.getCanProdExec()), ApiManagement::getCanProdExec,
-            apiManagementReq.getCanProdExec())
-        .gt(Objects.nonNull(apiManagementReq.getCaseCount())
-                && Long.parseLong(apiManagementReq.getCaseCount()) > 0, ApiManagement::getCaseCount,
-            apiManagementReq.getCaseCount())
-        .eq(Objects.nonNull(apiManagementReq.getCaseCount())
-                && Long.parseLong(apiManagementReq.getCaseCount()) == 0, ApiManagement::getCaseCount,
-            apiManagementReq.getCaseCount())
-        .gt(Objects.nonNull(apiManagementReq.getInvokeTimes())
-                && Long.parseLong(apiManagementReq.getCaseCount()) > 0, ApiManagement::getInvokeTimes,
-            apiManagementReq.getInvokeTimes())
-        .eq(Objects.nonNull(apiManagementReq.getInvokeTimes())
-                && Long.parseLong(apiManagementReq.getInvokeTimes()) == 0,
+        .like(Objects.nonNull(apiManagementDTO.getName()), ApiManagement::getName,
+            apiManagementDTO.getName())
+        .eq(Objects.nonNull(apiManagementDTO.getApiType()), ApiManagement::getApiType,
+            apiManagementDTO.getApiType())
+        .eq(Objects.nonNull(apiManagementDTO.getCanProdExec()), ApiManagement::getCanProdExec,
+            apiManagementDTO.getCanProdExec())
+        .gt(Objects.nonNull(apiManagementDTO.getCaseCount())
+                && Long.parseLong(apiManagementDTO.getCaseCount()) > 0, ApiManagement::getCaseCount,
+            apiManagementDTO.getCaseCount())
+        .eq(Objects.nonNull(apiManagementDTO.getCaseCount())
+                && Long.parseLong(apiManagementDTO.getCaseCount()) == 0, ApiManagement::getCaseCount,
+            apiManagementDTO.getCaseCount())
+        .gt(Objects.nonNull(apiManagementDTO.getInvokeTimes())
+                && Long.parseLong(apiManagementDTO.getCaseCount()) > 0, ApiManagement::getInvokeTimes,
+            apiManagementDTO.getInvokeTimes())
+        .eq(Objects.nonNull(apiManagementDTO.getInvokeTimes())
+                && Long.parseLong(apiManagementDTO.getInvokeTimes()) == 0,
             ApiManagement::getInvokeTimes,
-            apiManagementReq.getInvokeTimes())
-        .eq(Objects.nonNull(apiManagementReq.getOwnerId()), ApiManagement::getOwnerId,
-            apiManagementReq.getOwnerId())
-        .eq(Objects.nonNull(apiManagementReq.getStatus()), ApiManagement::getStatus,
-            apiManagementReq.getStatus())
-        .eq(Objects.nonNull(apiManagementReq.getApplicationId()),
-            ApiManagement::getApplicationId, apiManagementReq.getApplicationId())
-        .eq(Objects.nonNull(apiManagementReq.getPriority()), ApiManagement::getPriority,
-            apiManagementReq.getPriority())
-        .like(Objects.nonNull(apiManagementReq.getPath()), ApiManagement::getPath,
-            apiManagementReq.getPath())
+            apiManagementDTO.getInvokeTimes())
+        .eq(Objects.nonNull(apiManagementDTO.getOwnerId()), ApiManagement::getOwnerId,
+            apiManagementDTO.getOwnerId())
+        .eq(Objects.nonNull(apiManagementDTO.getStatus()), ApiManagement::getStatus,
+            apiManagementDTO.getStatus())
+        .eq(Objects.nonNull(apiManagementDTO.getApplicationId()),
+            ApiManagement::getApplicationId, apiManagementDTO.getApplicationId())
+        .eq(Objects.nonNull(apiManagementDTO.getPriority()), ApiManagement::getPriority,
+            apiManagementDTO.getPriority())
+        .like(Objects.nonNull(apiManagementDTO.getPath()), ApiManagement::getPath,
+            apiManagementDTO.getPath())
         .eq(ApiManagement::getIsDelete, Boolean.FALSE)
         .orderByDesc(ApiManagement::getUpdateTime)
-        .page(new Page<>(apiManagementReq.getCurrent(), apiManagementReq.getPageSize()));
+        .page(new Page<>(apiManagementDTO.getCurrent(), apiManagementDTO.getPageSize()));
 
   }
 

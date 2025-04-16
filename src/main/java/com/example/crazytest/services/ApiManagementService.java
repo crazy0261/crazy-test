@@ -3,13 +3,13 @@ package com.example.crazytest.services;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.vo.ApiManagementVO;
-import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.dto.ApiManagementDTO;
 import com.example.crazytest.entity.req.ApiTypeReq;
 import java.util.List;
 
 public interface ApiManagementService {
 
-  IPage<ApiManagementVO> listAll(ApiManagementReq apiManagementReq);
+  IPage<ApiManagementVO> listAll(ApiManagementDTO apiManagementDTO);
 
   ApiManagement getById(Long id);
 

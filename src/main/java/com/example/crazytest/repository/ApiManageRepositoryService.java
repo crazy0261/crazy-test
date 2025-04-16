@@ -3,7 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.dto.ApiManagementDTO;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ApiManageRepositoryService extends IService<ApiManagement> {
 
-  IPage<ApiManagement> listAll(ApiManagementReq apiManagementReq);
+  IPage<ApiManagement> listAll(ApiManagementDTO apiManagementDTO);
 
   List<ApiManagement> getPaths(Long projectId, String path);
 

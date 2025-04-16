@@ -6,7 +6,7 @@ import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ImportApiReq;
 import com.example.crazytest.services.ImportApiService;
 import com.example.crazytest.vo.ApiManagementVO;
-import com.example.crazytest.entity.req.ApiManagementReq;
+import com.example.crazytest.dto.ApiManagementDTO;
 import com.example.crazytest.services.ApiManagementService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.entity.req.ApiTypeReq;
@@ -42,10 +42,36 @@ public class ApiManagementController {
   @Autowired
   ImportApiService importerService;
 
-  @PostMapping("/list")
+  @GetMapping("/list")
   @Operation(summary = "查询所有接口")
-  public Result<List<ApiManagementVO>> listAll(@RequestBody ApiManagementReq apiManagementReq) {
-    IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementReq);
+  public Result<List<ApiManagementVO>> listAll(
+      @RequestParam(value = "applicationId", required = false) Long applicationId,
+      @RequestParam(value = "apiType", required = false) String apiType,
+      @RequestParam(value = "canProdExec", required = false) String canProdExec,
+      @RequestParam(value = "caseCount", required = false) String caseCount,
+      @RequestParam(value = "invokeTimes", required = false) String invokeTimes,
+      @RequestParam(value = "ownerId", required = false) Long ownerId,
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "path", required = false) String path,
+      @RequestParam(value = "priority", required = false) String priority,
+      @RequestParam(value = "status", required = false) Integer status,
+      @RequestParam(value = "current", required = false, defaultValue = "1") int current,
+      @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+
+    ApiManagementDTO apiManagementDTO = new ApiManagementDTO();
+    apiManagementDTO.setApplicationId(applicationId);
+    apiManagementDTO.setApiType(apiType);
+    apiManagementDTO.setCanProdExec(canProdExec);
+    apiManagementDTO.setCaseCount(caseCount);
+    apiManagementDTO.setInvokeTimes(invokeTimes);
+    apiManagementDTO.setOwnerId(ownerId);
+    apiManagementDTO.setName(name);
+    apiManagementDTO.setPath(path);
+    apiManagementDTO.setPriority(priority);
+    apiManagementDTO.setStatus(status);
+    apiManagementDTO.setCurrent(current);
+    apiManagementDTO.setPageSize(pageSize);
+    IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementDTO);
     return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
   }
 
