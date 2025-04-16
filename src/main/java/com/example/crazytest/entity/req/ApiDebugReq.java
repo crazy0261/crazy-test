@@ -23,7 +23,6 @@ public class ApiDebugReq {
   private List<ParamsListVO> inputParams;
   private String mode;
   private String remark;
-  private Long scheduleId;
   private Long scheduleBatchId;
   Map<String, String> envSubParameter;
 }

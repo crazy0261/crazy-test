@@ -1,6 +1,7 @@
 package com.example.crazytest.services.imp;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -209,6 +210,8 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     context.setId(apiDebugReq.getId());
     context.setApiDebugReq(apiDebugReq);
     context.setProjectId(processCase.getProjectId());
+    context.setScheduleId(IdUtil.getSnowflakeNextId());
+    context.setScheduleBatchId(apiDebugReq.getScheduleBatchId());
 
     flowEngineService.executeFlow(processCase.getNodes(), processCase.getEdges(), context);
 
