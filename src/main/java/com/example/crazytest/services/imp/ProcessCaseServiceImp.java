@@ -61,8 +61,6 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   @Override
   public IPage<ProcessCaseVO> listPage(ProcessCaseDTO processCaseDTO) {
-    AssertUtil.assertTrue(Objects.isNull(processCaseDTO.getTreeKey()),
-        ResultEnum.TREE_NODE_NOT_KEY_FAIL.getMessage());
 
     List<Long> ids = Optional.ofNullable(processCaseDTO.getRecentExecResult())
         .map(result -> processCaseResultRepositoryService
