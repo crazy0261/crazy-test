@@ -10,7 +10,6 @@ public interface ApplicationManagementService {
 
   IPage<ApplicationManagementVO> list(String name, Long ownerId, int current, int pageSize);
 
-
   boolean save(ApplicationManagementReq applicationManagementReq);
 
   ApplicationManagement getById(Long id);

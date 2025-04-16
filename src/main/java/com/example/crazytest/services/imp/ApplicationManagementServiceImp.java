@@ -1,6 +1,8 @@
 package com.example.crazytest.services.imp;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.entity.ApiCase;
+import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.vo.ApplicationManagementVO;
@@ -45,8 +47,9 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
 
     return applicationManagementList.convert(applicationManagement -> {
       ApplicationManagementVO applicationManagementVo = new ApplicationManagementVO();
-      Long apiCount = apiManageRepositoryService
+      List<ApiManagement> apiList = apiManageRepositoryService
           .getApiCount(applicationManagement.getProjectId(), applicationManagement.getId());
+      Long apiCount = apiList.stream().map(ApiManagement::getPath).distinct().count();
       BeanUtils.copyProperties(applicationManagement, applicationManagementVo);
       applicationManagementVo.setOwnerName(
           userRepositoryService.getUserData(applicationManagement.getOwnerId()).getName());
@@ -81,8 +84,9 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
 
   @Override
   public Long getCoverApiCount(Long projectId, Long appId, Long apiCount) {
-
-    return apiCount - apiCaseRepositoryService.getApiCaseList(projectId, appId);
+    List<ApiCase> apiCaseList = apiCaseRepositoryService.getApiCaseList(projectId, appId);
+    Long count = apiCaseList.stream().map(ApiCase::getApiId).distinct().count();
+    return apiCount - count;
   }
 
 }
