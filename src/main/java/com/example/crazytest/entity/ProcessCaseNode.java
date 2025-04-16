@@ -52,6 +52,9 @@ public class ProcessCaseNode implements Serializable {
   @ApiModelProperty(value = "断言")
   private String assertList;
 
+  @ApiModelProperty(value = "环境关联")
+  private String isSubEnv;
+
   @ApiModelProperty(value = "入参（目前只有子流程用到）")
   private String inputParams;
 

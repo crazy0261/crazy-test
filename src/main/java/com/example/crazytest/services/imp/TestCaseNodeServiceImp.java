@@ -50,13 +50,7 @@ public class TestCaseNodeServiceImp implements NodeService {
     JSONObject outParamJson = JSON.parseObject(processCaseNode.getOutputParams());
 
     Map<String, String> envParameter = context.getEnvParameter();
-    outParamJson.forEach((key, value) -> {
-      if (JSONPathUtil.isJsonPathCheck(value.toString())) {
-        envParameter.put(key, Objects.requireNonNull(
-            JSONPathUtil.getJsonPathValue(outParamJson, value.toString())).toString());
-      }
-    });
-
+    outParamJson.forEach((key, value) -> envParameter.put(key,JSONPathUtil.isJsonPathValue(outParamJson, value.toString())));
     context.setEnvParameter(envParameter);
 
     result.setStatus(

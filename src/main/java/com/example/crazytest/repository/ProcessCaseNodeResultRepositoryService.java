@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProcessCaseNodeResultRepositoryService extends IService<ProcessCaseNodeResult> {
 
+  ProcessCaseNodeResult findLast(Long projectId, Long resultId);
+
 }

@@ -24,7 +24,10 @@ public enum ResultEnum {
   API_CASE_NOT_FAIL(400, "用例不存在"),
   PROCESS_CASE_NOT_FAIL(400, "场景用例不存在"),
   SQL_NOT_SELECT(400,   "sql语句必须以select开头"),
-  START_NODE_NOT_EXIST(400, "流程节点必须有开始节点");
+  START_NODE_NOT_EXIST(400, "流程节点必须有开始节点"),
+  SUB_ENV_NOT_EXIST(400, "子流程未关联环境"),
+  NODE_EXEC_TIMEOUT(400, "节点执行超时 ")
+  ;
 
 
 

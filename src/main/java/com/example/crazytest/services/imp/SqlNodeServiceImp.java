@@ -113,14 +113,7 @@ public class SqlNodeServiceImp implements NodeService {
       JSONObject outParam = Optional.ofNullable(processCaseNode.getOutputParams()).map(
           JSON::parseObject).orElse(new JSONObject());
 
-      outParam.forEach((key, value) -> {
-        if (JSONPathUtil.isJsonPathCheck(value.toString())) {
-          envParameter.put(key, Objects.requireNonNull(
-              JSONPathUtil
-                  .getJsonPathValue(JSON.parseObject(resultSet.toString()), value.toString()))
-              .toString());
-        }
-      });
+      outParam.forEach((key, value) -> envParameter.put(key,JSONPathUtil.isJsonPathValue(JSON.parseObject(resultSet.toString()),value.toString())));
 
       context.setEnvParameter(envParameter);
     } catch (SQLException | IOException e) {

@@ -9,6 +9,7 @@ import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
+import java.util.Map;
 
 public interface ProcessCaseService {
 
@@ -37,5 +38,8 @@ public interface ProcessCaseService {
   List<ProcessCase> getIsSubProcess();
 
   Long  debug(ApiDebugReq apiDebugReq);
+
+  Long executeSubTask(Map<String, String> envParameter, Long subCaseId, Long subEnvId);
+
 
 }

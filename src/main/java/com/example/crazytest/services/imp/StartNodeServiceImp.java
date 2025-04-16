@@ -51,8 +51,9 @@ public class StartNodeServiceImp implements NodeService {
           item -> item.stream()
               .collect(Collectors.toMap(ParamsListVO::getKey, ParamsListVO::getValue)))
           .orElse(Collections.emptyMap());
+
+      params.put("token", testAccount.getToken());
       context.setEnvParameter(params);
-      context.setToken(testAccount.getToken());
       result.setStatus(NodeStatusEnum.SUCCESS);
     }
 

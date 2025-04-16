@@ -15,7 +15,19 @@ import org.springframework.stereotype.Service;
  * @since 2025-04-06
  */
 @Service
-public class ProcessCaseNodeResultRepositoryServiceImpl extends ServiceImpl<ProcessCaseNodeResultMapper, ProcessCaseNodeResult> implements
+public class ProcessCaseNodeResultRepositoryServiceImpl extends
+    ServiceImpl<ProcessCaseNodeResultMapper, ProcessCaseNodeResult> implements
     ProcessCaseNodeResultRepositoryService {
 
+  @Override
+  public ProcessCaseNodeResult findLast(Long projectId, Long resultId) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseNodeResult::getProjectId, projectId)
+        .eq(ProcessCaseNodeResult::getCaseResultId, resultId)
+        .isNotNull(ProcessCaseNodeResult::getOutputParams)
+        .eq(ProcessCaseNodeResult::getIsDelete, Boolean.FALSE)
+        .orderByDesc(ProcessCaseNodeResult::getUpdateTime)
+        .last("limit 1")
+        .one();
+  }
 }

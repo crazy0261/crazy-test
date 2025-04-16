@@ -26,6 +26,7 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -214,5 +215,21 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     long resultId = processCaseResultService.insert(processCase, context);
     context.setResultId(resultId);
     return resultId;
+  }
+
+  /**
+   * 执行子流程
+   * @param envParameter
+   * @param subCaseId
+   * @param subEnvId
+   * @return
+   */
+  @Override
+  public Long executeSubTask(Map<String, String> envParameter, Long subCaseId, Long subEnvId) {
+    ApiDebugReq apiSubDebugReq = new ApiDebugReq();
+    apiSubDebugReq.setId(subCaseId);
+    apiSubDebugReq.setEnvSubParameter(envParameter);
+    apiSubDebugReq.setEnvId(subEnvId);
+    return debug(apiSubDebugReq);
   }
 }
