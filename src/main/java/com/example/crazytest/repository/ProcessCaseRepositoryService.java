@@ -31,4 +31,6 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   List<ProcessCase> getIsSubProcess(Long projectId);
 
+  Long getProcessCaseCount(Long projectId);
+
 }

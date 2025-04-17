@@ -43,4 +43,12 @@ public class ApplicationManagementRepositoryRepositoryServiceImpl extends
         .list();
   }
 
+  @Override
+  public Long getApplicationCount(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ApplicationManagement::getProjectId, projectId)
+        .eq(ApplicationManagement::getIsDelete, Boolean.FALSE)
+        .count();
+  }
+
 }

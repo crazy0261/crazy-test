@@ -58,5 +58,7 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   JSONObject decryptRequestBody(String secret, JSONObject body);
 
+  Long getCoverageIsApiCount();
+
 
 }

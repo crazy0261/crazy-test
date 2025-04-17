@@ -19,5 +19,7 @@ public interface ApplicationManagementRepositoryService extends IService<Applica
 
   List<ApplicationManagement> listAllApplicationManagement(Long projectId);
 
+  Long getApplicationCount(Long projectId);
+
 
 }

@@ -376,4 +376,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     String data = aes.decryptStr(body.getString("data"), CharsetUtil.CHARSET_UTF_8);
     return JSON.parseObject(data);
   }
+
+  @Override
+  public Long getCoverageIsApiCount() {
+    List<ApiCase> apiCaseList = apiCaseRepository.allList(BaseContext.getSelectProjectId());
+    return Optional.ofNullable(apiCaseList)
+        .map(list -> list.stream().map(ApiCase::getApiId).distinct().count()).orElse(0L);
+  }
 }

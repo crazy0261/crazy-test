@@ -114,4 +114,12 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .groupBy(ApiCase::getApiId)
         .list();
   }
+
+  @Override
+  public Long getApiCaseCount(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ApiCase::getProjectId, projectId)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .count();
+  }
 }

@@ -106,4 +106,12 @@ public class ProcessCaseRepositoryServiceImpl extends
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public Long getProcessCaseCount(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ProcessCase::getProjectId, projectId)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .count();
+  }
 }

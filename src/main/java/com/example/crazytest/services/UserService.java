@@ -31,5 +31,4 @@ public interface UserService {
   Boolean checkUser(String account);
 
   List<UserResultEntity> listAll();
-
 }

@@ -26,4 +26,6 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
   List<ApiCase> getApiCaseList(Long projectId, Long appId);
 
+  Long getApiCaseCount(Long projectId);
+
 }
