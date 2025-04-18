@@ -32,6 +32,7 @@ public class DailyDataRepositoryServiceImpl extends ServiceImpl<DailyDataMapper,
         .eq(DailyData::getProjectId, projectId)
         .eq(DailyData::getIsDelete, 0)
         .between(DailyData::getDate, startDate, endDate)
+        .orderByAsc(DailyData::getDate)
         .list();
   }
 }
