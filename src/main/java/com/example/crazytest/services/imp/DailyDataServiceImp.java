@@ -1,8 +1,5 @@
 package com.example.crazytest.services.imp;
 
-import cn.hutool.core.util.NumberUtil;
-import com.example.crazytest.entity.DailyData;
-import com.example.crazytest.entity.req.DailyDataReq;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.repository.ApplicationManagementRepositoryService;
