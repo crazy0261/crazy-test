@@ -1,6 +1,6 @@
 package com.example.crazytest.mapper;
 
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Menghui
  * @since 2025-04-06
  */
-public interface ProcessCaseResultMapper extends BaseMapper<ProcessCaseResult> {
+public interface ProcessCaseResultMapper extends BaseMapper<ProcessCaseRecord> {
 
 }

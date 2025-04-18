@@ -6,7 +6,7 @@ import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.enums.NodeStatusEnum;
 
 /**
@@ -23,21 +23,21 @@ public class ProcessCaseNodeResultCovert {
   }
 
 
-  public static ProcessCaseResult processCaseResultConvert(ProcessCase processCase,
+  public static ProcessCaseRecord processCaseResultConvert(ProcessCase processCase,
       ExecutionProcessContext context) {
-    ProcessCaseResult processCaseResult = new ProcessCaseResult();
-    processCaseResult.setId(IdUtil.getSnowflakeNextId());
-    processCaseResult.setCaseId(processCase.getId());
-    processCaseResult.setProjectId(processCase.getProjectId());
-    processCaseResult.setAppId(processCase.getAppId());
-    processCaseResult.setStatus(NodeStatusEnum.PENDING.name());
-    processCaseResult.setScheduleId(context.getScheduleId());
-    processCaseResult.setScheduleBatchId(context.getScheduleBatchId());
-    processCaseResult.setNodes(JSON.toJSONString(context.getNodeMap()));
-    processCaseResult.setEdges(JSON.toJSONString(context.getEdgeMap()));
-    processCaseResult.setEnvNameId(context.getApiDebugReq().getEnvId());
-    processCaseResult.setMode(context.getMode());
-    return processCaseResult;
+    ProcessCaseRecord processCaseRecord = new ProcessCaseRecord();
+    processCaseRecord.setId(IdUtil.getSnowflakeNextId());
+    processCaseRecord.setCaseId(processCase.getId());
+    processCaseRecord.setProjectId(processCase.getProjectId());
+    processCaseRecord.setAppId(processCase.getAppId());
+    processCaseRecord.setStatus(NodeStatusEnum.PENDING.name());
+    processCaseRecord.setScheduleId(context.getScheduleId());
+    processCaseRecord.setScheduleBatchId(context.getScheduleBatchId());
+    processCaseRecord.setNodes(JSON.toJSONString(context.getNodeMap()));
+    processCaseRecord.setEdges(JSON.toJSONString(context.getEdgeMap()));
+    processCaseRecord.setEnvNameId(context.getApiDebugReq().getEnvId());
+    processCaseRecord.setMode(context.getMode());
+    return processCaseRecord;
   }
 
   public static ProcessCaseNodeResult processCaseNodeResultConvert(ExecutionResult executionResult,

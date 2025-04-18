@@ -82,4 +82,12 @@ public class ApiCaseResultRepositoryServiceImpl extends
         .orderByDesc(ApiCaseRecord::getUpdateTime)
         .list();
   }
+
+  @Override
+  public List<ApiCaseRecord> getApiCaseCount(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ApiCaseRecord::getProjectId, projectId)
+        .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.ProcessCaseBatchReq;
 import com.example.crazytest.entity.req.ProcessCaseReq;
@@ -71,7 +71,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     List<Long> ids = Optional.ofNullable(processCaseDTO.getRecentExecResult())
         .map(result -> processCaseResultRepositoryService
             .list(BaseContext.getSelectProjectId(), result).stream()
-            .map(ProcessCaseResult::getCaseId).collect(Collectors.toList()))
+            .map(ProcessCaseRecord::getCaseId).collect(Collectors.toList()))
         .orElse(null);
 
     if (StringUtils.isNotBlank(processCaseDTO.getRecentExecResult()) && CollUtil.isEmpty(ids)) {
@@ -82,7 +82,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
         .listPage(processCaseDTO, BaseContext.getSelectProjectId(), ids);
 
     return listPage.convert(processCase -> {
-      ProcessCaseResult processCaseResult = processCaseResultRepositoryService
+      ProcessCaseRecord processCaseRecord = processCaseResultRepositoryService
           .lastResult(BaseContext.getSelectProjectId(), processCase.getId());
 
       ProcessCaseVO processCaseVO = new ProcessCaseVO();
@@ -90,11 +90,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
       processCaseVO.setPriorityDesc(PriorityEnum.getDescByCode(processCase.getPriority()));
       processCaseVO.setOwnerName(userRepository.getUserData(processCase.getOwnerId()).getName());
-      Optional.ofNullable(processCaseResult).ifPresent(result -> {
+      Optional.ofNullable(processCaseRecord).ifPresent(result -> {
         processCaseVO
-            .setRecentExecResult(Optional.ofNullable(processCaseResult.getStatus()).orElse(""));
+            .setRecentExecResult(Optional.ofNullable(processCaseRecord.getStatus()).orElse(""));
         processCaseVO
-            .setRecentExecTime(Optional.ofNullable(processCaseResult.getCreateTime()).orElse(null));
+            .setRecentExecTime(Optional.ofNullable(processCaseRecord.getCreateTime()).orElse(null));
       });
       return processCaseVO;
     });

@@ -28,5 +28,7 @@ public interface ApiCaseResultRepositoryService extends IService<ApiCaseRecord> 
 
   List<ApiCaseRecord> getResultChildren(Long projectId,Long scheduleBatchId, Long apiTestcaseId, Long id);
 
+  List<ApiCaseRecord> getApiCaseCount(Long projectId);
+
 
 }

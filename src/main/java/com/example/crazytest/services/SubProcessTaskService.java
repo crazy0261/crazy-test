@@ -1,7 +1,7 @@
 package com.example.crazytest.services;
 
 import com.example.crazytest.entity.ExecutionResult;
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import java.util.Map;
 
 public interface SubProcessTaskService {
@@ -10,9 +10,9 @@ public interface SubProcessTaskService {
 
   ExecutionResult waitForSubTaskCompletion(ExecutionResult result, Map<String, String> envParameter, Long subResultId);
 
-  boolean isSubTaskFinished(ProcessCaseResult processCaseResult);
+  boolean isSubTaskFinished(ProcessCaseRecord processCaseRecord);
 
-  void handleSubTaskResult(ExecutionResult result, Map<String, String> envParameter, ProcessCaseResult processCaseResult, Long subResultId) ;
+  void handleSubTaskResult(ExecutionResult result, Map<String, String> envParameter, ProcessCaseRecord processCaseRecord, Long subResultId) ;
 
   ExecutionResult setFailedResult(ExecutionResult result, String message);
 

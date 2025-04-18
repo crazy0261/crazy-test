@@ -24,9 +24,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("process_case_result")
+@TableName("process_case_record")
 @ApiModel(value = "ProcessCaseResult对象", description = "场景用例执行结果")
-public class ProcessCaseResult implements Serializable {
+public class ProcessCaseRecord implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

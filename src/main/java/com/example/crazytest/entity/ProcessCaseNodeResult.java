@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("process_case_node_result")
+@TableName("process_case_node_record")
 @ApiModel(value = "ProcessCaseNodeResult对象", description = "场景用例节点执行结果")
 public class ProcessCaseNodeResult implements Serializable {
 

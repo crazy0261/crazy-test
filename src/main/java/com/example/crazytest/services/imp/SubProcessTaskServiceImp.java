@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.enums.NodeStatusEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ProcessCaseNodeResultRepositoryService;
@@ -64,10 +64,10 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
 
     long startTime = System.currentTimeMillis();
     while (processCaseExecService.isTimeout(startTime)) {
-      ProcessCaseResult processCaseResult = processCaseResultService.getById(subResultId);
+      ProcessCaseRecord processCaseRecord = processCaseResultService.getById(subResultId);
 
-      if (isSubTaskFinished(processCaseResult)) {
-        handleSubTaskResult(result, envParameter, processCaseResult, subResultId);
+      if (isSubTaskFinished(processCaseRecord)) {
+        handleSubTaskResult(result, envParameter, processCaseRecord, subResultId);
         return result;
       }
     }
@@ -77,15 +77,15 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
   /**
    * 判断子任务是否完成
    *
-   * @param processCaseResult
+   * @param processCaseRecord
    * @return
    */
   @Override
-  public boolean isSubTaskFinished(ProcessCaseResult processCaseResult) {
-    return Objects.nonNull(processCaseResult) && Objects.nonNull(processCaseResult.getStatus()) &&
-        (Objects.equals(processCaseResult.getStatus(), NodeStatusEnum.SUCCESS.name()) ||
-            Objects.equals(processCaseResult.getStatus(), NodeStatusEnum.FAILED.name()) ||
-            Objects.equals(processCaseResult.getStatus(), NodeStatusEnum.TIMEOUT.name()));
+  public boolean isSubTaskFinished(ProcessCaseRecord processCaseRecord) {
+    return Objects.nonNull(processCaseRecord) && Objects.nonNull(processCaseRecord.getStatus()) &&
+        (Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.SUCCESS.name()) ||
+            Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.FAILED.name()) ||
+            Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.TIMEOUT.name()));
   }
 
   /**
@@ -93,15 +93,15 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
    *
    * @param result
    * @param envParameter
-   * @param processCaseResult
+   * @param processCaseRecord
    * @param subResultId
    */
   @Override
   public void handleSubTaskResult(ExecutionResult result, Map<String, String> envParameter,
-      ProcessCaseResult processCaseResult, Long subResultId) {
-    if (Objects.equals(processCaseResult.getStatus(), NodeStatusEnum.SUCCESS.name())) {
+      ProcessCaseRecord processCaseRecord, Long subResultId) {
+    if (Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.SUCCESS.name())) {
       ProcessCaseNodeResult processNodeResult = processCaseNodeResultRepositoryService.findLast(
-          processCaseResult.getProjectId(), subResultId);
+          processCaseRecord.getProjectId(), subResultId);
       if (Objects.nonNull(processNodeResult)) {
         Map<String, String> params = JSON.parseObject(
             processNodeResult.getOutputParams(), new TypeReference<Map<String, String>>() {

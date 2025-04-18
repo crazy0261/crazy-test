@@ -1,9 +1,11 @@
 package com.example.crazytest.services.imp;
 
+import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
+import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ExecModeEnum;
@@ -17,9 +19,12 @@ import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ApiCaseResultVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +43,8 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   @Autowired
   ApiCaseResultRepositoryService apiCaseResultRepositoryService;
 
-
   @Autowired
   ApiCaseRepositoryService apiCaseRepository;
-
-  @Autowired
-  ApiCaseRepositoryService apiCaseService;
 
   @Autowired
   UserRepositoryService userRepository;
@@ -95,6 +96,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   /**
    * 获取最近一次执行结果
+   *
    * @param scheduleBatchId
    * @return
    */
@@ -109,6 +111,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   /**
    * 根据任务id获取结果详情
+   *
    * @param apiCaseResultIds
    * @param current
    * @param pageSize
@@ -123,6 +126,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   /**
    * 获取任务列表详情
+   *
    * @param scheduleBatchId
    * @param current
    * @param pageSize
@@ -138,7 +142,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
       ApiCaseResultVO apiCaseRecordVO = new ApiCaseResultVO();
       BeanUtils.copyProperties(apiCaseRecord, apiCaseRecordVO);
 
-      ApiCase apiCase = apiCaseService.getById(apiCaseRecord.getApiTestcaseId());
+      ApiCase apiCase = apiCaseRepository.getById(apiCaseRecord.getApiTestcaseId());
       List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
           .getResultChildren(BaseContext.getSelectProjectId(), scheduleBatchId,
               apiCaseRecord.getApiTestcaseId(), apiCaseRecord.getId());
@@ -156,6 +160,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   /**
    * 获取用例执行结果详情 整理子集
+   *
    * @param apiCaseRecordList
    * @param ownerName
    * @param caseName
@@ -171,5 +176,84 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
       apiCaseResultVO.setCaseName(caseName);
       return apiCaseResultVO;
     }).collect(Collectors.toList());
+  }
+
+  /**
+   * 获取成功用例数量
+   *
+   * @return
+   */
+  @Override
+  public CaseResultCountEntity getApiCaseSuccessCount() {
+    CaseResultCountEntity caseResultCountEntity = new CaseResultCountEntity();
+    List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
+        .getApiCaseCount(BaseContext.getSelectProjectId());
+
+    List<ApiCaseRecord> apiCaseRecordValidRecords = apiCaseRecordList.stream()
+        .filter(apiCaseRecord -> getFilterValid(apiCaseRecordList)
+            .contains(apiCaseRecord.getApiTestcaseId()))
+        .distinct()
+        .collect(Collectors.toList());
+
+    Map<Long, Optional<ApiCaseRecord>> latestRecordsByCaseId = apiCaseRecordValidRecords.stream()
+        .collect(Collectors
+            .groupingBy(ApiCaseRecord::getApiTestcaseId,
+                Collectors.collectingAndThen(Collectors.toList(), this::getLatestRecord)));
+
+    long apiCaseSuccessCount = countByStatus(latestRecordsByCaseId,
+        apiCaseRecord -> ExecStatusEnum.SUCCESS.getValue()
+            .equalsIgnoreCase(apiCaseRecord.getStatus()));
+    long apiCaseFailCount = countByStatus(latestRecordsByCaseId,
+        apiCaseRecord -> !ExecStatusEnum.SUCCESS.getValue()
+            .equalsIgnoreCase(apiCaseRecord.getStatus()));
+
+    caseResultCountEntity.setApiCaseCount(Convert.toInt(apiCaseFailCount + apiCaseSuccessCount));
+    caseResultCountEntity.setApiCaseSuccessCount(Convert.toInt(apiCaseSuccessCount));
+    caseResultCountEntity.setApiCaseFailCount(Convert.toInt(apiCaseFailCount));
+    return caseResultCountEntity;
+  }
+
+  /**
+   * 过滤掉无效的用例
+   *
+   * @param apiCaseRecordList
+   * @return
+   */
+  @Override
+  public List<Long> getFilterValid(List<ApiCaseRecord> apiCaseRecordList) {
+    List<Long> ids = apiCaseRecordList.stream().map(ApiCaseRecord::getApiTestcaseId).distinct()
+        .collect(Collectors.toList());
+    List<ApiCase> apiCaseList = apiCaseRepository
+        .getApiCaseValid(BaseContext.getSelectProjectId(), ids);
+
+    return apiCaseList.stream().map(ApiCase::getId)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * 获取最新一条记录
+   *
+   * @param records
+   * @return
+   */
+  @Override
+  public Optional<ApiCaseRecord> getLatestRecord(List<ApiCaseRecord> records) {
+    return records.stream()
+        .max(Comparator.comparing(ApiCaseRecord::getUpdateTime));
+  }
+
+  /**
+   * 根据状态统计数量
+   *
+   * @param recordsByCaseId
+   * @param filterCondition
+   * @param <T>
+   * @return
+   */
+  @Override
+  public <T> long countByStatus(Map<Long, Optional<T>> recordsByCaseId,
+      Predicate<T> filterCondition) {
+    return recordsByCaseId.values().stream().filter(Optional::isPresent)
+        .map(Optional::get).filter(filterCondition).count();
   }
 }

@@ -1,8 +1,7 @@
 package com.example.crazytest.repository.imp;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.example.crazytest.entity.Node;
-import com.example.crazytest.entity.ProcessCaseResult;
+import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.mapper.ProcessCaseResultMapper;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,25 +18,25 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProcessCaseResultRepositoryServiceImpl extends
-    ServiceImpl<ProcessCaseResultMapper, ProcessCaseResult> implements
+    ServiceImpl<ProcessCaseResultMapper, ProcessCaseRecord> implements
     ProcessCaseResultRepositoryService {
 
   @Override
-  public List<ProcessCaseResult> list(Long projectId, String status) {
+  public List<ProcessCaseRecord> list(Long projectId, String status) {
     return this.lambdaQuery()
-        .eq(ProcessCaseResult::getProjectId, projectId)
-        .eq(ObjectUtils.isNotNull(status), ProcessCaseResult::getStatus, status)
-        .eq(ProcessCaseResult::getIsDelete, Boolean.FALSE)
+        .eq(ProcessCaseRecord::getProjectId, projectId)
+        .eq(ObjectUtils.isNotNull(status), ProcessCaseRecord::getStatus, status)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
         .list();
   }
 
   @Override
-  public ProcessCaseResult lastResult(Long projectId, Long caseId) {
+  public ProcessCaseRecord lastResult(Long projectId, Long caseId) {
     return this.lambdaQuery()
-        .eq(ProcessCaseResult::getProjectId, projectId)
-        .eq(ProcessCaseResult::getCaseId, caseId)
-        .eq(ProcessCaseResult::getIsDelete, Boolean.FALSE)
-        .orderByDesc(ProcessCaseResult::getUpdateTime)
+        .eq(ProcessCaseRecord::getProjectId, projectId)
+        .eq(ProcessCaseRecord::getCaseId, caseId)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .orderByDesc(ProcessCaseRecord::getUpdateTime)
         .last("limit 1")
         .one();
   }
@@ -45,9 +44,17 @@ public class ProcessCaseResultRepositoryServiceImpl extends
   @Override
   public void updateNodes(Long id, String nodes, String status) {
     this.lambdaUpdate()
-        .eq(ProcessCaseResult::getId, id)
-        .set(ProcessCaseResult::getNodes, nodes)
-        .set(ProcessCaseResult::getStatus, status)
+        .eq(ProcessCaseRecord::getId, id)
+        .set(ProcessCaseRecord::getNodes, nodes)
+        .set(ProcessCaseRecord::getStatus, status)
         .update();
+  }
+
+  @Override
+  public List<ProcessCaseRecord> getProcessCaseRecordList(Long processId) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getCaseId, processId)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }
