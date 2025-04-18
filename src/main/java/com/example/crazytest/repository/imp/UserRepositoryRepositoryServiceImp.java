@@ -91,9 +91,17 @@ public class UserRepositoryRepositoryServiceImp extends ServiceImpl<UserMapper, 
   @Override
   public Long getUserCount(Long projectId) {
     return this.lambdaQuery()
-        .eq(User::getSelectProject, projectId)
+        .eq(User::getProjectId, projectId)
         .eq(User::getIsDelete, Boolean.FALSE)
         .count();
+  }
+
+  @Override
+  public List<User> getProcessUserList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(User::getProjectId, projectId)
+        .eq(User::getIsDelete, Boolean.FALSE)
+        .list();
   }
 
 }

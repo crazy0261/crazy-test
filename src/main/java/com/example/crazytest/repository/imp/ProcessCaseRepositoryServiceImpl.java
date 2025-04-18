@@ -123,4 +123,12 @@ public class ProcessCaseRepositoryServiceImpl extends
         .in(ProcessCase::getId, ids)
         .list();
   }
+
+  @Override
+  public Long getProcessCaseCreateByCount(Long createById) {
+    return this.lambdaQuery()
+        .eq(ProcessCase::getCreateById, createById)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .count();
+  }
 }

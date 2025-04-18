@@ -1,5 +1,7 @@
 package com.example.crazytest.vo;
 
+import com.example.crazytest.entity.UserDistributionEntity;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -23,5 +25,6 @@ public class CoreIndicatorsListVO {
   private Long coverageIsApiCount;
   private Long coverageNotApiCount;
   private Double coverageApiRate;
+  List<UserDistributionEntity> userDistributionEntities;
 
 }

@@ -46,7 +46,7 @@ public class User implements Serializable {
   private String phone;
 
   @ApiModelProperty(value = "项目id")
-  private Long selectProject;
+  private Long projectId;
 
   @ApiModelProperty(value = "角色id")
   private Long roleId;

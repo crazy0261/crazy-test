@@ -16,9 +16,6 @@ public class UserResultEntity {
 
   private Long id;
 
-  @ApiModelProperty(value = "租户")
-  private Long projectId;
-
   @ApiModelProperty(value = "账号")
   private String account;
 
@@ -29,7 +26,7 @@ public class UserResultEntity {
   private String email;
 
   @ApiModelProperty(value = "项目id")
-  private Long selectProject;
+  private Long projectId;
 
   @ApiModelProperty(value = "角色id")
   private Long roleId;

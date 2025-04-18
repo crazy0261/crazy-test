@@ -30,4 +30,6 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
   List<ApiCase> getApiCaseValid(Long projectId,List<Long> ids);
 
+  Long userApiCaseCount(Long createById);
+
 }

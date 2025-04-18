@@ -132,4 +132,12 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .in(ApiCase::getId, ids)
         .list();
   }
+
+  @Override
+  public Long userApiCaseCount(Long createById) {
+    return this.lambdaQuery()
+        .eq(ApiCase::getCreateById, createById)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .count();
+  }
 }

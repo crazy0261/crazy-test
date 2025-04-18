@@ -44,7 +44,7 @@ public class DailyData implements Serializable {
   @ApiModelProperty(value = "单接口用例数")
   private Long apiCaseNum;
 
-  @ApiModelProperty(value = "多接口用例数")
+  @ApiModelProperty(value = "场景用例数")
   private Long processCaseNum;
 
   @ApiModelProperty(value = "用例成功率")

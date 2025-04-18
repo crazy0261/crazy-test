@@ -84,7 +84,7 @@ public class UserServiceImp implements UserService {
   public String updateToken(Long selectProject) {
     User userEntity = userRepositoryService.getUserData(BaseContext.getUserId());
 
-    userEntity.setSelectProject(selectProject);
+    userEntity.setProjectId(selectProject);
     userRepositoryService.updateById(userEntity);
 
     return JWTUtil.crateToken(userEntity);
@@ -98,7 +98,7 @@ public class UserServiceImp implements UserService {
     User userEntity = userRepositoryService.getUser(account);
     loginCheck(userEntity, password);
 
-    userEntity.setSelectProject(Optional.ofNullable(userEntity.getSelectProject())
+    userEntity.setProjectId(Optional.ofNullable(userEntity.getProjectId())
         .orElseGet(() -> projectUserAssociationService.getOne(userEntity.getId()).getProjectId()));
 
     userRepositoryService.updateById(userEntity);

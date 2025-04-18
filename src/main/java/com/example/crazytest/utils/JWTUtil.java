@@ -34,7 +34,7 @@ public class JWTUtil {
         JWT.create().withHeader(map).withClaim("userId", user.getId())
             .withClaim("account", user.getAccount())
             .withClaim("name", user.getName())
-            .withClaim("select_project", user.getSelectProject())
+            .withClaim("select_project", user.getProjectId())
             .withClaim("roleId", user.getRoleId())
             .withExpiresAt(expDate).withIssuedAt(new Date()).sign(Algorithm.HMAC256(SECRET));
 
@@ -66,7 +66,7 @@ public class JWTUtil {
       user.setId(claimMap.get("userId").asLong());
       user.setAccount(claimMap.get("account").asString());
       user.setName(claimMap.get("name").asString());
-      user.setSelectProject(claimMap.get("select_project").asLong());
+      user.setProjectId(claimMap.get("select_project").asLong());
       user.setRoleId(claimMap.get("roleId").asLong());
       return user;
     }

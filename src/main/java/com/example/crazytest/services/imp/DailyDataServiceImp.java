@@ -1,6 +1,10 @@
 package com.example.crazytest.services.imp;
 
 import com.example.crazytest.entity.CaseResultCountEntity;
+import com.example.crazytest.entity.DailyData;
+import com.example.crazytest.entity.TrendDataEntity;
+import com.example.crazytest.entity.User;
+import com.example.crazytest.entity.UserDistributionEntity;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.repository.ApplicationManagementRepositoryService;
@@ -14,6 +18,11 @@ import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.ComputeNumUtil;
 import com.example.crazytest.vo.CoreIndicatorsListVO;
+import com.example.crazytest.vo.DailyDataCaseVO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.LongStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,7 +98,49 @@ public class DailyDataServiceImp implements DailyDataService {
     coreIndicatorsListVO.setCoverageNotApiCount(apiCount - coverageIsApiCount);
     coreIndicatorsListVO
         .setCoverageApiRate(ComputeNumUtil.divideNum(coverageIsApiCount, apiCount, 2));
+    coreIndicatorsListVO.setUserDistributionEntities(this.getUserDistribution());
 
     return coreIndicatorsListVO;
+  }
+
+  /**
+   * 获取趋势数据
+   * @param startTime
+   * @param endTime
+   * @return
+   */
+  @Override
+  public DailyDataCaseVO getTrendData(LocalDate startTime, LocalDate endTime) {
+    DailyDataCaseVO dataCaseVO = new DailyDataCaseVO();
+    List<TrendDataEntity> trendData= new ArrayList<>();
+    List<DailyData> dailyDataList = dailyDataRepository.getCoreIndicatorsList(BaseContext.getSelectProjectId(), startTime, endTime);
+    dailyDataList.forEach(dailyData -> {
+      TrendDataEntity trendDataEntity = new TrendDataEntity();
+      trendDataEntity.setDate(dailyData.getDate().format(DateTimeFormatter.ofPattern("M/d")));
+      trendDataEntity.setApiCaseNum(dailyData.getApiCaseNum());
+      trendDataEntity.setProcessCaseNum(dailyData.getProcessCaseNum());
+      trendData.add(trendDataEntity);
+    });
+    dataCaseVO.setTrendData(trendData);
+    return dataCaseVO;
+  }
+
+  /**
+   * 用户分布
+   * @return
+   */
+  @Override
+  public List<UserDistributionEntity> getUserDistribution() {
+    List<UserDistributionEntity> userDistributionEntities = new ArrayList<>();
+    List<User> userList =userRepositoryService.getProcessUserList(BaseContext.getSelectProjectId());
+
+     userList.forEach(user -> {
+      UserDistributionEntity userDistributionEntity = new UserDistributionEntity();
+      userDistributionEntity.setUserName(user.getName());
+      userDistributionEntity.setApiCaseNum(apiCaseRepositoryService.userApiCaseCount(user.getId()));
+       userDistributionEntity.setProcessCaseNum(processCaseRepositoryService.getProcessCaseCreateByCount(user.getId()));
+       userDistributionEntities.add(userDistributionEntity);
+     });
+     return userDistributionEntities;
   }
 }

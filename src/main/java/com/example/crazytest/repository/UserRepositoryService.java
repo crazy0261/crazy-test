@@ -27,6 +27,8 @@ public interface UserRepositoryService extends IService<User> {
 
   Long getUserCount(Long projectId);
 
+  List<User> getProcessUserList(Long projectId);
+
 
 
 }
