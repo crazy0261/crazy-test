@@ -30,7 +30,7 @@ public class DailyDataRepositoryServiceImpl extends ServiceImpl<DailyDataMapper,
       LocalDate endDate) {
     return this.lambdaQuery()
         .eq(DailyData::getProjectId, projectId)
-        .eq(DailyData::getIsDelete, 0)
+        .eq(DailyData::getIsDelete, Boolean.FALSE)
         .between(DailyData::getDate, startDate, endDate)
         .orderByAsc(DailyData::getDate)
         .list();
