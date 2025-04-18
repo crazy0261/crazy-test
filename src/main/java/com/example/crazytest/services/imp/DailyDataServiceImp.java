@@ -12,6 +12,7 @@ import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.DailyDataService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.ComputeNumUtil;
 import com.example.crazytest.vo.CoreIndicatorsListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,7 @@ public class DailyDataServiceImp implements DailyDataService {
     // todo 后续接入 bug 和成功率
     coreIndicatorsListVO.setCoverageIsApiCount(coverageIsApiCount);
     coreIndicatorsListVO.setCoverageNotApiCount(apiCount-coverageIsApiCount);
-    coreIndicatorsListVO.setCoverageApiRate(NumberUtil.div(coverageIsApiCount, apiCount).doubleValue());
+    coreIndicatorsListVO.setCoverageApiRate(ComputeNumUtil.divideNum(coverageIsApiCount, apiCount,2));
 
     return coreIndicatorsListVO;
   }
