@@ -34,8 +34,8 @@ public class ApiCaseConvert {
     });
   }
 
-  public String apiCaseCheckEnable(String apiCaseIds) throws JsonProcessingException {
-    List<Long> apiCaseIdsList = apiCaseIdTypeConvert(apiCaseIds);
+  public String apiCaseCheckEnable(List<Long>  apiCaseIds) throws JsonProcessingException {
+    List<Long> apiCaseIdsList = apiCaseIdTypeConvert(apiCaseIds.toString());
     return caseService.checkApiCaseEnable(apiCaseIdsList).toString();
   }
 

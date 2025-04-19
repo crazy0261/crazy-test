@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.entity.req.TaskScheduleReq;
 import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
+import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
@@ -49,6 +51,10 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   ApiCaseRepositoryService apiCaseRepositoryService;
 
   @Autowired
+  ProcessCaseRepositoryService processorService;
+  ;
+
+  @Autowired
   ApiCaseResultService apiCaseResultService;
 
   @Autowired
@@ -78,21 +84,24 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Override
   @Transactional(rollbackFor = Exception.class)
-  public Boolean save(TaskSchedule taskSchedule) throws JsonProcessingException {
-    List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
+  public Boolean save(TaskScheduleReq taskScheduleReq) throws JsonProcessingException {
+    List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskScheduleReq.getName());
 
-    AssertUtil.assertTrue(Objects.isNull(taskSchedule.getId()) && CollUtil.isNotEmpty(taskSchedules), ResultEnum.Task_Name_EXIST.getMessage());
-    CronUtil.cronCheckRule(taskSchedule.getCron());
+    AssertUtil
+        .assertTrue(Objects.isNull(taskScheduleReq.getId()) && CollUtil.isNotEmpty(taskSchedules),
+            ResultEnum.Task_Name_EXIST.getMessage());
+    CronUtil.cronCheckRule(taskScheduleReq.getCron());
+
+    TaskSchedule taskSchedule = new TaskSchedule();
+    BeanUtils.copyProperties(taskScheduleReq, taskSchedule);
 
     taskSchedule.setNextExecTime(CronUtil.getNextTime(taskSchedule.getCron()));
-
-    String apiCaseCheckEnable = caseConvert.apiCaseCheckEnable(taskSchedule.getTestcaseList());
 
     taskSchedule.setProjectId(
         Optional.ofNullable(taskSchedule.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     taskSchedule
         .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
-    taskSchedule.setTestcaseList(apiCaseCheckEnable);
+    taskSchedule.setTestcaseList(taskScheduleReq.getTestcaseList().toString());
     return repositoryService.saveOrUpdate(taskSchedule);
   }
 
@@ -101,7 +110,11 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
     TaskScheduleVO taskScheduleVO = new TaskScheduleVO();
 
     TaskSchedule taskSchedule = repositoryService.getById(id);
-    Long apiCaseCount = apiCaseRepositoryService.countCase();
+    Long apiCaseCount =
+        Objects.equals("API_CASE", taskSchedule.getTestcaseType()) ? apiCaseRepositoryService
+            .countCase(BaseContext.getSelectProjectId())
+            : processorService.getProcessCount(BaseContext.getSelectProjectId(),Boolean.FALSE);
+
     List<Long> apiCaseList = caseConvert.apiCaseIdTypeConvert(taskSchedule.getTestcaseList());
 
     BeanUtils.copyProperties(taskSchedule, taskScheduleVO);

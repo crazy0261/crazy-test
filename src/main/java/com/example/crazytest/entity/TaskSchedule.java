@@ -38,7 +38,7 @@ public class TaskSchedule implements Serializable {
   @ApiModelProperty(value = "项目id")
   private Long projectId;
 
-  @ApiModelProperty(value = "环境变量")
+  @ApiModelProperty(value = "环境顺序")
   private Integer envSort;
 
   @ApiModelProperty(value = "执行模式")

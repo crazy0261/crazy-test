@@ -4,6 +4,7 @@ package com.example.crazytest.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.TaskScheduleExecuteReq;
+import com.example.crazytest.entity.req.TaskScheduleReq;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.TaskScheduleVO;
@@ -53,14 +54,14 @@ public class TaskScheduleController {
 
   @PostMapping("/save")
   @Operation(summary = "保存定时任务")
-  public Result<Boolean> save(@RequestBody TaskSchedule taskSchedule)
+  public Result<Boolean> save(@RequestBody TaskScheduleReq taskSchedule)
       throws JsonProcessingException {
     return Result.success(taskScheduleService.save(taskSchedule));
   }
 
   @GetMapping("/query")
   @Operation(summary = "详情")
-  public Result<TaskScheduleVO> save(@RequestParam(value = "id") Long id)
+  public Result<TaskScheduleVO> query(@RequestParam(value = "id") Long id)
       throws JsonProcessingException {
     return Result.success(taskScheduleService.queryById(id));
   }

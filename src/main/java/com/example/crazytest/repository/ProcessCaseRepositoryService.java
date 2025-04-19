@@ -33,6 +33,8 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   Long getProcessCaseCount(Long projectId);
 
+  Long getProcessCount(Long projectId,Boolean isSubProcess);
+
   List<ProcessCase> getProcessCaseList(Long projectId,List<Long> ids);
 
   Long getProcessCaseCreateByCount(Long createById);

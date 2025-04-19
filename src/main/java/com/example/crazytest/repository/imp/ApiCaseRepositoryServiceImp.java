@@ -90,8 +90,9 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   }
 
   @Override
-  public Long countCase() {
+  public Long countCase(Long projectId) {
     return this.lambdaQuery()
+        .eq(ApiCase::getProjectId, projectId)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .count();
   }

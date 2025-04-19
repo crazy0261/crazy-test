@@ -20,7 +20,7 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
   Boolean batchDown(List<Long> ids, String remark);
 
-  Long countCase();
+  Long countCase(Long projectId);
 
   List<ApiCase> checkApiCaseEnable(List<Long> ids);
 

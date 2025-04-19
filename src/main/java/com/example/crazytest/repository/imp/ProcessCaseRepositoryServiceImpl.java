@@ -116,6 +116,15 @@ public class ProcessCaseRepositoryServiceImpl extends
   }
 
   @Override
+  public Long getProcessCount(Long projectId, Boolean isSubProcess) {
+    return this.lambdaQuery()
+        .eq(ProcessCase::getProjectId, projectId)
+        .eq(ProcessCase::getIsSubProcess, isSubProcess)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .count();
+  }
+
+  @Override
   public List<ProcessCase> getProcessCaseList(Long projectId, List<Long> ids) {
     return this.lambdaQuery()
         .eq(ProcessCase::getProjectId, projectId)
