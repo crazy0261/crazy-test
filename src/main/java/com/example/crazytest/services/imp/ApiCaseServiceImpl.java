@@ -256,7 +256,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     return ResultApiVO
         .builder()
-        .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
+        .requestParams(Optional.ofNullable(encryptJsonParams).filter(json->!json.isEmpty()).orElse(paramsJson))
         .requestUrl(request.getUrl())
         .envId(apiDebugReq.getEnvId())
         .envName(envConfig.getEnvName())
