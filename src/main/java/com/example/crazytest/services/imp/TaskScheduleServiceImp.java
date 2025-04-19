@@ -89,7 +89,7 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
     AssertUtil
         .assertTrue(Objects.isNull(taskScheduleReq.getId()) && CollUtil.isNotEmpty(taskSchedules),
-            ResultEnum.Task_Name_EXIST.getMessage());
+            ResultEnum.TASK_NAME_EXIST.getMessage());
     CronUtil.cronCheckRule(taskScheduleReq.getCron());
 
     TaskSchedule taskSchedule = new TaskSchedule();

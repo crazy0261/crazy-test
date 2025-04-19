@@ -1,6 +1,7 @@
 package com.example.crazytest.services.imp;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -28,6 +29,7 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
@@ -212,7 +214,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     ExecutionProcessContext context = new ExecutionProcessContext();
     ProcessCase processCase = processCaseRepositoryService.getById(apiDebugReq.getId());
     AssertUtil.assertNotNull(processCase, ResultEnum.PROCESS_CASE_NOT_FAIL.getMessage());
+    AssertUtil.assertNotNull(processCase.getAppId(), ResultEnum.PROCESS_CASE_NODE_NOT_SELECT_APP.getMessage());
 
+    apiDebugReq.setEnvId(
+        Objects.nonNull(apiDebugReq.getEnvSortId()) ? Convert.toLong(apiDebugReq.getEnvSortId())
+            : apiDebugReq.getEnvId());
     context.setId(apiDebugReq.getId());
     context.setApiDebugReq(apiDebugReq);
     context.setProjectId(processCase.getProjectId());

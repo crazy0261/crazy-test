@@ -33,7 +33,7 @@ public class FlowEngineServiceImp implements FlowEngineService {
   ApiCaseService apiCaseService;
 
   @Override
-  @Async("ThreadPoolConfig")
+  @Async("taskThreadPool")
   public void executeFlow(String nodesJson, String edgesJson,
       ExecutionProcessContext context) {
 

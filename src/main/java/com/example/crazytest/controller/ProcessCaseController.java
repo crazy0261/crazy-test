@@ -119,7 +119,7 @@ public class ProcessCaseController {
     return Result.success(processCaseService.getIsSubProcess());
   }
 
-  @GetMapping("/debug")
+  @PostMapping("/debug")
   @Operation(summary = "场景用例调试")
   public Result<Long> debug(@RequestBody ApiDebugReq apiDebugReq) {
     return Result.success(processCaseService.debug(apiDebugReq));
