@@ -26,8 +26,11 @@ public enum ResultEnum {
   SQL_NOT_SELECT(400,   "sql语句必须以select开头"),
   START_NODE_NOT_EXIST(400, "流程节点必须有开始节点"),
   SUB_ENV_NOT_EXIST(400, "子流程未关联环境"),
-  NODE_EXEC_TIMEOUT(400, "节点执行超时 ")
+  NODE_EXEC_TIMEOUT(400, "节点执行超时 "),
+  Task_Name_EXIST(400, " 任务名称已存在")
   ;
+
+
 
 
 

@@ -1,10 +1,12 @@
 package com.example.crazytest.services.imp;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ExecModeEnum;
+import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
@@ -79,8 +81,7 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
   public Boolean save(TaskSchedule taskSchedule) throws JsonProcessingException {
     List<TaskSchedule> taskSchedules = repositoryService.cheTaskSchedule(taskSchedule.getName());
 
-    AssertUtil.assertTrue(Objects.isNull(taskSchedule.getId()) && Objects.nonNull(taskSchedules),
-        "任务名称已存在");
+    AssertUtil.assertTrue(Objects.isNull(taskSchedule.getId()) && CollUtil.isNotEmpty(taskSchedules), ResultEnum.Task_Name_EXIST.getMessage());
     CronUtil.cronCheckRule(taskSchedule.getCron());
 
     taskSchedule.setNextExecTime(CronUtil.getNextTime(taskSchedule.getCron()));
@@ -122,7 +123,7 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
     ApiDebugReq apiDebugReq = new ApiDebugReq();
     apiDebugReq.setScheduleBatchId(TimestampRandomIdGenerator.generateId());
     apiDebugReq.setMode(ExecModeEnum.AUTO.getDesc());
-    apiDebugReq.setEnvId(Long.valueOf(taskSchedule.getEnv()));
+    apiDebugReq.setEnvSortId(taskSchedule.getEnvSort());
     apiDebugReq.setScheduleId(taskSchedule.getId());
 
     if (Objects.equals("API_CASE", taskSchedule.getTestcaseType())) {

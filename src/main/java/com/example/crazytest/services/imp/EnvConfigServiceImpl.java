@@ -16,8 +16,10 @@ import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.services.EnvConfigService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ParamsListVO;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +68,7 @@ public class EnvConfigServiceImpl implements EnvConfigService {
 
   @Override
   public EnvConfig getByAppId(Long appId, Long envId) {
-    return envConfigRepositoryService.getByAppId(BaseContext.getSelectProjectId(), appId,envId);
+    return envConfigRepositoryService.getByAppId(BaseContext.getSelectProjectId(), appId, envId);
   }
 
   @Override
@@ -121,5 +123,15 @@ public class EnvConfigServiceImpl implements EnvConfigService {
   @Override
   public List<EnvConfig> envAppList(Long appId) {
     return envConfigRepositoryService.envAppList(BaseContext.getSelectProjectId(), appId);
+  }
+
+  @Override
+  public List<Integer> getEnvSort() {
+    List<EnvConfig> envConfigs = envConfigRepositoryService
+        .envList(BaseContext.getSelectProjectId());
+
+    return Optional.ofNullable(envConfigs).map(
+        envConfig -> envConfig.stream().map(EnvConfig::getEnvSort).distinct()
+            .collect(Collectors.toList())).orElse(Collections.emptyList());
   }
 }

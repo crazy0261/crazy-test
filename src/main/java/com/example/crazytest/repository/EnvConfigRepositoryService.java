@@ -33,5 +33,7 @@ public interface EnvConfigRepositoryService extends IService<EnvConfig> {
 
   List<EnvConfig> envAppList(Long projectId, Long appId);
 
+  List<EnvConfig> envList(Long projectId);
+
 
 }

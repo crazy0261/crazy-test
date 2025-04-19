@@ -18,6 +18,7 @@ public class ApiDebugReq {
 
   private Long id;
   private Long envId;
+  private Integer envSortId;
   private Long testAccount;
   private JSONObject testAccountInParam;
   private List<ParamsListVO> inputParams;

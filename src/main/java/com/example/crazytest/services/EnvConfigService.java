@@ -22,4 +22,7 @@ public interface EnvConfigService {
   Boolean delete(Long id);
 
   List<EnvConfig> envAppList(Long appId);
+
+  List<Integer> getEnvSort();
+
 }

@@ -110,4 +110,12 @@ public class EnvConfigRepositoryServiceImpl extends
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public List<EnvConfig> envList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(EnvConfig::getProjectId, projectId)
+        .eq(EnvConfig::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

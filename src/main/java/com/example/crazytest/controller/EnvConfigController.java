@@ -77,8 +77,15 @@ public class EnvConfigController {
 
   @GetMapping("/app/list")
   @Operation(summary = "应用下所有环境")
-  public Result<List<EnvConfig>> envAppList(@RequestParam(value = "appId",required = false) Long appId) {
+  public Result<List<EnvConfig>> envAppList(
+      @RequestParam(value = "appId", required = false) Long appId) {
     return Result.success(envConfigService.envAppList(appId));
+  }
+
+  @GetMapping("/env/sort")
+  @Operation(summary = "获取环境排序")
+  public Result<List<Integer>> getEnvSort() {
+    return Result.success(envConfigService.getEnvSort());
   }
 
 }

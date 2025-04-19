@@ -346,6 +346,10 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Override
   public List<Long> checkApiCaseEnable(List<Long> ids) {
+    if (CollUtil.isEmpty(ids)){
+      return Collections.emptyList();
+    }
+
     List<ApiCase> apiCases = apiCaseRepository.checkApiCaseEnable(ids);
     return apiCases.stream().map(ApiCase::getId).collect(Collectors.toList());
   }
