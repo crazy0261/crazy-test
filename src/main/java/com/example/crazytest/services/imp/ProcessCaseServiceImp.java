@@ -62,6 +62,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   /**
    * 分页查询
+   *
    * @param processCaseDTO
    * @return
    */
@@ -102,18 +103,21 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   /**
    * 检验是否有开始节点
+   *
    * @param nodes
    */
   @Override
   public void checkNodeStartType(List<JSONObject> nodes) {
     Boolean isStartNode = nodes.stream()
         .anyMatch(node -> node.getString("type").equals(NodeTypeEnum.START_NODE.getTypeName()));
-    AssertUtil.assertTrue(isStartNode, ResultEnum.START_NODE_NOT_EXIST.getMessage());
+    AssertUtil.assertNotTrue(isStartNode, ResultEnum.START_NODE_NOT_EXIST.getMessage());
   }
 
   @Override
   public Boolean save(ProcessCaseReq processCaseReq) {
-    checkNodeStartType(processCaseReq.getNodes());
+    if (CollUtil.isNotEmpty(processCaseReq.getNodes())) {
+      checkNodeStartType(processCaseReq.getNodes());
+    }
 
     ProcessCase processCase = new ProcessCase();
     BeanUtils.copyProperties(processCaseReq, processCase);
@@ -181,6 +185,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   /**
    * 更新节点或边
+   *
    * @param id
    * @param nodes
    * @param edge
@@ -198,6 +203,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   /**
    * 执行流程
+   *
    * @param apiDebugReq
    * @return
    */
@@ -222,6 +228,7 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   /**
    * 执行子流程
+   *
    * @param envParameter
    * @param subCaseId
    * @param subEnvId

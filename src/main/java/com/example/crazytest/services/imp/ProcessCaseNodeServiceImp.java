@@ -12,6 +12,7 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseNodeVO;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class ProcessCaseNodeServiceImp implements ProcessCaseNodeService {
   public ProcessCaseNodeVO detail(Long id) {
     ProcessCaseNodeVO processCaseNodeVO = new ProcessCaseNodeVO();
     ProcessCaseNode processCaseNode = processor.detail(BaseContext.getSelectProjectId(), id);
+
+    if (Objects.isNull(processCaseNode)){
+      return processCaseNodeVO;
+    }
+
     BeanUtils.copyProperties(processCaseNode, processCaseNodeVO);
 
     ProcessCaseVO processCaseVO = processCaseService.detail(processCaseNode.getCaseId());
