@@ -1,6 +1,7 @@
 package com.example.crazytest.services.imp;
 
 import com.example.crazytest.entity.CaseResultCountEntity;
+import com.example.crazytest.entity.CaseSuccessRateDataEntity;
 import com.example.crazytest.entity.DailyData;
 import com.example.crazytest.entity.TrendDataEntity;
 import com.example.crazytest.entity.User;
@@ -120,16 +121,25 @@ public class DailyDataServiceImp implements DailyDataService {
   public DailyDataCaseVO getTrendData(LocalDate startTime, LocalDate endTime) {
     DailyDataCaseVO dataCaseVO = new DailyDataCaseVO();
     List<TrendDataEntity> trendData = new ArrayList<>();
+    List<CaseSuccessRateDataEntity> caseSuccessRateData= new ArrayList<>();
     List<DailyData> dailyDataList = dailyDataRepository
         .getCoreIndicatorsList(BaseContext.getSelectProjectId(), startTime, endTime);
+
     dailyDataList.forEach(dailyData -> {
       TrendDataEntity trendDataEntity = new TrendDataEntity();
       trendDataEntity.setDate(dailyData.getDate().format(DateTimeFormatter.ofPattern("M/d")));
       trendDataEntity.setApiCaseNum(dailyData.getApiCaseNum());
       trendDataEntity.setProcessCaseNum(dailyData.getProcessCaseNum());
       trendData.add(trendDataEntity);
+
+      CaseSuccessRateDataEntity successRateDataEntity = new CaseSuccessRateDataEntity();
+      successRateDataEntity.setDate(dailyData.getDate());
+      successRateDataEntity.setScales(dailyData.getCaseSuccessRate());
+      caseSuccessRateData.add(successRateDataEntity);
     });
+
     dataCaseVO.setTrendData(trendData);
+    dataCaseVO.setCaseSuccessRateData(caseSuccessRateData);
     return dataCaseVO;
   }
 

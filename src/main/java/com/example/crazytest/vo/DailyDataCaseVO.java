@@ -1,6 +1,7 @@
 package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.TrendDataEntity;
+import com.example.crazytest.entity.CaseSuccessRateDataEntity;
 import java.util.List;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import lombok.Data;
 @Data
 public class DailyDataCaseVO {
   private List<TrendDataEntity> trendData;
+  private List<CaseSuccessRateDataEntity> caseSuccessRateData;
 }
 
 
