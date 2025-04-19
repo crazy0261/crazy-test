@@ -7,6 +7,7 @@ import com.example.crazytest.entity.ProjectManagement;
 import com.example.crazytest.mapper.ProjectManagementMapper;
 import com.example.crazytest.repository.ProjectManagementRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,12 @@ public class ProjectManagementRepositoryServiceImpl extends
         .like(ObjectUtils.isNotNull(name), ProjectManagement::getName, name)
         .eq(ProjectManagement::getIsDelete, Boolean.FALSE)
         .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<ProjectManagement> listAll() {
+    return this.lambdaQuery()
+        .eq(ProjectManagement::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

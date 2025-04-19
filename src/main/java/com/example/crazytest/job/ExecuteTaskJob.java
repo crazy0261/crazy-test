@@ -1,6 +1,5 @@
 package com.example.crazytest.job;
 
-import com.example.crazytest.config.ThreadPoolConfig;
 import com.example.crazytest.services.TaskScheduleService;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -8,7 +7,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -3,6 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ProjectManagement;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ProjectManagementRepositoryService extends IService<ProjectManagement> {
 
   IPage<ProjectManagement> list(String name, Integer current, Integer pageSize);
+
+  List<ProjectManagement> listAll();
 }

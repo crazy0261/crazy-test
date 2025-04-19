@@ -14,4 +14,6 @@ public interface DailyDataService {
 
   List<UserDistributionEntity> getUserDistribution();
 
+  void createDataDaily(Long projectId);
+
 }

@@ -98,6 +98,12 @@ public class DailyDataServiceImp implements DailyDataService {
     coreIndicatorsListVO.setCoverageNotApiCount(apiCount - coverageIsApiCount);
     coreIndicatorsListVO
         .setCoverageApiRate(ComputeNumUtil.divideNum(coverageIsApiCount, apiCount, 2));
+    coreIndicatorsListVO.setSumCaseSuccessCount(
+        apiCaseResultCount.getApiCaseSuccessCount() + processCaseResultCount
+            .getApiCaseProcessSuccessCount());
+    coreIndicatorsListVO.setSumCaseFailureCount(
+        apiCaseResultCount.getApiCaseFailCount() + processCaseResultCount
+            .getApiCaseProcessFailCount());
     coreIndicatorsListVO.setUserDistributionEntities(this.getUserDistribution());
 
     return coreIndicatorsListVO;
@@ -105,6 +111,7 @@ public class DailyDataServiceImp implements DailyDataService {
 
   /**
    * 获取趋势数据
+   *
    * @param startTime
    * @param endTime
    * @return
@@ -112,8 +119,9 @@ public class DailyDataServiceImp implements DailyDataService {
   @Override
   public DailyDataCaseVO getTrendData(LocalDate startTime, LocalDate endTime) {
     DailyDataCaseVO dataCaseVO = new DailyDataCaseVO();
-    List<TrendDataEntity> trendData= new ArrayList<>();
-    List<DailyData> dailyDataList = dailyDataRepository.getCoreIndicatorsList(BaseContext.getSelectProjectId(), startTime, endTime);
+    List<TrendDataEntity> trendData = new ArrayList<>();
+    List<DailyData> dailyDataList = dailyDataRepository
+        .getCoreIndicatorsList(BaseContext.getSelectProjectId(), startTime, endTime);
     dailyDataList.forEach(dailyData -> {
       TrendDataEntity trendDataEntity = new TrendDataEntity();
       trendDataEntity.setDate(dailyData.getDate().format(DateTimeFormatter.ofPattern("M/d")));
@@ -127,20 +135,47 @@ public class DailyDataServiceImp implements DailyDataService {
 
   /**
    * 用户分布
+   *
    * @return
    */
   @Override
   public List<UserDistributionEntity> getUserDistribution() {
     List<UserDistributionEntity> userDistributionEntities = new ArrayList<>();
-    List<User> userList =userRepositoryService.getProcessUserList(BaseContext.getSelectProjectId());
+    List<User> userList = userRepositoryService
+        .getProcessUserList(BaseContext.getSelectProjectId());
 
-     userList.forEach(user -> {
+    userList.forEach(user -> {
       UserDistributionEntity userDistributionEntity = new UserDistributionEntity();
       userDistributionEntity.setUserName(user.getName());
       userDistributionEntity.setApiCaseNum(apiCaseRepositoryService.userApiCaseCount(user.getId()));
-       userDistributionEntity.setProcessCaseNum(processCaseRepositoryService.getProcessCaseCreateByCount(user.getId()));
-       userDistributionEntities.add(userDistributionEntity);
-     });
-     return userDistributionEntities;
+      userDistributionEntity.setProcessCaseNum(
+          processCaseRepositoryService.getProcessCaseCreateByCount(user.getId()));
+      userDistributionEntities.add(userDistributionEntity);
+    });
+    return userDistributionEntities;
+  }
+
+  @Override
+  public void createDataDaily(Long projectId) {
+    Long apiCaseNum = apiCaseRepositoryService.getApiCaseCount(projectId);
+    Long processCaseNum = processCaseRepositoryService
+        .getProcessCaseCount(projectId);
+
+    CaseResultCountEntity apiCaseResultCount = apiCaseResultService.getApiCaseSuccessCount();
+    CaseResultCountEntity processCaseResultCount = processResultService.getCaseResultCount();
+
+    Double caseSuccessRate = ComputeNumUtil.divideNum(
+        LongStream.of(apiCaseResultCount.getApiCaseSuccessCount(), processCaseResultCount
+            .getApiCaseProcessSuccessCount()).sum()
+        , LongStream.of(apiCaseResultCount.getApiCaseCount(), processCaseResultCount
+            .getApiProcessCaseCount()).sum(), 2);
+
+    DailyData dailyData = new DailyData();
+    dailyData.setProjectId(projectId);
+    dailyData.setDate(LocalDate.now());
+    dailyData.setApiCaseNum(apiCaseNum);
+    dailyData.setProcessCaseNum(processCaseNum);
+    dailyData.setCaseSuccessRate(caseSuccessRate);
+    dailyDataRepository.saveOrUpdate(dailyData);
   }
 }
