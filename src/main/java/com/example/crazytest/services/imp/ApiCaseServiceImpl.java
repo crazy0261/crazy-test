@@ -258,10 +258,12 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .builder()
         .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
         .requestUrl(request.getUrl())
+        .envId(apiDebugReq.getEnvId())
+        .envName(envConfig.getEnvName())
         .requestHeaders(request.getHeaders())
-        .response(encryptJson.isEmpty() ? decryptRequestBody(encryptJson.getString("secret"), body)
-            : body)
-        .assertResultVo(CollUtil.isNotEmpty(assertsArray) ? assertResult(assertsArray, body) : null)
+        .response(encryptJson.isEmpty() ? body
+            : decryptRequestBody(encryptJson.getString("secret"), body))
+        .assertResultVo(assertResult(assertsArray, body))
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)
         .build();
@@ -271,6 +273,10 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
   public AssertResultVo assertResult(List<AssertVO> assertVOS, JSONObject body) {
     AssertResultVo assertResult = new AssertResultVo();
     assertResult.setPass(Boolean.TRUE);
+
+    if (CollUtil.isEmpty(assertVOS)) {
+      return assertResult;
+    }
 
     Integer code = body.getInteger("code");
     if (code != 200) {
@@ -346,7 +352,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   @Override
   public List<Long> checkApiCaseEnable(List<Long> ids) {
-    if (CollUtil.isEmpty(ids)){
+    if (CollUtil.isEmpty(ids)) {
       return Collections.emptyList();
     }
 

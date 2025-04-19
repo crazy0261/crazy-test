@@ -35,9 +35,7 @@ public class DynamicVariableParserUtil {
   public static Map<String, String> parseToMap() {
     Map<String, String> resultMap = new HashMap<>();
     for (Map.Entry<String, Supplier<String>> entry : dynamicVariables.entrySet()) {
-      String key = "${" + entry.getKey() + "}";
-      String value = entry.getValue().get();
-      resultMap.put(key, value);
+      resultMap.put(entry.getKey(), entry.getValue().get());
     }
     return resultMap;
   }

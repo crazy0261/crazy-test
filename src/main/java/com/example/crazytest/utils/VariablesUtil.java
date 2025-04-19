@@ -67,7 +67,7 @@ public class VariablesUtil {
     }
 
     String variablesValue = variables.getOrDefault(matcher.group(1), "");
-    return value.replaceAll(matcher.group(0), variablesValue);
+    return value.replaceAll("\\$\\{".concat(matcher.group(1)).concat("}"), variablesValue);
   }
 
   /**

@@ -25,6 +25,9 @@ public class ApiCaseResultReq {
   @ApiModelProperty(value = "执行状态,INIT,RUNNING,SUCCESS,FAIL")
   private String status;
 
+  @ApiModelProperty(value = "执行环境")
+  private String envName;
+
   @ApiModelProperty(value = "执行结果")
   private String debugResult;
 

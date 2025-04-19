@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
+import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
+import com.example.crazytest.repository.EnvConfigRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.BaseContext;
@@ -49,6 +51,9 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   @Autowired
   UserRepositoryService userRepository;
 
+  @Autowired
+  EnvConfigRepositoryService envConfigRepositoryService;
+
   @Override
   public ApiCaseRecord queryById(Long id) {
     return apiCaseResultRepositoryService.getById(id);
@@ -61,7 +66,9 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
     return apiCaseResult.convert(caseResult -> {
       ApiCaseResultReq apiCaseResultVo = new ApiCaseResultReq();
+      EnvConfig envConfig =  envConfigRepositoryService.getById(caseResult.getEnvId());
       BeanUtils.copyProperties(caseResult, apiCaseResultVo);
+      apiCaseResultVo.setEnvName(envConfig.getEnvName());
       return apiCaseResultVo;
     });
   }
@@ -79,6 +86,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
         .status(Optional.ofNullable(resultApiVO.getAssertResultVo()).map(
             AssertResultVo::getPass).filter(pass -> pass)
             .map(pass -> ExecStatusEnum.SUCCESS.getValue()).orElse(ExecStatusEnum.FAIL.getValue()))
+        .envId(apiDebugReq.getEnvId())
         .debugResult(JSON.toJSONString(resultApiVO))
         .scheduleId(apiDebugReq.getScheduleId())
         .scheduleBatchId(apiDebugReq.getScheduleBatchId())

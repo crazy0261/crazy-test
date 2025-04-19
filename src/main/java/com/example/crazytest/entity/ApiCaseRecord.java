@@ -55,8 +55,8 @@ public class ApiCaseRecord implements Serializable {
   @ApiModelProperty(value = "用例负责人ID")
   private Long caseOwnerId;
 
-  @ApiModelProperty(value = "环境名称id")
-  private String envNameId;
+  @ApiModelProperty(value = "环境id")
+  private Long envId;
 
   @ApiModelProperty(value = "执行模式：自动 schedule/手动 manual")
   private String mode;

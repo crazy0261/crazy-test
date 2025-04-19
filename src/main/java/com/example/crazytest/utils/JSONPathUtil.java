@@ -29,7 +29,7 @@ public class JSONPathUtil {
    * @return
    */
   public static boolean isJsonPathCheck(String jsonPath) {
-    if (StringUtils.isEmpty(jsonPath) && !jsonPath.startsWith("$.")) {
+    if (StringUtils.isEmpty(jsonPath) || !jsonPath.startsWith("$.")) {
       return false;
     }
     if (jsonPath.contains("size()")) {

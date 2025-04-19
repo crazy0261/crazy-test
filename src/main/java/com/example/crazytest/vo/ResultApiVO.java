@@ -24,7 +24,7 @@ public class ResultApiVO {
   private String startExecTime;
   private Long execTime;
 //  private List<AssertVo> autoGenerateAsserts;  // 自动生成的断言
-  private Long envNameId;
+  private Long envId;
   private String envName;
 
 
