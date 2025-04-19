@@ -1,5 +1,10 @@
 package com.example.crazytest.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
+
+@Getter
 public enum NodeTypeEnum {
   START_NODE("StartNode"),
   END_NODE("EndNode"),
@@ -15,10 +20,12 @@ public enum NodeTypeEnum {
     this.typeName = typeName;
   }
 
+  @JsonValue
   public String getTypeName() {
     return typeName;
   }
 
+  @JsonCreator
   public static NodeTypeEnum fromString(String type) {
     for (NodeTypeEnum nodeType : values()) {
       if (nodeType.typeName.equalsIgnoreCase(type)) {

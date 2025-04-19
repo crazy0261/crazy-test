@@ -22,7 +22,6 @@ public class ExecutionProcessContext {
   Long resultId;
   Long projectId;
   Node currentNode;
-  private String mode;
   ApiDebugReq apiDebugReq;
   ProcessCase processCase;
   private Long scheduleId;

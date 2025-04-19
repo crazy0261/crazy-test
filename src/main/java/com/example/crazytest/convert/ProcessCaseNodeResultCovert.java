@@ -26,7 +26,7 @@ public class ProcessCaseNodeResultCovert {
   public static ProcessCaseRecord processCaseResultConvert(ProcessCase processCase,
       ExecutionProcessContext context) {
     ProcessCaseRecord processCaseRecord = new ProcessCaseRecord();
-    processCaseRecord.setId(IdUtil.getSnowflakeNextId());
+    processCaseRecord.setId(context.getResultId());
     processCaseRecord.setCaseId(processCase.getId());
     processCaseRecord.setProjectId(processCase.getProjectId());
     processCaseRecord.setAppId(processCase.getAppId());
@@ -36,7 +36,7 @@ public class ProcessCaseNodeResultCovert {
     processCaseRecord.setNodes(JSON.toJSONString(context.getNodeMap()));
     processCaseRecord.setEdges(JSON.toJSONString(context.getEdgeMap()));
     processCaseRecord.setEnvNameId(context.getApiDebugReq().getEnvId());
-    processCaseRecord.setMode(context.getMode());
+    processCaseRecord.setMode(context.getApiDebugReq().getMode());
     return processCaseRecord;
   }
 
@@ -44,9 +44,12 @@ public class ProcessCaseNodeResultCovert {
       ExecutionProcessContext context) {
     ProcessCaseNodeResult processCaseNodeResult = new ProcessCaseNodeResult();
     processCaseNodeResult.setId(IdUtil.getSnowflakeNextId());
+    processCaseNodeResult.setProjectId(context.getProjectId());
     processCaseNodeResult.setCaseId(context.getId());
-    processCaseNodeResult.setNodeId(executionResult.getNodeId());
+    processCaseNodeResult.setCaseResultId(context.getResultId());
+    processCaseNodeResult.setNodeId(context.getCurrentNode().getId());
     processCaseNodeResult.setNextNodeId(executionResult.getNextNodeId());
+    processCaseNodeResult.setStatus(executionResult.getStatus().name());
     processCaseNodeResult.setDebugResult(executionResult.getMessage());
     processCaseNodeResult.setSqlExecResult(executionResult.getSqlExecResult());
     processCaseNodeResult.setPreStepExecResult(executionResult.getPreStepExecResult());

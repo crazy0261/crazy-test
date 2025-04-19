@@ -43,11 +43,10 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
   ApiCaseResultService apiCaseResultService;
 
   @Override
-  public Long insert(ProcessCase processCase, ExecutionProcessContext context) {
+  public void save(ProcessCase processCase, ExecutionProcessContext context) {
     ProcessCaseRecord processCaseRecord = ProcessCaseNodeResultCovert
         .processCaseResultConvert(processCase, context);
     repositoryService.saveOrUpdate(processCaseRecord);
-    return processCaseRecord.getId();
   }
 
   @Override

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ProcessCaseResultService {
 
-  Long insert(ProcessCase processCase, ExecutionProcessContext context);
+  void save(ProcessCase processCase, ExecutionProcessContext context);
 
   void updateNodes(Long id, Map<String, Node> nodes, String status);
 

@@ -58,7 +58,7 @@ public class ProcessCaseRecord implements Serializable {
   private Long envNameId;
 
   @ApiModelProperty(value = "执行次数")
-  private Integer execTimes;
+  private Integer execCount;
 
   @ApiModelProperty(value = "状态")
   private String status;

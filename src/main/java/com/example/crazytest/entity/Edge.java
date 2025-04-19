@@ -13,9 +13,18 @@ import lombok.Data;
 public class Edge {
 
   private String id;
+  private String type;
   private String source;
   private String target;
   private String sourceHandle;
   private String targetHandle;
   private String label;
+  private MarkerEnd markerEnd;
+
+  @Data
+  public static class MarkerEnd {
+
+    private String type;
+  }
+
 }

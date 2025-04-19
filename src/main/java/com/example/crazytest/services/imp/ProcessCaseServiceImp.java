@@ -224,12 +224,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     context.setProjectId(processCase.getProjectId());
     context.setScheduleId(IdUtil.getSnowflakeNextId());
     context.setScheduleBatchId(apiDebugReq.getScheduleBatchId());
+    context.setResultId(IdUtil.getSnowflakeNextId());
 
     flowEngineService.executeFlow(processCase.getNodes(), processCase.getEdges(), context);
-
-    long resultId = processCaseResultService.insert(processCase, context);
-    context.setResultId(resultId);
-    return resultId;
+    processCaseResultService.save(processCase, context);
+    return context.getResultId();
   }
 
   /**

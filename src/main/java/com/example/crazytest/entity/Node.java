@@ -21,6 +21,8 @@ public class Node {
   private Double width;
   private Double height;
   private Position position;
+  private Position positionAbsolute;
+
 
   @Data
   public static class Position {
