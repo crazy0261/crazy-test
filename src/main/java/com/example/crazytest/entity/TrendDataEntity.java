@@ -1,5 +1,6 @@
 package com.example.crazytest.entity;
 
+import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -12,7 +13,7 @@ import lombok.Data;
 @Data
 public class TrendDataEntity {
 
-  private String date;
+  private LocalDate date;
   private Long apiCaseNum;
   private Long processCaseNum;
 

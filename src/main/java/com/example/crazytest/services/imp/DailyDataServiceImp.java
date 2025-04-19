@@ -127,7 +127,7 @@ public class DailyDataServiceImp implements DailyDataService {
 
     dailyDataList.forEach(dailyData -> {
       TrendDataEntity trendDataEntity = new TrendDataEntity();
-      trendDataEntity.setDate(dailyData.getDate().format(DateTimeFormatter.ofPattern("M/d")));
+      trendDataEntity.setDate(dailyData.getDate());
       trendDataEntity.setApiCaseNum(dailyData.getApiCaseNum());
       trendDataEntity.setProcessCaseNum(dailyData.getProcessCaseNum());
       trendData.add(trendDataEntity);
