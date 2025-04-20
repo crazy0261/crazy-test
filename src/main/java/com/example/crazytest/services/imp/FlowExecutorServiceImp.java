@@ -84,17 +84,18 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
       if (Objects.equals(result.getStatus(), NodeStatusEnum.FAILED)) {
         handleFailedNode(context.getResultId(), nodeMap, result, context);
-      }else {
-        handleSuccessfulNode(context.getResultId(), nodeMap,result, context);
+        break;
+      } else {
+        handleSuccessfulNode(context.getResultId(), nodeMap, result, context);
       }
 
-
-      currentNode = findNextNode(currentNode, edgeMap, nodeMap,context);
+      currentNode = findNextNode(currentNode, edgeMap, nodeMap, context);
       String nextNodeId = Optional.ofNullable(currentNode).map(Node::getId).orElse("");
       result.setNextNodeId(nextNodeId);
 
       processCaseResultService.updateNodes(context.getResultId(), nodeMap,
-          StringUtils.isEmpty(nextNodeId)? NodeStatusEnum.SUCCESS.name(): NodeStatusEnum.RUNNING.name());
+          StringUtils.isEmpty(nextNodeId) ? NodeStatusEnum.SUCCESS.name()
+              : NodeStatusEnum.RUNNING.name());
       saveNodeResult(result, context);
     }
   }
@@ -141,13 +142,13 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
    */
   @Override
   public Node findNextNode(Node currentNode, Map<String, List<Edge>> edgeMap,
-      Map<String, Node> nodeMap,ExecutionProcessContext context) {
+      Map<String, Node> nodeMap, ExecutionProcessContext context) {
     return edgeMap.getOrDefault(currentNode.getId(), Collections.emptyList()).stream()
         .filter(edge -> {
-          if (Objects.equals(edge.getLabel(),context.getConditionOutKey())){
+          if (Objects.equals(edge.getLabel(), context.getConditionOutKey())) {
             return true;
           }
-          return Objects.isNull(edge.getLabel()) ;
+          return Objects.isNull(edge.getLabel());
         })
         .findFirst()
         .map(Edge::getTarget)
@@ -166,6 +167,11 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   public void markRemainingAsFailed(Map<String, Node> nodeMap, String type) {
     nodeMap.values().stream().filter(node -> Objects.isNull(node.getData().getColor()))
         .forEach(node -> node.getData().setColor(NodeStatusEnum.getValueByType(type)));
+  }
+
+  @Override
+  public void markRemainingAsSuccess(Map<String, Node> nodeMap, Node currentNode, String type) {
+    nodeMap.get(currentNode.getId()).getData().setColor(NodeStatusEnum.getValueByType(type));
   }
 
   /**
@@ -218,8 +224,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   @Override
   public void handleSuccessfulNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result,
       ExecutionProcessContext context) {
-    markRemainingAsFailed(nodeMap, NodeStatusEnum.SUCCESS.name());
-    result.setNodeMap(nodeMap);
+    markRemainingAsSuccess(nodeMap, context.getCurrentNode(), NodeStatusEnum.SUCCESS.name());
   }
 
   /**

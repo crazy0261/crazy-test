@@ -19,6 +19,8 @@ public interface FlowExecutorService {
 
   void markRemainingAsFailed(Map<String, Node> nodeMap, String type);
 
+  void markRemainingAsSuccess(Map<String, Node> nodeMap,Node currentNode, String type);
+
   Node findStartNode(List<Node> nodes);
 
   void handleTimeout(long resultId, Map<String, Node> nodeMap, ExecutionProcessContext context);
