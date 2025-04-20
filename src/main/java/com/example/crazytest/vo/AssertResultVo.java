@@ -21,4 +21,10 @@ public class AssertResultVo {
     return assertResultVo;
   }
 
+  public static AssertResultVo success(){
+    AssertResultVo assertResultVo = new AssertResultVo();
+    assertResultVo.setPass(true);
+    return assertResultVo;
+  }
+
 }

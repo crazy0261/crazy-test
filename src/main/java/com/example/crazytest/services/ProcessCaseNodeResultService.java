@@ -1,9 +1,9 @@
 package com.example.crazytest.services;
 
-import com.example.crazytest.entity.ProcessCaseNodeResult;
+import com.example.crazytest.vo.ProcessCaseNodeResultVO;
 
 public interface ProcessCaseNodeResultService {
 
-  ProcessCaseNodeResult detailNode(Long resultId,Long nodeId);
+  ProcessCaseNodeResultVO detailNode(Long resultId,Long nodeId);
 
 }

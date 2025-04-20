@@ -15,7 +15,6 @@ import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +53,7 @@ public class TestCaseNodeServiceImp implements NodeService {
         Optional.ofNullable(resultApiVO.getAssertResultVo()).map(AssertResultVo::getPass)
             .filter(Boolean.TRUE::equals).map(pass -> NodeStatusEnum.SUCCESS)
             .orElse(NodeStatusEnum.FAILED));
-    result.setMessage(resultApiVO.getResponse().toJSONString());
+    result.setMessage(JSON.toJSONString(resultApiVO));
     return result;
   }
 }

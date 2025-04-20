@@ -2,6 +2,7 @@ package com.example.crazytest.services.imp;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,9 +19,9 @@ import com.example.crazytest.services.CaseDebugService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.services.EnvConfigService;
-import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
+import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.AssertVO;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
@@ -72,7 +73,7 @@ public class CaseDebugServiceImp implements CaseDebugService {
 
     // 环境信息域名
     EnvConfig envConfig = envConfigService
-        .getByAppId(context.getProjectId(),processCaseNode.getAppId(), apiDebugReq.getEnvId());
+        .getByAppId(context.getProjectId(), processCaseNode.getAppId(), apiDebugReq.getEnvId());
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
     // 全局参数
@@ -102,7 +103,8 @@ public class CaseDebugServiceImp implements CaseDebugService {
       headers.put("Authorization", encryptJson.getString("key"));
 
       if (Objects.nonNull(paramsJson)) {
-        encryptJsonParams = apiCaseService.encryptParam(encryptJson.getString("secret"), paramsJson);
+        encryptJsonParams = apiCaseService
+            .encryptParam(encryptJson.getString("secret"), paramsJson);
       }
     }
 
@@ -115,16 +117,24 @@ public class CaseDebugServiceImp implements CaseDebugService {
     JSONObject body = JSON.parseObject(Objects.requireNonNull(response.body()).string());
     long endTime = System.currentTimeMillis();
 
+    AssertResultVo auditResult = new AssertResultVo();
+    if (CollUtil.isNotEmpty(assertsArray)) {
+      auditResult = apiCaseService.assertResult(assertsArray, body);
+    } else if (response.code() == 200 && Objects
+        .equals(Convert.toStr(200), body.getString("code"))) {
+      auditResult.setPass(Boolean.TRUE);
+    } else {
+      auditResult.setPass(Boolean.FALSE);
+    }
+
     return ResultApiVO
         .builder()
         .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
-        .response(encryptJson.isEmpty() ? body:apiCaseService
+        .response(encryptJson.isEmpty() ? body : apiCaseService
             .decryptRequestBody(encryptJson.getString("secret"), body))
-        .assertResultVo(
-            CollUtil.isNotEmpty(assertsArray) ? apiCaseService.assertResult(assertsArray, body)
-                : null)
+        .assertResultVo(auditResult)
         .startExecTime(DateUtil.formatDateTime(DateUtil.date(startTime)))
         .execTime(endTime - startTime)
         .build();
