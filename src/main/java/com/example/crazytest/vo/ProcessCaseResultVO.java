@@ -16,7 +16,7 @@ public class ProcessCaseResultVO {
   private Long id;
   private Long appId;
   private Long accountId;
-  private Long resultId;
+  private Long caseId;
   private String status;
   private String caseName;
   private Long envSortId;

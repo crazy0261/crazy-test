@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.convert.ProcessCaseNodeResultCovert;
 import com.example.crazytest.convert.mapArrayConvert;
-import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
@@ -130,7 +129,7 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
     processCaseResult.setId(processCase.getId());
     processCaseResult.setAppId(processCaseRecord.getAppId());
     processCaseResult.setAccountId(processCaseRecord.getAccountId());
-    processCaseResult.setResultId(processCaseRecord.getId());
+    processCaseResult.setCaseId(processCaseRecord.getCaseId());
     processCaseResult.setStatus(processCaseRecord.getStatus());
     processCaseResult.setCaseName(processCase.getName());
     processCaseResult.setEnvSortId(processCaseRecord.getEnvSortId());
