@@ -32,6 +32,7 @@ public class ProcessCaseNodeResultCovert {
 
     processCaseRecord.setId(context.getResultId());
     processCaseRecord.setCaseId(processCase.getId());
+    processCaseRecord.setAccountId(context.getApiDebugReq().getTestAccount());
     processCaseRecord.setProjectId(processCase.getProjectId());
     processCaseRecord.setAppId(processCase.getAppId());
     processCaseRecord.setStatus(NodeStatusEnum.PENDING.name());

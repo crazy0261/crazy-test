@@ -48,6 +48,9 @@ public class ProcessCaseRecord implements Serializable {
   @ApiModelProperty(value = "用例id")
   private Long caseId;
 
+  @ApiModelProperty(value = "用户id")
+  private Long accountId;
+
   @ApiModelProperty(value = "节点")
   private String nodes;
 

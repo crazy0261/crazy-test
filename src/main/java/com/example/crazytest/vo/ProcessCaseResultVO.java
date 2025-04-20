@@ -14,6 +14,8 @@ import lombok.Data;
 public class ProcessCaseResultVO {
 
   private Long id;
+  private Long appId;
+  private Long accountId;
   private Long resultId;
   private String status;
   private String caseName;

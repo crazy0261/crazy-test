@@ -128,6 +128,8 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
     ProcessCase processCase = processCaseRepositoryService.getById(processCaseRecord.getCaseId());
 
     processCaseResult.setId(processCase.getId());
+    processCaseResult.setAppId(processCaseRecord.getAppId());
+    processCaseResult.setAccountId(processCaseRecord.getAccountId());
     processCaseResult.setResultId(processCaseRecord.getId());
     processCaseResult.setStatus(processCaseRecord.getStatus());
     processCaseResult.setCaseName(processCase.getName());
