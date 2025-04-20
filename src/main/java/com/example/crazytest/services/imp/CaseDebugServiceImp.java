@@ -18,6 +18,7 @@ import com.example.crazytest.services.CaseDebugService;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.services.EncryptInfoService;
 import com.example.crazytest.services.EnvConfigService;
+import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.RequestUtil;
 import com.example.crazytest.utils.VariablesUtil;
 import com.example.crazytest.vo.AssertVO;
@@ -71,7 +72,7 @@ public class CaseDebugServiceImp implements CaseDebugService {
 
     // 环境信息域名
     EnvConfig envConfig = envConfigService
-        .getByAppId(processCaseNode.getAppId(), apiDebugReq.getEnvId());
+        .getByAppId(context.getProjectId(),processCaseNode.getAppId(), apiDebugReq.getEnvId());
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
     // 全局参数
@@ -119,9 +120,8 @@ public class CaseDebugServiceImp implements CaseDebugService {
         .requestParams(Optional.ofNullable(encryptJsonParams).orElse(paramsJson))
         .requestUrl(request.getUrl())
         .requestHeaders(request.getHeaders())
-        .response(encryptJson.isEmpty() ? apiCaseService
-            .decryptRequestBody(encryptJson.getString("secret"), body)
-            : body)
+        .response(encryptJson.isEmpty() ? body:apiCaseService
+            .decryptRequestBody(encryptJson.getString("secret"), body))
         .assertResultVo(
             CollUtil.isNotEmpty(assertsArray) ? apiCaseService.assertResult(assertsArray, body)
                 : null)

@@ -15,4 +15,6 @@ public interface ProcessCaseNodeResultRepositoryService extends IService<Process
 
   ProcessCaseNodeResult findLast(Long projectId, Long resultId);
 
+  ProcessCaseNodeResult getDetail(Long resultId, Long nodeId);
+
 }

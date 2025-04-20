@@ -46,6 +46,7 @@ public class JWTInterceptor implements HandlerInterceptor {
       try {
         JWTUtil.getDecodeToken(token);
         User user = JWTUtil.getUserByToken(token);
+
         assert user != null;
         BaseContext.setSelectProjectId(user.getProjectId());
         BaseContext.setUserAccount(user.getAccount());

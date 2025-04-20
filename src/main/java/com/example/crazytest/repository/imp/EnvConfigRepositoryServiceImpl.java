@@ -46,7 +46,7 @@ public class EnvConfigRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(EnvConfig::getAppId, appId)
         .eq(EnvConfig::getProjectId, projectId)
-        .eq(EnvConfig::getEnvId, envId)
+        .eq(EnvConfig::getEnvSort, envId)
         .eq(EnvConfig::getIsDelete, Boolean.FALSE)
         .last("limit 1")
         .one();

@@ -117,6 +117,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
     try {
       return service.execute(node, context);
     } catch (Exception e) {
+      log.info("executeNode error:", e);
+
       node.updateStatus(NodeStatusEnum.FAILED);
       executionResult.setStatus(NodeStatusEnum.FAILED);
       return executionResult;

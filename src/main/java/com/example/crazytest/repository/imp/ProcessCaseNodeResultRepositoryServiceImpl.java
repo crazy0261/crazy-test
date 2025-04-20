@@ -30,4 +30,12 @@ public class ProcessCaseNodeResultRepositoryServiceImpl extends
         .last("limit 1")
         .one();
   }
+
+  @Override
+  public ProcessCaseNodeResult getDetail(Long resultId, Long nodeId) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseNodeResult::getCaseResultId, resultId)
+        .eq(ProcessCaseNodeResult::getNodeId, nodeId)
+        .one();
+  }
 }

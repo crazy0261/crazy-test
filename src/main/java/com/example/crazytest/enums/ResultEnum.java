@@ -27,7 +27,8 @@ public enum ResultEnum {
   START_NODE_NOT_EXIST(400, "流程节点必须有开始节点"),
   SUB_ENV_NOT_EXIST(400, "子流程未关联环境"),
   NODE_EXEC_TIMEOUT(400, "节点执行超时 "),
-  TASK_NAME_EXIST(400, " 任务名称已存在"),
+  TASK_NAME_EXIST(400, "任务名称已存在"),
+  ENV_INFO_NOT_NULL(400, "环境信息为空 "),
   PROCESS_CASE_NODE_NOT_SELECT_APP(400, "请在开始节点选择应用")
   ;
 

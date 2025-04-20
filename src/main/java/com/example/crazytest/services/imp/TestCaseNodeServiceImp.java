@@ -11,9 +11,12 @@ import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
 import com.example.crazytest.services.CaseDebugService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.utils.JSONPathUtil;
+import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +46,14 @@ public class TestCaseNodeServiceImp implements NodeService {
     JSONObject outParamJson = JSON.parseObject(processCaseNode.getOutputParams());
 
     Map<String, String> envParameter = context.getEnvParameter();
-    outParamJson.forEach((key, value) -> envParameter.put(key,JSONPathUtil.isJsonPathValue(outParamJson, value.toString())));
+    outParamJson.forEach((key, value) -> envParameter
+        .put(key, JSONPathUtil.isJsonPathValue(outParamJson, value.toString())));
     context.setEnvParameter(envParameter);
 
     result.setStatus(
-        Boolean.TRUE.equals(resultApiVO.getAssertResultVo().getPass()) ? NodeStatusEnum.SUCCESS
-            : NodeStatusEnum.FAILED);
+        Optional.ofNullable(resultApiVO.getAssertResultVo()).map(AssertResultVo::getPass)
+            .filter(Boolean.TRUE::equals).map(pass -> NodeStatusEnum.SUCCESS)
+            .orElse(NodeStatusEnum.FAILED));
     result.setMessage(resultApiVO.getResponse().toJSONString());
     return result;
   }

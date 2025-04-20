@@ -198,7 +198,11 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), ResultEnum.API_CASE_NOT_FAIL.getMessage());
 
     // 获取域名
-    EnvConfig envConfig = envConfigService.getByAppId(apiCase.getAppId(), apiDebugReq.getEnvId());
+    EnvConfig envConfig = envConfigService.getByAppId(BaseContext.getSelectProjectId(),apiCase.getAppId(), apiDebugReq.getEnvId());
+    if (Objects.isNull(envConfig)){
+      return ResultApiVO.builder().response(
+          (JSONObject) new JSONObject().put("data",ResultEnum.ENV_INFO_NOT_NULL.getMessage())).build();
+    }
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
     // 全局参数整合
