@@ -5,6 +5,7 @@ import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
+import com.example.crazytest.vo.ProcessCaseResultVO;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +21,8 @@ public interface ProcessCaseResultService {
   List<Long> getProcessCaseFilterValid(List<ProcessCaseRecord> processCaseRecordList);
 
   Optional<ProcessCaseRecord> getLatestRecord(List<ProcessCaseRecord> records);
+
+  ProcessCaseResultVO getProcessCaseResult(String id);
 
 
 }

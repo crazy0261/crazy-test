@@ -121,7 +121,7 @@ public class ProcessCaseController {
 
   @PostMapping("/debug")
   @Operation(summary = "场景用例调试")
-  public Result<Long> debug(@RequestBody ApiDebugReq apiDebugReq) {
+  public Result<String> debug(@RequestBody ApiDebugReq apiDebugReq) {
     return Result.success(processCaseService.debug(apiDebugReq));
   }
 

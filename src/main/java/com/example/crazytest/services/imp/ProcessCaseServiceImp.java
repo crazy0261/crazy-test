@@ -22,16 +22,18 @@ import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.FlowEngineService;
-import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.utils.CommonUtil;
 import com.example.crazytest.vo.ProcessCaseVO;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,7 @@ import org.springframework.stereotype.Service;
  * @DESRIPTION
  */
 
+@Slf4j
 @Service
 public class ProcessCaseServiceImp implements ProcessCaseService {
 
@@ -58,9 +61,6 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
   @Autowired
   FlowEngineService flowEngineService;
-
-  @Autowired
-  ProcessCaseResultService processCaseResultService;
 
   /**
    * 分页查询
@@ -210,14 +210,15 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
    * @return
    */
   @Override
-  public Long debug(ApiDebugReq apiDebugReq) {
+  public String debug(ApiDebugReq apiDebugReq) {
     ExecutionProcessContext context = new ExecutionProcessContext();
     ProcessCase processCase = processCaseRepositoryService.getById(apiDebugReq.getId());
     AssertUtil.assertNotNull(processCase, ResultEnum.PROCESS_CASE_NOT_FAIL.getMessage());
-    AssertUtil.assertNotNull(processCase.getAppId(), ResultEnum.PROCESS_CASE_NODE_NOT_SELECT_APP.getMessage());
+    AssertUtil.assertNotNull(processCase.getAppId(),
+        ResultEnum.PROCESS_CASE_NODE_NOT_SELECT_APP.getMessage());
 
     apiDebugReq.setEnvId(
-        Objects.nonNull(apiDebugReq.getEnvSortId()) ? Convert.toLong(apiDebugReq.getEnvSortId())
+        Objects.nonNull(apiDebugReq.getEnvSortId()) ? Convert.toInt(apiDebugReq.getEnvSortId())
             : apiDebugReq.getEnvId());
     context.setId(apiDebugReq.getId());
     context.setApiDebugReq(apiDebugReq);
@@ -225,10 +226,11 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     context.setScheduleId(IdUtil.getSnowflakeNextId());
     context.setScheduleBatchId(apiDebugReq.getScheduleBatchId());
     context.setResultId(IdUtil.getSnowflakeNextId());
+    context.setProcessCase(processCase);
 
-    flowEngineService.executeFlow(processCase.getNodes(), processCase.getEdges(), context);
-    processCaseResultService.save(processCase, context);
-    return context.getResultId();
+    flowEngineService.executeFlow(processCase, context);
+
+    return pollingQuery(context.getResultId());
   }
 
   /**
@@ -245,6 +247,35 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
     apiSubDebugReq.setId(subCaseId);
     apiSubDebugReq.setEnvSubParameter(envParameter);
     apiSubDebugReq.setEnvId(subEnvId);
-    return debug(apiSubDebugReq);
+    return Convert.toLong(debug(apiSubDebugReq));
+  }
+
+  /**
+   * 轮询查询
+   * @param resultId
+   * @return
+   */
+  @Override
+  public String pollingQuery(Long resultId) {
+    long startTime = System.currentTimeMillis();
+
+    while (System.currentTimeMillis() - startTime < CommonUtil.MAX_WAIT_TIME_MILLIS) {
+      ProcessCaseRecord processCaseRecord = processCaseResultRepositoryService.getById(resultId);
+
+      if (Objects.nonNull(processCaseRecord)) {
+        return resultId.toString();
+      }
+      try {
+        TimeUnit.MILLISECONDS.sleep(CommonUtil.POLLING_INTERVAL_MILLIS);
+      } catch (InterruptedException e) {
+        // 中断线程
+        Thread.currentThread().interrupt();
+
+        log.error("pollingQuery error", e);
+        break;
+      }
+    }
+
+    return "";
   }
 }

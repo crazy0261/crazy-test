@@ -25,5 +25,8 @@ public interface FlowExecutorService {
 
   void handleFailedNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result, ExecutionProcessContext context);
 
+  void handleSuccessfulNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result, ExecutionProcessContext context);
+
+
   void saveNodeResult(ExecutionResult result, ExecutionProcessContext context);
 }

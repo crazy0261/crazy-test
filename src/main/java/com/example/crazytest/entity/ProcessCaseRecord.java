@@ -55,7 +55,7 @@ public class ProcessCaseRecord implements Serializable {
   private String edges;
 
   @ApiModelProperty(value = "执行环境id")
-  private Long envNameId;
+  private Long envSortId;
 
   @ApiModelProperty(value = "执行次数")
   private Integer execCount;

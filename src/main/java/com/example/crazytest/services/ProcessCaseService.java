@@ -37,9 +37,11 @@ public interface ProcessCaseService {
 
   List<ProcessCase> getIsSubProcess();
 
-  Long  debug(ApiDebugReq apiDebugReq);
+  String  debug(ApiDebugReq apiDebugReq);
 
   Long executeSubTask(Map<String, String> envParameter, Long subCaseId, Long subEnvId);
+
+  String pollingQuery(Long resultId);
 
 
 }

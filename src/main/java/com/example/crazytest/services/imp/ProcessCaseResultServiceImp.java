@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.convert.ProcessCaseNodeResultCovert;
+import com.example.crazytest.convert.mapArrayConvert;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
@@ -15,6 +16,7 @@ import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.vo.ProcessCaseResultVO;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -46,12 +48,13 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
   public void save(ProcessCase processCase, ExecutionProcessContext context) {
     ProcessCaseRecord processCaseRecord = ProcessCaseNodeResultCovert
         .processCaseResultConvert(processCase, context);
+
     repositoryService.saveOrUpdate(processCaseRecord);
   }
 
   @Override
   public void updateNodes(Long id, Map<String, Node> nodes, String status) {
-    repositoryService.updateNodes(id, JSON.toJSONString(nodes), status);
+    repositoryService.updateNodes(id, mapArrayConvert.nodeMapToJsonArray(nodes).toString(), status);
   }
 
   /**
@@ -105,7 +108,6 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
         .collect(Collectors.toList());
   }
 
-
   /**
    * 获取最新一条记录
    *
@@ -116,5 +118,22 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
   public Optional<ProcessCaseRecord> getLatestRecord(List<ProcessCaseRecord> records) {
     return records.stream()
         .max(Comparator.comparing(ProcessCaseRecord::getUpdateTime));
+  }
+
+  @Override
+  public ProcessCaseResultVO getProcessCaseResult(String id) {
+    ProcessCaseResultVO processCaseResult = new ProcessCaseResultVO();
+    ProcessCaseRecord processCaseRecord = repositoryService.getById(Convert.toLong(id));
+
+    ProcessCase processCase = processCaseRepositoryService.getById(processCaseRecord.getCaseId());
+
+    processCaseResult.setId(processCase.getId());
+    processCaseResult.setResultId(processCaseRecord.getId());
+    processCaseResult.setStatus(processCaseRecord.getStatus());
+    processCaseResult.setCaseName(processCase.getName());
+    processCaseResult.setEnvSortId(processCaseRecord.getEnvSortId());
+    processCaseResult.setNodeArray(JSON.parseArray(processCaseRecord.getNodes()));
+    processCaseResult.setEdgeArray(JSON.parseArray(processCaseRecord.getEdges()));
+    return processCaseResult;
   }
 }

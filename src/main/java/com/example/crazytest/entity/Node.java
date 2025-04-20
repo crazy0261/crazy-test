@@ -14,12 +14,12 @@ import lombok.Data;
 @Data
 public class Node {
   private String id;
-  private NodeTypeEnum type;
+  private String type;
   private NodeData data;
   private Boolean dragging;
   private Boolean selected;
-  private Double width;
-  private Double height;
+  private Integer width;
+  private Integer height;
   private Position position;
   private Position positionAbsolute;
 

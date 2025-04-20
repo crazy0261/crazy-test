@@ -2,12 +2,15 @@ package com.example.crazytest.convert;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
 import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.enums.NodeStatusEnum;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author
@@ -26,6 +29,7 @@ public class ProcessCaseNodeResultCovert {
   public static ProcessCaseRecord processCaseResultConvert(ProcessCase processCase,
       ExecutionProcessContext context) {
     ProcessCaseRecord processCaseRecord = new ProcessCaseRecord();
+
     processCaseRecord.setId(context.getResultId());
     processCaseRecord.setCaseId(processCase.getId());
     processCaseRecord.setProjectId(processCase.getProjectId());
@@ -33,9 +37,9 @@ public class ProcessCaseNodeResultCovert {
     processCaseRecord.setStatus(NodeStatusEnum.PENDING.name());
     processCaseRecord.setScheduleId(context.getScheduleId());
     processCaseRecord.setScheduleBatchId(context.getScheduleBatchId());
-    processCaseRecord.setNodes(JSON.toJSONString(context.getNodeMap()));
-    processCaseRecord.setEdges(JSON.toJSONString(context.getEdgeMap()));
-    processCaseRecord.setEnvNameId(context.getApiDebugReq().getEnvId());
+    processCaseRecord.setNodes(mapArrayConvert.nodeMapToJsonArray(context.getNodeMap()).toString());
+    processCaseRecord.setEdges(mapArrayConvert.edgeMapToJsonArray(context.getEdgeMap()).toString());
+    processCaseRecord.setEnvSortId(context.getApiDebugReq().getEnvId());
     processCaseRecord.setMode(context.getApiDebugReq().getMode());
     return processCaseRecord;
   }

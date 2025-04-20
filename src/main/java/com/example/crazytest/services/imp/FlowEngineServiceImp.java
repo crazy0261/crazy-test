@@ -3,6 +3,7 @@ package com.example.crazytest.services.imp;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.Edge;
 import com.example.crazytest.entity.Node;
+import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.FlowEngineService;
 import com.example.crazytest.services.FlowExecutorService;
@@ -34,11 +35,11 @@ public class FlowEngineServiceImp implements FlowEngineService {
 
   @Override
   @Async("taskThreadPool")
-  public void executeFlow(String nodesJson, String edgesJson,
-      ExecutionProcessContext context) {
+  public void executeFlow(ProcessCase processCase, ExecutionProcessContext context) {
 
-    List<Node> nodes = jsonParser.parseNodes(nodesJson);
-    List<Edge> edges = jsonParser.parseEdges(edgesJson);
+    List<Node> nodes = jsonParser.parseNodes(processCase.getNodes());
+    List<Edge> edges = jsonParser.parseEdges(processCase.getEdges());
+
     flowExecutor.execute(nodes, edges, context);
   }
 

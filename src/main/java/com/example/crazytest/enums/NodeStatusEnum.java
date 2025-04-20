@@ -5,7 +5,7 @@ public enum NodeStatusEnum {
   RUNNING("gray", "执行中"),
   SUCCESS("green", "成功"),
   FAILED("red", "失败"),
-  TIMEOUT("yellow", "超时");
+  TIMEOUT("orange", "超时");
 
   private final String color;
   private final String desc;

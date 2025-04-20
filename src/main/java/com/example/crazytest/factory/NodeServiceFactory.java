@@ -5,6 +5,7 @@ import com.example.crazytest.services.NodeService;
 import com.example.crazytest.services.imp.ConditionNodeServiceImp;
 import com.example.crazytest.services.imp.EndNodeServiceImp;
 import com.example.crazytest.services.imp.PreStepNodeServiceImp;
+import com.example.crazytest.services.imp.SqlNodeServiceImp;
 import com.example.crazytest.services.imp.StartNodeServiceImp;
 import com.example.crazytest.services.imp.SubProcessNodeServiceImp;
 import com.example.crazytest.services.imp.TestCaseNodeServiceImp;
@@ -28,20 +29,23 @@ public class NodeServiceFactory {
   private final SubProcessNodeServiceImp subProcessNodeService;
   private final ConditionNodeServiceImp conditionNodeService;
   private final EndNodeServiceImp endNodeService;
+  private final SqlNodeServiceImp sqlNodeService;
 
-  public NodeService getService(NodeTypeEnum nodeType) {
+  public NodeService getService(String nodeType) {
     switch (nodeType) {
-      case START_NODE:
+      case "StartNode":
         return startNodeService;
-      case TEST_CASE_NODE:
+      case "TestCaseNode":
         return testCaseNodeService;
-      case PRE_STEP_NODE:
+      case "PreStepNode":
         return preStepNodeService;
-      case SUB_PROCESS_NODE:
+      case "SubProcessNode":
         return subProcessNodeService;
-      case CONDITION_NODE:
+      case "ConditionNode":
         return conditionNodeService;
-      case END_NODE:
+      case "SqlNode":
+        return sqlNodeService;
+      case "EndNode":
         return endNodeService;
       default:
         throw new IllegalArgumentException("不存在类型: " + nodeType);

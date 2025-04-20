@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author
@@ -15,6 +16,7 @@ import java.util.function.Function;
  * @DESRIPTION 动态数据库执行
  */
 
+@Slf4j
 public class DataSourceExecUtil {
 
   private DataSourceExecUtil() {
@@ -88,7 +90,7 @@ public class DataSourceExecUtil {
         json.put(columnName, columnValue);
       }
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      log.error(e.getMessage());
     }
     return json;
   }

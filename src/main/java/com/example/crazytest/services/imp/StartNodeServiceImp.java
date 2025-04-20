@@ -11,6 +11,7 @@ import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.vo.ParamsListVO;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class StartNodeServiceImp implements NodeService {
   public ExecutionResult execute(Node node, ExecutionProcessContext context) {
     ExecutionResult result = new ExecutionResult();
     ApiDebugReq apiDebugReq = context.getApiDebugReq();
+
     TestAccount testAccount = repositoryService.enable(apiDebugReq.getTestAccount());
 
     if (Objects.isNull(testAccount)) {
@@ -44,13 +46,12 @@ public class StartNodeServiceImp implements NodeService {
       Map<String, String> params = Optional.ofNullable(apiDebugReq.getInputParams()).map(
           item -> item.stream()
               .collect(Collectors.toMap(ParamsListVO::getKey, ParamsListVO::getValue)))
-          .orElse(Collections.emptyMap());
+          .orElse(new HashMap<>());
 
       params.put("token", testAccount.getToken());
       context.setEnvParameter(params);
       result.setStatus(NodeStatusEnum.SUCCESS);
     }
-
     return result;
   }
 }

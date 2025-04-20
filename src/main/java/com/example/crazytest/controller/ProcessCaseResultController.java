@@ -1,12 +1,16 @@
 package com.example.crazytest.controller;
 
 
+import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.ProcessCaseResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,10 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/process/case/result")
 public class ProcessCaseResultController {
 
-  @PostMapping("/save")
-  @Operation(summary = "保存场景用例执行结果")
-  public Result<Boolean> save() {
-    return Result.success(true);
+  @Autowired
+  ProcessCaseResultService processCaseService;
+
+  @GetMapping("/detail/id")
+  @Operation(summary = "查询用例执行结果")
+  public Result<ProcessCaseResultVO> queryById(@RequestParam(value = "resultId") String resultId) {
+    return Result.success(processCaseService.getProcessCaseResult(resultId));
   }
 
 }

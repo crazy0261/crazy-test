@@ -27,7 +27,7 @@ public class ProcessCaseExecServiceImp implements ProcessCaseExecService {
    */
   @Override
   public boolean isTimeout(long startTime) {
-    return System.currentTimeMillis() - startTime < CommonUtil.NODE_TIMEOUT_MINUTES;
+    return System.currentTimeMillis() - startTime > CommonUtil.NODE_TIMEOUT_MINUTES;
   }
 
   /**

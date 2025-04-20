@@ -23,6 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
     context.setNodeMap(nodeMap);
     context.setEdgeMap(edgeMap);
 
+    processCaseResultService.save(context.getProcessCase(), context);
+
     long startTime = System.currentTimeMillis();
     Node currentNode = findStartNode(nodes);
 
@@ -74,17 +77,24 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
       if (processCaseExecService.isTimeout(startTime)) {
         handleTimeout(context.getResultId(), nodeMap, context);
+        break;
       }
 
       ExecutionResult result = executeNode(currentNode, context);
 
       if (Objects.equals(result.getStatus(), NodeStatusEnum.FAILED)) {
         handleFailedNode(context.getResultId(), nodeMap, result, context);
-        break;
+      }else {
+        handleSuccessfulNode(context.getResultId(), nodeMap,result, context);
       }
 
+
       currentNode = findNextNode(currentNode, edgeMap, nodeMap,context);
-      result.setNextNodeId(Optional.ofNullable(currentNode).map(Node::getId).orElse(""));
+      String nextNodeId = Optional.ofNullable(currentNode).map(Node::getId).orElse("");
+      result.setNextNodeId(nextNodeId);
+
+      processCaseResultService.updateNodes(context.getResultId(), nodeMap,
+          StringUtils.isEmpty(nextNodeId)? NodeStatusEnum.SUCCESS.name(): NodeStatusEnum.RUNNING.name());
       saveNodeResult(result, context);
     }
   }
@@ -154,8 +164,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
   @Override
   public void markRemainingAsFailed(Map<String, Node> nodeMap, String type) {
-    nodeMap.values().stream().filter(node -> Objects.isNull(node.getData().getBorderColor()))
-        .forEach(node -> node.getData().setBorderColor(NodeStatusEnum.getValueByType(type)));
+    nodeMap.values().stream().filter(node -> Objects.isNull(node.getData().getColor()))
+        .forEach(node -> node.getData().setColor(NodeStatusEnum.getValueByType(type)));
   }
 
   /**
@@ -167,7 +177,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   @Override
   public Node findStartNode(List<Node> nodes) {
     return nodes.stream()
-        .filter(n -> n.getType().equals(NodeTypeEnum.START_NODE))
+        .filter(n -> n.getType().equals(NodeTypeEnum.START_NODE.getTypeName()))
         .findFirst()
         .orElse(null);
   }
@@ -203,6 +213,13 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
         .processCaseNodeResultConvert(result, context);
     processCaseResultService.updateNodes(resultId, nodeMap, NodeStatusEnum.FAILED.name());
     processCaseNodeResultRepositoryService.saveOrUpdate(processCaseNodeResult);
+  }
+
+  @Override
+  public void handleSuccessfulNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result,
+      ExecutionProcessContext context) {
+    markRemainingAsFailed(nodeMap, NodeStatusEnum.SUCCESS.name());
+    result.setNodeMap(nodeMap);
   }
 
   /**

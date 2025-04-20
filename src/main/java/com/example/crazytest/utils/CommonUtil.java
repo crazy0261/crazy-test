@@ -8,9 +8,12 @@ package com.example.crazytest.utils;
  */
 
 public class CommonUtil {
-  private CommonUtil(){}
 
-  public static final String DEFAULT_HANDLE = "4";
-  public static  final long NODE_TIMEOUT_MINUTES = 5 * 60 *1000;
+  private CommonUtil() {
+  }
+
+  public static final long NODE_TIMEOUT_MINUTES = 5 * 60 * 1000;
+  public static final long POLLING_INTERVAL_MILLIS = 200;
+  public static final long MAX_WAIT_TIME_MILLIS = 10000;
 
 }
