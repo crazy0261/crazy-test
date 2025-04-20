@@ -1,7 +1,7 @@
 package com.example.crazytest.enums;
 
 public enum NodeStatusEnum {
-  PENDING("black", "待执行"),
+  INIT("black", "待执行"),
   RUNNING("gray", "执行中"),
   SUCCESS("green", "成功"),
   FAILED("red", "失败"),

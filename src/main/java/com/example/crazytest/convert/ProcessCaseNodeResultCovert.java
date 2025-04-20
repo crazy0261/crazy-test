@@ -35,7 +35,7 @@ public class ProcessCaseNodeResultCovert {
     processCaseRecord.setAccountId(context.getApiDebugReq().getTestAccount());
     processCaseRecord.setProjectId(processCase.getProjectId());
     processCaseRecord.setAppId(processCase.getAppId());
-    processCaseRecord.setStatus(NodeStatusEnum.PENDING.name());
+    processCaseRecord.setStatus(NodeStatusEnum.INIT.name());
     processCaseRecord.setScheduleId(context.getScheduleId());
     processCaseRecord.setScheduleBatchId(context.getScheduleBatchId());
     processCaseRecord.setNodes(mapArrayConvert.nodeMapToJsonArray(context.getNodeMap()).toString());
