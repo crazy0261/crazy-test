@@ -1,6 +1,5 @@
 package com.example.crazytest.convert;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.crazytest.entity.Edge;
 import com.example.crazytest.entity.Node;
