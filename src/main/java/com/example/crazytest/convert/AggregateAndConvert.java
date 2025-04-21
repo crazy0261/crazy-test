@@ -24,7 +24,7 @@ public class AggregateAndConvert {
   UserRepositoryService userRepository;
 
   /**
-   * 合并两个Map，并转换为AssetsNotEntity列表
+   * 将它们合并成一个map，并按照value值从大到小排序，取前5个，
    * @param apiCaseAssetsCount
    * @param processCaseCount
    * @return
@@ -35,6 +35,8 @@ public class AggregateAndConvert {
     Map<Long, Integer> mergedMap = new HashMap<>(apiCaseAssetsCount);
     processCaseCount.forEach((key, value) -> mergedMap.merge(key, value, Integer::sum));
     return mergedMap.entrySet().stream()
+        .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+        .limit(5)
         .map(entry -> {
           Long id = entry.getKey();
           User user = userRepository.getById(id);
