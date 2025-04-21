@@ -8,6 +8,7 @@ import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -153,7 +154,7 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   @Override
   public List<ApiCase> queryIds(List<Long> ids) {
     return this.lambdaQuery()
-        .in(ApiCase::getId, ids)
+        .in(Objects.nonNull(ids), ApiCase::getId, ids)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .list();
   }

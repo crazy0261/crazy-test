@@ -1,6 +1,5 @@
 package com.example.crazytest.entity;
 
-import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
@@ -16,8 +15,6 @@ public class NotFailEntity {
   private Long id;
   private String name;
   private String type;
-  private String error;
-  private LocalDateTime time;
   private String ownerName;
 
 }

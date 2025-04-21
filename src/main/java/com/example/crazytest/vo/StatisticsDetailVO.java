@@ -2,6 +2,7 @@ package com.example.crazytest.vo;
 
 import com.example.crazytest.entity.DataCountEntity;
 import com.example.crazytest.entity.AssetsNotListEntity;
+import com.example.crazytest.entity.DataTaskCountEntity;
 import com.example.crazytest.entity.NotFailEntity;
 import com.example.crazytest.entity.NotTaskEntity;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +26,7 @@ public class StatisticsDetailVO {
   List<AssetsNotListEntity> assetsList;
 
   @ApiModelProperty(value = "未添加任务用例-应用")
-  List<DataCountEntity> notTaskCount;
+  List<DataTaskCountEntity> notTaskCount;
 
   @ApiModelProperty(value = "未添加任务用例明细")
   List<NotTaskEntity> notTaskList;

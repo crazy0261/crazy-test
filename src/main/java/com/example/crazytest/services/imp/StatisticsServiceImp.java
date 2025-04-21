@@ -6,6 +6,7 @@ import com.example.crazytest.entity.AssetsNotListEntity;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
+import com.example.crazytest.services.FailCaseService;
 import com.example.crazytest.services.NotTaskService;
 import com.example.crazytest.services.ProcessCaseNodeService;
 import com.example.crazytest.services.StatisticsService;
@@ -40,6 +41,9 @@ public class StatisticsServiceImp implements StatisticsService {
 
   @Autowired
   NotTaskService notTaskService;
+
+  @Autowired
+  FailCaseService failCaseService;
 
   /**
    * 将它们合并成一个map，并按照value值从大到小排序，取前5个，
@@ -90,11 +94,12 @@ public class StatisticsServiceImp implements StatisticsService {
 
   /**
    * 近三天用例失败人员分布/明细
+   *
    * @return
    */
   @Override
   public StatisticsDetailVO failCase() {
-    return null;
+    return failCaseService.failCase();
   }
 
 

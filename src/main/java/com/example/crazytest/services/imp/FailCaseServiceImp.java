@@ -4,12 +4,12 @@ import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.DataCountEntity;
 import com.example.crazytest.entity.NotFailEntity;
-import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ExecStatusEnum;
+import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
@@ -24,9 +24,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -82,17 +84,23 @@ public class FailCaseServiceImp implements FailCaseService {
     Set<Long> apiCaseFailedIds = this.getContinuousFailedIds(apiCaseRecordList);
     Set<Long> processCaseFailedIds = this.getContinuousFailedIds(processCaseRecordList);
 
-    List<ApiCase> apiCaseList = apiCaseRepositoryService
-        .queryIds(new ArrayList<>(apiCaseFailedIds));
-    List<ProcessCase> processCaseList = processCaseRepositoryService
-        .getIdsList(new ArrayList<>(processCaseFailedIds));
-    List<DataCountEntity> apiCaseListData = notTaskService.buildDataCountEntities(apiCaseList);
-    List<DataCountEntity> processCaseListData = notTaskService
-        .buildDataCountEntities(processCaseList);
+    List<ApiCase> apiCaseList = Optional.ofNullable(apiCaseFailedIds)
+        .filter(ids -> !ids.isEmpty())
+        .map(ArrayList::new)
+        .map(apiCaseRepositoryService::queryIds)
+        .orElseGet(ArrayList::new);
+    List<ProcessCase> processCaseList = Optional.ofNullable(processCaseFailedIds)
+        .filter(ids -> !ids.isEmpty())
+        .map(ArrayList::new)
+        .map(processCaseRepositoryService::getIdsList)
+        .orElseGet(ArrayList::new);
 
-    List<DataCountEntity> dataCountEntities = notTaskService
+    List<DataCountEntity> apiCaseListData = this.buildDataCountEntities(apiCaseList);
+    List<DataCountEntity> processCaseListData = this.buildDataCountEntities(processCaseList);
+
+    List<DataCountEntity> dataCountEntities = this
         .mergeDataCountEntities(apiCaseListData, processCaseListData);
-    List<NotFailEntity> failCaseList = this.failCaseList(apiCaseList,processCaseList);
+    List<NotFailEntity> failCaseList = this.failCaseList(apiCaseList, processCaseList);
 
     statisticsDetailVO.setFailCaseCount(dataCountEntities);
     statisticsDetailVO.setFailCaseList(failCaseList);
@@ -176,6 +184,7 @@ public class FailCaseServiceImp implements FailCaseService {
 
   /**
    * 失败用例列表
+   *
    * @param apiCaseList
    * @param processCaseList
    * @return
@@ -183,7 +192,7 @@ public class FailCaseServiceImp implements FailCaseService {
   @Override
   public List<NotFailEntity> failCaseList(List<ApiCase> apiCaseList,
       List<ProcessCase> processCaseList) {
-    List<NotFailEntity> failedArray =  new ArrayList<>();
+    List<NotFailEntity> failedArray = new ArrayList<>();
     apiCaseList.forEach(apiCase -> {
       NotFailEntity failedEntity = new NotFailEntity();
       User user = userRepositoryService.getById(apiCase.getOwnerId());
@@ -204,5 +213,69 @@ public class FailCaseServiceImp implements FailCaseService {
       failedArray.add(failedEntity);
     });
     return failedArray;
+  }
+
+  /**
+   * 构建数据统计实体列表
+   *
+   * @param caseList
+   * @return
+   */
+  @Override
+  public List<DataCountEntity> buildDataCountEntities(List<?> caseList) {
+    Map<String, Long> nameCountMap = caseList.stream()
+        .collect(Collectors.groupingBy(
+            this::getName,
+            Collectors.counting()
+        ));
+
+    return nameCountMap.entrySet().stream()
+        .map(entry -> new DataCountEntity(entry.getKey(), entry.getValue()))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * 合并数据统计实体列表
+   *
+   * @param apiCaseList
+   * @param processCaseList
+   * @return
+   */
+  @Override
+  public List<DataCountEntity> mergeDataCountEntities(List<DataCountEntity> apiCaseList,
+      List<DataCountEntity> processCaseList) {
+    Map<String, Long> mergedMap = new HashMap<>();
+
+    apiCaseList.forEach(entity -> mergedMap.merge(entity.getName(), entity.getCount(), Long::sum));
+
+    processCaseList
+        .forEach(entity -> mergedMap.merge(entity.getName(), entity.getCount(), Long::sum));
+
+    return mergedMap.entrySet().stream()
+        .map(entry -> new DataCountEntity(entry.getKey(), entry.getValue()))
+        .collect(Collectors.toList());
+
+  }
+
+  /**
+   * 获取用例名称
+   *
+   * @param caseItem
+   * @return
+   */
+  @Override
+  public String getName(Object caseItem) {
+    if (caseItem instanceof ApiCase) {
+      Long userId = ((ApiCase) caseItem).getOwnerId();
+      User user = userRepositoryService.getById(userId);
+      return user.getName();
+    } else if (caseItem instanceof ProcessCase) {
+      Long userId = ((ProcessCase) caseItem).getUpdateById();
+      User user = userRepositoryService.getById(userId);
+      return user.getName();
+    } else {
+      throw new IllegalArgumentException(
+          ResultEnum.INTERNAL_SERVER_ERROR.getMessage() + caseItem.getClass());
+    }
   }
 }

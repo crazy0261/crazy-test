@@ -3,7 +3,8 @@ package com.example.crazytest.services.imp;
 import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.dto.TaskDailyDTO;
 import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.entity.DataCountEntity;
+import com.example.crazytest.entity.ApplicationManagement;
+import com.example.crazytest.entity.DataTaskCountEntity;
 import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.TaskSchedule;
@@ -11,6 +12,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
+import com.example.crazytest.repository.ApplicationManagementRepositoryService;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,6 +57,9 @@ public class NotTaskServiceImp implements NotTaskService {
   @Autowired
   ProcessCaseRepositoryService processCaseRepositoryService;
 
+  @Autowired
+  ApplicationManagementRepositoryService applicationManagementRepositoryService;
+
   @Override
   public StatisticsDetailVO getDailyTask() {
     StatisticsDetailVO statisticsDetailVO = new StatisticsDetailVO();
@@ -69,9 +75,9 @@ public class NotTaskServiceImp implements NotTaskService {
    * @return
    */
   @Override
-  public List<DataCountEntity> notTaskCount(TaskDailyDTO taskDaily) {
+  public List<DataTaskCountEntity> notTaskCount(TaskDailyDTO taskDaily) {
 
-    return mergeDataCountEntities(
+    return this.mergeDataCountTaskEntities(
         buildDataCountEntities(taskDaily.getNotTaskApiCases()),
         buildDataCountEntities(taskDaily.getNotTaskProcessCases())
     );
@@ -189,40 +195,44 @@ public class NotTaskServiceImp implements NotTaskService {
   }
 
   /**
-   * 构建数据统计实体列表
-   *
+   * 构建数据统计实体
    * @param caseList
    * @return
    */
   @Override
-  public List<DataCountEntity> buildDataCountEntities(List<?> caseList) {
+  public List<DataTaskCountEntity> buildDataCountEntities(List<?> caseList) {
     Map<String, Long> nameCountMap = caseList.stream()
         .collect(Collectors.groupingBy(
-            this::getName,
+            this::getAppName,
             Collectors.counting()
         ));
 
     return nameCountMap.entrySet().stream()
-        .map(entry -> new DataCountEntity(entry.getKey(), entry.getValue()))
+        .map(entry -> new DataTaskCountEntity(entry.getKey(), entry.getValue()))
         .collect(Collectors.toList());
+
   }
 
   /**
-   * 获取用例名称
+   * 获取应用名称
    *
    * @param caseItem
    * @return
    */
   @Override
-  public String getName(Object caseItem) {
+  public String getAppName(Object caseItem) {
     if (caseItem instanceof ApiCase) {
-      Long userId = ((ApiCase) caseItem).getOwnerId();
-      User user = userRepositoryService.getById(userId);
-      return user.getName();
+      Long appId = ((ApiCase) caseItem).getAppId();
+      ApplicationManagement applicationManagement = applicationManagementRepositoryService
+          .getById(appId);
+      return Optional.ofNullable(applicationManagement).map(ApplicationManagement::getName)
+          .orElse("其它");
     } else if (caseItem instanceof ProcessCase) {
-      Long userId = ((ProcessCase) caseItem).getUpdateById();
-      User user = userRepositoryService.getById(userId);
-      return user.getName();
+      Long appId = ((ProcessCase) caseItem).getAppId();
+      ApplicationManagement applicationManagement = applicationManagementRepositoryService
+          .getById(appId);
+      return Optional.ofNullable(applicationManagement).map(ApplicationManagement::getName)
+          .orElse("其它");
     } else {
       throw new IllegalArgumentException(
           ResultEnum.INTERNAL_SERVER_ERROR.getMessage() + caseItem.getClass());
@@ -230,24 +240,21 @@ public class NotTaskServiceImp implements NotTaskService {
   }
 
   /**
-   * 合并数据统计实体列表
-   *
+   * 合并任务中未完成的用例
    * @param apiCaseList
    * @param processCaseList
    * @return
    */
   @Override
-  public List<DataCountEntity> mergeDataCountEntities(List<DataCountEntity> apiCaseList,
-      List<DataCountEntity> processCaseList) {
+  public List<DataTaskCountEntity> mergeDataCountTaskEntities(List<DataTaskCountEntity> apiCaseList,
+      List<DataTaskCountEntity> processCaseList) {
     Map<String, Long> mergedMap = new HashMap<>();
 
-    apiCaseList.forEach(entity -> mergedMap.merge(entity.getName(), entity.getCount(), Long::sum));
-
-    processCaseList
-        .forEach(entity -> mergedMap.merge(entity.getName(), entity.getCount(), Long::sum));
+    apiCaseList.forEach(entity -> mergedMap.merge(entity.getAppName(), entity.getCount(), Long::sum));
+    processCaseList.forEach(entity -> mergedMap.merge(entity.getAppName(), entity.getCount(), Long::sum));
 
     return mergedMap.entrySet().stream()
-        .map(entry -> new DataCountEntity(entry.getKey(), entry.getValue()))
+        .map(entry -> new DataTaskCountEntity(entry.getKey(), entry.getValue()))
         .collect(Collectors.toList());
   }
 }

@@ -10,6 +10,7 @@ import com.example.crazytest.mapper.ProcessCaseMapper;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 /**
@@ -152,7 +153,7 @@ public class ProcessCaseRepositoryServiceImpl extends
   @Override
   public List<ProcessCase> getIdsList(List<Long> ids) {
     return this.lambdaQuery()
-        .in(ProcessCase::getId, ids)
+        .in(Objects.nonNull(ids), ProcessCase::getId, ids)
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .list();
   }

@@ -143,7 +143,7 @@ public class ProcessCaseNodeServiceImp implements ProcessCaseNodeService {
       User user = userService.getById(processCaseNode.getUpdateById());
       Node node =  flowExecutorService.getNode(processCase.getNodes(),processCaseNode.getId());
 
-      assetsNotListEntity.setId(processCaseNode.getUpdateById());
+      assetsNotListEntity.setId(processCaseNode.getCaseId());
       assetsNotListEntity.setName(processCase.getName());
       assetsNotListEntity.setType(CaseTypeEnums.PROCESS_CASE_TYPE.getType());
       assetsNotListEntity.setNodeName(node.getData().getLabel());
