@@ -1,11 +1,14 @@
 package com.example.crazytest.services.imp;
 
 import com.example.crazytest.convert.ApiCaseConvert;
+import com.example.crazytest.dto.TaskDailyDTO;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.DataCountEntity;
+import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.User;
+import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
@@ -13,7 +16,9 @@ import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.NotTaskService;
 import com.example.crazytest.utils.BaseContext;
+import com.example.crazytest.vo.StatisticsDetailVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -49,12 +54,69 @@ public class NotTaskServiceImp implements NotTaskService {
   @Autowired
   ProcessCaseRepositoryService processCaseRepositoryService;
 
+  @Override
+  public StatisticsDetailVO getDailyTask() {
+    StatisticsDetailVO statisticsDetailVO = new StatisticsDetailVO();
+    TaskDailyDTO taskDaily = this.taskDailyService();
+    statisticsDetailVO.setNotTaskCount(this.notTaskCount(taskDaily));
+    statisticsDetailVO.setNotTaskList(this.notTaskList(taskDaily));
+    return statisticsDetailVO;
+  }
+
   /**
    * 获取未完成任务列表
+   *
    * @return
    */
   @Override
-  public List<DataCountEntity> notTaskCount() {
+  public List<DataCountEntity> notTaskCount(TaskDailyDTO taskDaily) {
+
+    return mergeDataCountEntities(
+        buildDataCountEntities(taskDaily.getNotTaskApiCases()),
+        buildDataCountEntities(taskDaily.getNotTaskProcessCases())
+    );
+  }
+
+  /**
+   * 获取未完成任务列表明细
+   *
+   * @return
+   */
+  @Override
+  public List<NotTaskEntity> notTaskList(TaskDailyDTO taskDaily) {
+    List<NotTaskEntity> notTaskList = new ArrayList<>();
+    taskDaily.getNotTaskApiCases().forEach(apiCase -> {
+      NotTaskEntity taskEntity = new NotTaskEntity();
+      User user = userRepositoryService.getById(apiCase.getOwnerId());
+      taskEntity.setId(apiCase.getId());
+      taskEntity.setName(apiCase.getName());
+      taskEntity.setType(CaseTypeEnums.API_CASE_TYPE.getType());
+      taskEntity.setOwnerName(user.getName());
+      notTaskList.add(taskEntity);
+    });
+
+    taskDaily.getNotTaskProcessCases().forEach(processCase -> {
+      NotTaskEntity taskEntity = new NotTaskEntity();
+      User user = userRepositoryService.getById(processCase.getOwnerId());
+      taskEntity.setId(processCase.getId());
+      taskEntity.setName(processCase.getName());
+      taskEntity.setType(CaseTypeEnums.PROCESS_CASE_TYPE.getType());
+      taskEntity.setOwnerName(user.getName());
+      notTaskList.add(taskEntity);
+    });
+
+    return notTaskList;
+  }
+
+
+  /**
+   * 获取任务中未完成的用例
+   *
+   * @return
+   */
+  @Override
+  public TaskDailyDTO taskDailyService() {
+    TaskDailyDTO taskDailyDTO = new TaskDailyDTO();
     Long projectId = BaseContext.getSelectProjectId();
 
     List<Long> apiCaseIds = extractCaseIds(
@@ -68,10 +130,9 @@ public class NotTaskServiceImp implements NotTaskService {
     List<ApiCase> notTaskApiCases = getNotTaskCases(allApiCases, apiCaseIds);
     List<ProcessCase> notTaskProcessCases = getNotTaskCases(allProcessCases, processCaseIds);
 
-    return mergeDataCountEntities(
-        buildDataCountEntities(notTaskApiCases),
-        buildDataCountEntities(notTaskProcessCases)
-    );
+    taskDailyDTO.setNotTaskApiCases(notTaskApiCases);
+    taskDailyDTO.setNotTaskProcessCases(notTaskProcessCases);
+    return taskDailyDTO;
   }
 
   /**
@@ -111,6 +172,7 @@ public class NotTaskServiceImp implements NotTaskService {
 
   /**
    * 获取用例id
+   *
    * @param caseItem
    * @return
    */

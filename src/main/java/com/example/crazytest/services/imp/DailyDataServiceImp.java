@@ -6,7 +6,6 @@ import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.CaseSuccessRateDataEntity;
 import com.example.crazytest.entity.DailyData;
 import com.example.crazytest.entity.NotFailEntity;
-import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.TrendDataEntity;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.UserDistributionEntity;
@@ -213,15 +212,14 @@ public class DailyDataServiceImp implements DailyDataService {
 
     List<DataCountEntity> assetsNotEntities = statisticsService.assetsAndCount();
     List<AssetsNotListEntity> assetsNotList = statisticsService.assetsList();
-    List<DataCountEntity> notTaskCount = statisticsService.notTaskCount();
-    List<NotTaskEntity> notTaskList = statisticsService.notTaskList();
+    StatisticsDetailVO notTaskDetail = statisticsService.notTaskCase();
     List<DataCountEntity> failCaseCount = statisticsService.failCaseCount();
     List<NotFailEntity> failCaseList = statisticsService.failCaseList();
 
     statisticsDetail.setAssetsCount(assetsNotEntities);
     statisticsDetail.setAssetsList(assetsNotList);
-    statisticsDetail.setNotTaskCount(notTaskCount);
-    statisticsDetail.setNotTaskList(notTaskList);
+    statisticsDetail.setNotTaskCount(notTaskDetail.getNotTaskCount());
+    statisticsDetail.setNotTaskList(notTaskDetail.getNotTaskList());
     statisticsDetail.setFailCaseCount(failCaseCount);
     statisticsDetail.setFailCaseList(failCaseList);
     return statisticsDetail;

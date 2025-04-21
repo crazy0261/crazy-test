@@ -4,13 +4,13 @@ import cn.hutool.core.convert.Convert;
 import com.example.crazytest.entity.DataCountEntity;
 import com.example.crazytest.entity.AssetsNotListEntity;
 import com.example.crazytest.entity.NotFailEntity;
-import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.NotTaskService;
 import com.example.crazytest.services.ProcessCaseNodeService;
 import com.example.crazytest.services.StatisticsService;
+import com.example.crazytest.vo.StatisticsDetailVO;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,20 +85,10 @@ public class StatisticsServiceImp implements StatisticsService {
    * @return
    */
   @Override
-  public List<DataCountEntity> notTaskCount() {
-    return notTaskService.notTaskCount();
+  public StatisticsDetailVO notTaskCase() {
+    return notTaskService.getDailyTask();
   }
 
-  /**
-   * 未添加任务用例-用例
-   *
-   * @return
-   */
-  @Override
-  public List<NotTaskEntity> notTaskList() {
-
-    return null;
-  }
 
   /**
    * 用例失败人员分布

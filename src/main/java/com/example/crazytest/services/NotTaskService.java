@@ -1,12 +1,21 @@
 package com.example.crazytest.services;
 
+import com.example.crazytest.dto.TaskDailyDTO;
 import com.example.crazytest.entity.DataCountEntity;
+import com.example.crazytest.entity.NotTaskEntity;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.vo.StatisticsDetailVO;
 import java.util.List;
 
 public interface NotTaskService {
 
-  List<DataCountEntity> notTaskCount();
+  StatisticsDetailVO getDailyTask();
+
+  List<DataCountEntity> notTaskCount(TaskDailyDTO taskDaily);
+
+  List<NotTaskEntity> notTaskList(TaskDailyDTO taskDaily);
+
+  TaskDailyDTO taskDailyService();
 
   List<Long> extractCaseIds(List<TaskSchedule> taskSchedules);
 
@@ -20,5 +29,4 @@ public interface NotTaskService {
 
   List<DataCountEntity> mergeDataCountEntities(List<DataCountEntity> apiCaseList,
       List<DataCountEntity> processCaseList);
-
 }
