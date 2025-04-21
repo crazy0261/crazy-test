@@ -3,7 +3,6 @@ package com.example.crazytest.services.imp;
 import cn.hutool.core.convert.Convert;
 import com.example.crazytest.entity.DataCountEntity;
 import com.example.crazytest.entity.AssetsNotListEntity;
-import com.example.crazytest.entity.NotFailEntity;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseService;
@@ -80,7 +79,7 @@ public class StatisticsServiceImp implements StatisticsService {
   }
 
   /**
-   * 未添加任务用例-用户分布
+   * 未添加任务用例-用户分布/明细
    *
    * @return
    */
@@ -89,24 +88,12 @@ public class StatisticsServiceImp implements StatisticsService {
     return notTaskService.getDailyTask();
   }
 
-
   /**
-   * 用例失败人员分布
-   *
+   * 近三天用例失败人员分布/明细
    * @return
    */
   @Override
-  public List<DataCountEntity> failCaseCount() {
-    return null;
-  }
-
-  /**
-   * 用例失败明细
-   *
-   * @return
-   */
-  @Override
-  public List<NotFailEntity> failCaseList() {
+  public StatisticsDetailVO failCase() {
     return null;
   }
 

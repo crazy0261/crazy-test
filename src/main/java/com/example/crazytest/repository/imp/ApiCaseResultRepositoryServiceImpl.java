@@ -6,6 +6,7 @@ import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.mapper.ApiCaseResultMapper;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
@@ -88,6 +89,15 @@ public class ApiCaseResultRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(ApiCaseRecord::getProjectId, projectId)
         .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
+        .list();
+  }
+
+  @Override
+  public List<ApiCaseRecord> getApiCaseFailed(Long projectId, LocalDateTime time) {
+    return this.lambdaQuery()
+        .eq(ApiCaseRecord::getProjectId, projectId)
+        .ge(ApiCaseRecord::getCreateTime, time)
+        .orderByAsc(ApiCaseRecord::getCreateTime)
         .list();
   }
 }

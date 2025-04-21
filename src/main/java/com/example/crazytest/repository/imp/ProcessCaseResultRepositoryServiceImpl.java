@@ -5,6 +5,7 @@ import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.mapper.ProcessCaseResultMapper;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,16 @@ public class ProcessCaseResultRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(ProcessCaseRecord::getCaseId, processId)
         .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .list();
+  }
+
+  @Override
+  public List<ProcessCaseRecord> getProcessCaseRecordFailList(Long processId, LocalDateTime time) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getCaseId, processId)
+        .ge(ProcessCaseRecord::getCreateTime, time)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .orderByAsc(ProcessCaseRecord::getCreateTime)
         .list();
   }
 }

@@ -148,4 +148,12 @@ public class ProcessCaseRepositoryServiceImpl extends
         .eq(ProcessCase::getIsDelete, Boolean.FALSE)
         .list();
   }
+
+  @Override
+  public List<ProcessCase> getIdsList(List<Long> ids) {
+    return this.lambdaQuery()
+        .in(ProcessCase::getId, ids)
+        .eq(ProcessCase::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

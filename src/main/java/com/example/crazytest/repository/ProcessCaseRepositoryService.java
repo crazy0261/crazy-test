@@ -41,4 +41,6 @@ public interface ProcessCaseRepositoryService extends IService<ProcessCase> {
 
   List<ProcessCase> getAllList(Long projectId);
 
+  List<ProcessCase> getIdsList(List<Long> ids);
+
 }

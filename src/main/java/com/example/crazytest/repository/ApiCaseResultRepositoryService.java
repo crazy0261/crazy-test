@@ -3,6 +3,7 @@ package com.example.crazytest.repository;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,9 +27,11 @@ public interface ApiCaseResultRepositoryService extends IService<ApiCaseRecord> 
   IPage<ApiCaseRecord> resultList(Long projectId, List<Long> apiTestcaseIds, Integer current,
       Integer pageSize);
 
-  List<ApiCaseRecord> getResultChildren(Long projectId,Long scheduleBatchId, Long apiTestcaseId, Long id);
+  List<ApiCaseRecord> getResultChildren(Long projectId, Long scheduleBatchId, Long apiTestcaseId, Long id);
 
   List<ApiCaseRecord> getApiCaseCount(Long projectId);
+
+  List<ApiCaseRecord> getApiCaseFailed(Long projectId, LocalDateTime time);
 
 
 }
