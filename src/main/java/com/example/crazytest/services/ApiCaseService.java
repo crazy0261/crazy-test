@@ -60,5 +60,7 @@ public interface ApiCaseService extends IService<ApiCase> {
 
   Long getCoverageIsApiCount();
 
+  Map<Long,Integer> getAssetsNot();
+
 
 }

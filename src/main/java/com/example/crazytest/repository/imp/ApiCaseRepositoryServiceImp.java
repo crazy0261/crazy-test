@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.crazytest.entity.ApiCase;
-import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import java.util.List;
@@ -140,5 +139,14 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
         .eq(ApiCase::getCreateById, createById)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .count();
+  }
+
+  @Override
+  public List<ApiCase> getNotAssetsList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ApiCase::getProjectId, projectId)
+        .ne(ApiCase::getAsserts, "[]")
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }

@@ -1,5 +1,7 @@
 package com.example.crazytest.services.imp;
 
+import com.example.crazytest.convert.AggregateAndConvert;
+import com.example.crazytest.entity.AssetsNotEntity;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.CaseSuccessRateDataEntity;
 import com.example.crazytest.entity.DailyData;
@@ -15,15 +17,17 @@ import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
 import com.example.crazytest.services.DailyDataService;
+import com.example.crazytest.services.ProcessCaseNodeService;
 import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.ComputeNumUtil;
 import com.example.crazytest.vo.CoreIndicatorsListVO;
 import com.example.crazytest.vo.DailyDataCaseVO;
+import com.example.crazytest.vo.StatisticsDetailVO;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.LongStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +69,17 @@ public class DailyDataServiceImp implements DailyDataService {
   @Autowired
   ProcessCaseResultService processResultService;
 
+  @Autowired
+  ProcessCaseNodeService processNodeService;
 
+  @Autowired
+  AggregateAndConvert aggregateAndConvert;
+
+
+  /**
+   * 获取核心指标/接口覆盖率/人员分布
+   * @return
+   */
   @Override
   public CoreIndicatorsListVO getCoreIndicatorsDetail() {
     CoreIndicatorsListVO coreIndicatorsListVO = new CoreIndicatorsListVO();
@@ -165,6 +179,10 @@ public class DailyDataServiceImp implements DailyDataService {
     return userDistributionEntities;
   }
 
+  /**
+   * 创建每日数据
+   * @param projectId
+   */
   @Override
   public void createDataDaily(Long projectId) {
     Long apiCaseNum = apiCaseRepositoryService.getApiCaseCount(projectId);
@@ -187,5 +205,16 @@ public class DailyDataServiceImp implements DailyDataService {
     dailyData.setProcessCaseNum(processCaseNum);
     dailyData.setCaseSuccessRate(caseSuccessRate);
     dailyDataRepository.saveOrUpdate(dailyData);
+  }
+
+  @Override
+  public StatisticsDetailVO statisticsDetail() {
+    StatisticsDetailVO statisticsDetail = new StatisticsDetailVO();
+    Map<Long,Integer> apiCaseAssetsCount =  apiCaseService.getAssetsNot();
+    Map<Long,Integer> processCaseCount = processNodeService.getAssetsNotCount();
+    List<AssetsNotEntity> assetsNotEntities =aggregateAndConvert.aggregateAndConvert(apiCaseAssetsCount,processCaseCount);
+
+    statisticsDetail.setAssets(assetsNotEntities);
+    return statisticsDetail;
   }
 }

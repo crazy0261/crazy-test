@@ -198,10 +198,12 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     AssertUtil.assertTrue(ObjectUtils.isEmpty(apiCase), ResultEnum.API_CASE_NOT_FAIL.getMessage());
 
     // 获取域名
-    EnvConfig envConfig = envConfigService.getByAppId(BaseContext.getSelectProjectId(),apiCase.getAppId(), apiDebugReq.getEnvId());
-    if (Objects.isNull(envConfig)){
+    EnvConfig envConfig = envConfigService
+        .getByAppId(BaseContext.getSelectProjectId(), apiCase.getAppId(), apiDebugReq.getEnvId());
+    if (Objects.isNull(envConfig)) {
       return ResultApiVO.builder().response(
-          (JSONObject) new JSONObject().put("data",ResultEnum.ENV_INFO_NOT_NULL.getMessage())).build();
+          (JSONObject) new JSONObject().put("data", ResultEnum.ENV_INFO_NOT_NULL.getMessage()))
+          .build();
     }
     DomainInfo domainInfo = domainInfoService.getById(envConfig.getDomainId());
 
@@ -260,7 +262,8 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
     return ResultApiVO
         .builder()
-        .requestParams(Optional.ofNullable(encryptJsonParams).filter(json->!json.isEmpty()).orElse(paramsJson))
+        .requestParams(Optional.ofNullable(encryptJsonParams).filter(json -> !json.isEmpty())
+            .orElse(paramsJson))
         .requestUrl(request.getUrl())
         .envId(apiDebugReq.getEnvId())
         .envName(envConfig.getEnvName())
@@ -354,6 +357,12 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     return apiCaseRepository.batchDown(batchReq.getIds(), batchReq.getRemark());
   }
 
+  /**
+   * 检查用例是否可用
+   *
+   * @param ids
+   * @return
+   */
   @Override
   public List<Long> checkApiCaseEnable(List<Long> ids) {
     if (CollUtil.isEmpty(ids)) {
@@ -364,6 +373,13 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     return apiCases.stream().map(ApiCase::getId).collect(Collectors.toList());
   }
 
+  /**
+   * 加密请求参数
+   *
+   * @param secret
+   * @param params
+   * @return
+   */
   @Override
   public JSONObject encryptParam(String secret, JSONObject params) {
     JSONObject encryptJsonParams = new JSONObject();
@@ -384,6 +400,13 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     return encryptJsonParams;
   }
 
+  /**
+   * 解密请求参数
+   *
+   * @param secret
+   * @param body
+   * @return
+   */
   @Override
   public JSONObject decryptRequestBody(String secret, JSONObject body) {
     AES aes = SecureUtil.aes(secret.getBytes());
@@ -391,10 +414,27 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
     return JSON.parseObject(data);
   }
 
+  /**
+   * 获取接口覆盖率
+   *
+   * @return
+   */
   @Override
   public Long getCoverageIsApiCount() {
     List<ApiCase> apiCaseList = apiCaseRepository.allList(BaseContext.getSelectProjectId());
     return Optional.ofNullable(apiCaseList)
         .map(list -> list.stream().map(ApiCase::getApiId).distinct().count()).orElse(0L);
+  }
+
+  /**
+   * 获取未分配的用例
+   * @return
+   */
+  @Override
+  public Map<Long, Integer> getAssetsNot() {
+    List<ApiCase> apiCaseList = apiCaseRepository
+        .getNotAssetsList(BaseContext.getSelectProjectId());
+    return apiCaseList.stream()
+        .collect(Collectors.toMap(ApiCase::getOwnerId, v -> 1, Integer::sum));
   }
 }

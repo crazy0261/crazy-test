@@ -5,6 +5,7 @@ import com.example.crazytest.services.DailyDataService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.CoreIndicatorsListVO;
 import com.example.crazytest.vo.DailyDataCaseVO;
+import com.example.crazytest.vo.StatisticsDetailVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,12 @@ public class DailyDataController {
   @PostMapping("/case/detail")
   @Operation(summary = "获取趋势数据")
   public Result<DailyDataCaseVO> queryTrendData(@RequestBody DateTimeReq dateTimeReq) {
-    return Result
-        .success(dataService.getTrendData(dateTimeReq.getStartTime(), dateTimeReq.getEndTime()));
+    return Result.success(dataService.getTrendData(dateTimeReq.getStartTime(), dateTimeReq.getEndTime()));
+  }
+
+  @GetMapping("/statistics/detail")
+  @Operation(summary = "未加入定时任务/未断言/执行失败")
+  public Result<StatisticsDetailVO> queryStatisticsData() {
+    return Result.success(dataService.statisticsDetail());
   }
 }

@@ -32,4 +32,6 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
   Long userApiCaseCount(Long createById);
 
+  List<ApiCase> getNotAssetsList(Long projectId);
+
 }

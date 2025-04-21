@@ -4,6 +4,7 @@ import com.example.crazytest.entity.ProcessCaseNode;
 import com.example.crazytest.mapper.ProcessCaseNodeMapper;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,5 +27,14 @@ public class ProcessCaseNodeRepositoryServiceImpl extends
         .eq(ProcessCaseNode::getId, id)
         .eq(ProcessCaseNode::getIsDelete, Boolean.FALSE)
         .one();
+  }
+
+  @Override
+  public List<ProcessCaseNode> getAssetsNotList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseNode::getProjectId, projectId)
+        .ne(ProcessCaseNode::getAssertList, "[]")
+        .eq(ProcessCaseNode::getIsDelete, Boolean.FALSE)
+        .list();
   }
 }
