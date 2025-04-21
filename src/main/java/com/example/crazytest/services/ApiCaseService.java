@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCase;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.crazytest.entity.AssetsNotListEntity;
 import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
@@ -61,6 +62,8 @@ public interface ApiCaseService extends IService<ApiCase> {
   Long getCoverageIsApiCount();
 
   Map<Long,Integer> getAssetsNot();
+
+  List<AssetsNotListEntity> getAssetsNotMap();
 
 
 }

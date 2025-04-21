@@ -34,4 +34,6 @@ public interface ApiCaseRepositoryService extends IService<ApiCase> {
 
   List<ApiCase> getNotAssetsList(Long projectId);
 
+  List<ApiCase> queryIds(List<Long> ids);
+
 }

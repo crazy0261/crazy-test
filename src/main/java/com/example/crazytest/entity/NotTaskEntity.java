@@ -1,18 +1,20 @@
 package com.example.crazytest.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * @author
  * @name Menghui
- * @date 2025/4/21 12:27
+ * @date 2025/4/21 14:36
  * @DESRIPTION
  */
+
 @Data
-@AllArgsConstructor
-public class AssetsNotEntity {
+public class NotTaskEntity {
+
+  private Long id;
   private String name;
-  private Integer count;
+  private String type;
+  private String ownerName;
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.mapper.TaskScheduleMapper;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -52,6 +53,24 @@ public class TaskScheduleRepositoryServiceImpl extends
         .eq(TaskSchedule::getEnable, Boolean.TRUE)
         .eq(TaskSchedule::getIsDelete, Boolean.FALSE)
         .le(TaskSchedule::getNextExecTime, LocalDateTime.now())
+        .list();
+  }
+
+  @Override
+  public List<TaskSchedule> queryApiCaseList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(TaskSchedule::getProjectId, projectId)
+        .eq(TaskSchedule::getIsDelete, Boolean.FALSE)
+        .eq(TaskSchedule::getTestcaseType, CaseTypeEnums.API_CASE_TYPE.getType())
+        .list();
+  }
+
+  @Override
+  public List<TaskSchedule> queryProcessList(Long projectId) {
+    return this.lambdaQuery()
+        .eq(TaskSchedule::getProjectId, projectId)
+        .eq(TaskSchedule::getIsDelete, Boolean.FALSE)
+        .eq(TaskSchedule::getTestcaseType, CaseTypeEnums.PROCESS_CASE_TYPE.getType())
         .list();
   }
 }

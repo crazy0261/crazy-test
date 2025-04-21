@@ -1,6 +1,7 @@
 package com.example.crazytest.services;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.crazytest.entity.AssetsNotListEntity;
 import com.example.crazytest.entity.req.ProcessCaseNodeReq;
 import com.example.crazytest.vo.ProcessCaseNodeVO;
 import java.util.List;
@@ -14,6 +15,8 @@ public interface ProcessCaseNodeService {
 
   String getNodeName(List<JSONObject> nodes, Long nodeId);
 
-  Map<Long,Integer> getAssetsNotCount();
+  Map<Long, Integer> getAssetsNotCount();
+
+  List<AssetsNotListEntity> getAssetsNotMap();
 
 }

@@ -128,7 +128,7 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
   public List<ApiCase> getApiCaseValid(Long projectId, List<Long> ids) {
     return this.lambdaQuery()
         .eq(ApiCase::getProjectId, projectId)
-        .eq(ApiCase::getIsDelete,Boolean.FALSE)
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .in(ApiCase::getId, ids)
         .list();
   }
@@ -146,6 +146,14 @@ public class ApiCaseRepositoryServiceImp extends ServiceImpl<ApiCaseMapper, ApiC
     return this.lambdaQuery()
         .eq(ApiCase::getProjectId, projectId)
         .ne(ApiCase::getAsserts, "[]")
+        .eq(ApiCase::getIsDelete, Boolean.FALSE)
+        .list();
+  }
+
+  @Override
+  public List<ApiCase> queryIds(List<Long> ids) {
+    return this.lambdaQuery()
+        .in(ApiCase::getId, ids)
         .eq(ApiCase::getIsDelete, Boolean.FALSE)
         .list();
   }

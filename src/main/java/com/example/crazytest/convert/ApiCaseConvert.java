@@ -23,6 +23,12 @@ public class ApiCaseConvert {
   @Autowired
   ApiCaseService caseService;
 
+  /**
+   * apiCaseIds 转换
+   * @param apiCaseIds
+   * @return
+   * @throws JsonProcessingException
+   */
   public List<Long> apiCaseIdTypeConvert(String apiCaseIds) throws JsonProcessingException {
 
     if (StringUtils.isEmpty(apiCaseIds)) {

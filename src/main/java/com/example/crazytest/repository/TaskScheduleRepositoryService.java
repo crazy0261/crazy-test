@@ -22,4 +22,9 @@ public interface TaskScheduleRepositoryService extends IService<TaskSchedule> {
 
   List<TaskSchedule> listAllEnable();
 
+  List<TaskSchedule> queryApiCaseList(Long projectId);
+
+  List<TaskSchedule> queryProcessList(Long projectId);
+
+
 }

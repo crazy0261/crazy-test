@@ -1,5 +1,6 @@
 package com.example.crazytest.services.imp;
 
+import cn.hutool.core.convert.Convert;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.convert.ProcessCaseNodeResultCovert;
 import com.example.crazytest.entity.Edge;
@@ -14,6 +15,7 @@ import com.example.crazytest.services.FlowExecutorService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.services.ProcessCaseExecService;
 import com.example.crazytest.services.ProcessCaseResultService;
+import com.example.crazytest.utils.JsonParserUtil;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,9 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
   @Autowired
   ProcessCaseExecService processCaseExecService;
+
+  @Autowired
+  JsonParserUtil jsonParser;
 
   /**
    * 执行流程
@@ -186,6 +191,22 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   public Node findStartNode(List<Node> nodes) {
     return nodes.stream()
         .filter(n -> n.getType().equals(NodeTypeEnum.START_NODE.getTypeName()))
+        .findFirst()
+        .orElse(null);
+  }
+
+  /**
+   * 获取节点
+   *
+   * @param node
+   * @param nodeId
+   * @return
+   */
+  @Override
+  public Node getNode(String nodes, Long nodeId) {
+    List<Node> nodeList = jsonParser.parseNodes(nodes);
+    return nodeList.stream()
+        .filter(n -> n.getId().equals(Convert.toStr(nodeId)))
         .findFirst()
         .orElse(null);
   }

@@ -14,6 +14,7 @@ import com.example.crazytest.config.OkHttpRequestConfig;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.ApiManagement;
+import com.example.crazytest.entity.AssetsNotListEntity;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.TestAccount;
@@ -21,6 +22,7 @@ import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ConditionTypeEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.mapper.ApiCaseMapper;
@@ -28,6 +30,7 @@ import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.repository.ApiManageRepositoryService;
 import com.example.crazytest.repository.TestAccountRepositoryService;
+import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -428,6 +431,7 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
 
   /**
    * 获取未分配的用例
+   *
    * @return
    */
   @Override
@@ -436,5 +440,25 @@ public class ApiCaseServiceImpl extends ServiceImpl<ApiCaseMapper, ApiCase> impl
         .getNotAssetsList(BaseContext.getSelectProjectId());
     return apiCaseList.stream()
         .collect(Collectors.toMap(ApiCase::getOwnerId, v -> 1, Integer::sum));
+  }
+
+  /**
+   * 获取未断言用例明细
+   * @return
+   */
+  @Override
+  public List<AssetsNotListEntity> getAssetsNotMap() {
+    List<ApiCase> apiCaseList = apiCaseRepository
+        .getNotAssetsList(BaseContext.getSelectProjectId());
+
+    return apiCaseList.stream().map(item -> {
+      AssetsNotListEntity assetsNotListEntity = new AssetsNotListEntity();
+      User user = userService.getById(item.getOwnerId());
+      assetsNotListEntity.setId(item.getId());
+      assetsNotListEntity.setName(item.getName());
+      assetsNotListEntity.setType(CaseTypeEnums.API_CASE_TYPE.getType());
+      assetsNotListEntity.setOwnerName(user.getName());
+      return assetsNotListEntity;
+    }).collect(Collectors.toList());
   }
 }
