@@ -1,7 +1,7 @@
 package com.example.crazytest.entity;
 
 
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class ExecutionResult {
 
   private String nodeId;
   private String nextNodeId;
-  private NodeStatusEnum status;
+  private ExecStatusEnum status;
   private String message;
   private LocalDateTime timestamp;
   Map<String, Node> nodeMap;

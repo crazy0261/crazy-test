@@ -6,7 +6,7 @@ import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNode;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
 import com.example.crazytest.services.CaseDebugService;
 import com.example.crazytest.services.NodeService;
@@ -51,8 +51,8 @@ public class TestCaseNodeServiceImp implements NodeService {
 
     result.setStatus(
         Optional.ofNullable(resultApiVO.getAssertResultVo()).map(AssertResultVo::getPass)
-            .filter(Boolean.TRUE::equals).map(pass -> NodeStatusEnum.SUCCESS)
-            .orElse(NodeStatusEnum.FAILED));
+            .filter(Boolean.TRUE::equals).map(pass -> ExecStatusEnum.SUCCESS)
+            .orElse(ExecStatusEnum.FAILED));
     result.setMessage(JSON.toJSONString(resultApiVO));
     return result;
   }

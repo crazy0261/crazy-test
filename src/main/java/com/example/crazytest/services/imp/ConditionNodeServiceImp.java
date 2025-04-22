@@ -4,7 +4,7 @@ import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNode;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
 import com.example.crazytest.services.NodeService;
 import com.example.crazytest.utils.GroovyExecUtil;
@@ -36,12 +36,12 @@ public class ConditionNodeServiceImp implements NodeService {
       Object groovyValue = GroovyExecUtil
           .executeGroovy(processCaseNode.getGroovyScript(), envParameter);
       envParameter.put(processCaseNode.getGroovyKey(), groovyValue.toString());
-      result.setStatus(NodeStatusEnum.SUCCESS);
+      result.setStatus(ExecStatusEnum.SUCCESS);
       result.setMessage(groovyValue.toString());
 
       context.setEnvParameter(envParameter);
     } catch (Exception e) {
-      result.setStatus(NodeStatusEnum.FAILED);
+      result.setStatus(ExecStatusEnum.FAILED);
       result.setMessage(e.getMessage());
     }
     return result;

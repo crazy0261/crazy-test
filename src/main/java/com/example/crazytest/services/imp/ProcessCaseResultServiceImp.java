@@ -2,6 +2,7 @@ package com.example.crazytest.services.imp;
 
 import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.convert.ProcessCaseNodeResultCovert;
 import com.example.crazytest.convert.mapArrayConvert;
@@ -9,6 +10,7 @@ import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
+import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
@@ -77,10 +79,10 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
             Collectors.collectingAndThen(Collectors.toList(), this::getLatestRecord)));
 
     long processCaseSuccessCount = apiCaseResultService.countByStatus(latestRecordsByCaseId,
-        processCaseRecord -> ExecStatusEnum.SUCCESS.getValue()
+        processCaseRecord -> ExecStatusEnum.SUCCESS.name()
             .equalsIgnoreCase(processCaseRecord.getStatus()));
     long apiCaseProcessFailCount = apiCaseResultService.countByStatus(latestRecordsByCaseId,
-        processCaseRecord -> !ExecStatusEnum.SUCCESS.getValue()
+        processCaseRecord -> !ExecStatusEnum.SUCCESS.name()
             .equalsIgnoreCase(processCaseRecord.getStatus()));
 
     countEntity
@@ -136,5 +138,20 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
     processCaseResult.setNodeArray(JSON.parseArray(processCaseRecord.getNodes()));
     processCaseResult.setEdgeArray(JSON.parseArray(processCaseRecord.getEdges()));
     return processCaseResult;
+  }
+
+  @Override
+  public IPage<ApiCaseResultReq> getProcessCaseResultLogs(Long caseId, Integer current,
+      Integer pageSize) {
+    IPage<ProcessCaseRecord> page = repositoryService
+        .getProcessCaseRecordLogList(caseId, current, pageSize);
+    return page.convert(processCaseRecord -> {
+      ApiCaseResultReq apiCaseResultReq = new ApiCaseResultReq();
+      apiCaseResultReq.setId(processCaseRecord.getId());
+      apiCaseResultReq.setScheduleBatchId(processCaseRecord.getScheduleBatchId());
+      apiCaseResultReq.setStatus(processCaseRecord.getStatus());
+      apiCaseResultReq.setCreateTime(processCaseRecord.getCreateTime());
+      return apiCaseResultReq;
+    });
   }
 }

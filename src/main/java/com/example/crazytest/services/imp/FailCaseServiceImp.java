@@ -142,12 +142,12 @@ public class FailCaseServiceImp implements FailCaseService {
   public boolean isFailed(Object recordObj) {
     if (recordObj instanceof ApiCaseRecord) {
       String statusStatus = ((ApiCaseRecord) recordObj).getStatus();
-      return ExecStatusEnum.FAIL.getValue().equals(statusStatus) || ExecStatusEnum.TIMEOUT
-          .getValue().equals(statusStatus);
+      return ExecStatusEnum.FAILED.name().equals(statusStatus) || ExecStatusEnum.TIMEOUT
+          .name().equals(statusStatus);
     } else if (recordObj instanceof ProcessCaseRecord) {
       String statusStatus = ((ProcessCaseRecord) recordObj).getStatus();
-      return ExecStatusEnum.FAIL.getValue().equals(statusStatus) || ExecStatusEnum.TIMEOUT
-          .getValue().equals(statusStatus);
+      return ExecStatusEnum.FAILED.name().equals(statusStatus) || ExecStatusEnum.TIMEOUT
+          .name().equals(statusStatus);
     }
     return Boolean.FALSE;
   }

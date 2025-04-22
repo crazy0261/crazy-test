@@ -6,7 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
 import com.example.crazytest.entity.ProcessCaseRecord;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ProcessCaseNodeResultRepositoryService;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
@@ -83,9 +83,9 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
   @Override
   public boolean isSubTaskFinished(ProcessCaseRecord processCaseRecord) {
     return Objects.nonNull(processCaseRecord) && Objects.nonNull(processCaseRecord.getStatus()) &&
-        (Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.SUCCESS.name()) ||
-            Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.FAILED.name()) ||
-            Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.TIMEOUT.name()));
+        (Objects.equals(processCaseRecord.getStatus(), ExecStatusEnum.SUCCESS.name()) ||
+            Objects.equals(processCaseRecord.getStatus(), ExecStatusEnum.FAILED.name()) ||
+            Objects.equals(processCaseRecord.getStatus(), ExecStatusEnum.TIMEOUT.name()));
   }
 
   /**
@@ -99,7 +99,7 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
   @Override
   public void handleSubTaskResult(ExecutionResult result, Map<String, String> envParameter,
       ProcessCaseRecord processCaseRecord, Long subResultId) {
-    if (Objects.equals(processCaseRecord.getStatus(), NodeStatusEnum.SUCCESS.name())) {
+    if (Objects.equals(processCaseRecord.getStatus(), ExecStatusEnum.SUCCESS.name())) {
       ProcessCaseNodeResult processNodeResult = processCaseNodeResultRepositoryService.findLast(
           processCaseRecord.getProjectId(), subResultId);
       if (Objects.nonNull(processNodeResult)) {
@@ -107,12 +107,12 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
             processNodeResult.getOutputParams(), new TypeReference<Map<String, String>>() {
             });
         envParameter.putAll(params);
-        result.setStatus(NodeStatusEnum.SUCCESS);
+        result.setStatus(ExecStatusEnum.SUCCESS);
         result.setMessage(JSON.toJSONString(params));
         return;
       }
     }
-    result.setStatus(NodeStatusEnum.FAILED);
+    result.setStatus(ExecStatusEnum.FAILED);
   }
 
   /**
@@ -124,7 +124,7 @@ public class SubProcessTaskServiceImp implements SubProcessTaskService {
    */
   @Override
   public ExecutionResult setFailedResult(ExecutionResult result, String message) {
-    result.setStatus(NodeStatusEnum.FAILED);
+    result.setStatus(ExecStatusEnum.FAILED);
     result.setMessage(message);
     return result;
   }

@@ -1,6 +1,8 @@
 package com.example.crazytest.repository.imp;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.mapper.ProcessCaseResultMapper;
 import com.example.crazytest.repository.ProcessCaseResultRepositoryService;
@@ -67,5 +69,14 @@ public class ProcessCaseResultRepositoryServiceImpl extends
         .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
         .orderByAsc(ProcessCaseRecord::getCreateTime)
         .list();
+  }
+
+  @Override
+  public IPage<ProcessCaseRecord> getProcessCaseRecordLogList(Long caseId, Integer current,
+      Integer pageSize) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getCaseId, caseId)
+        .orderByDesc(ProcessCaseRecord::getCreateTime)
+        .page(new Page<>(current, pageSize));
   }
 }

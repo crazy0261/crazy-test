@@ -1,16 +1,12 @@
 package com.example.crazytest.convert;
 
 import cn.hutool.core.util.IdUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
 import com.example.crazytest.entity.ProcessCaseRecord;
-import com.example.crazytest.enums.NodeStatusEnum;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.example.crazytest.enums.ExecStatusEnum;
 
 /**
  * @author
@@ -35,7 +31,7 @@ public class ProcessCaseNodeResultCovert {
     processCaseRecord.setAccountId(context.getApiDebugReq().getTestAccount());
     processCaseRecord.setProjectId(processCase.getProjectId());
     processCaseRecord.setAppId(processCase.getAppId());
-    processCaseRecord.setStatus(NodeStatusEnum.INIT.name());
+    processCaseRecord.setStatus(ExecStatusEnum.INIT.name());
     processCaseRecord.setScheduleId(context.getScheduleId());
     processCaseRecord.setScheduleBatchId(context.getScheduleBatchId());
     processCaseRecord.setNodes(mapArrayConvert.nodeMapToJsonArray(context.getNodeMap()).toString());

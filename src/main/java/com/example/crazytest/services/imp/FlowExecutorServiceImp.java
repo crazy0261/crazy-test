@@ -7,7 +7,7 @@ import com.example.crazytest.entity.Edge;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNodeResult;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.enums.NodeTypeEnum;
 import com.example.crazytest.factory.NodeServiceFactory;
 import com.example.crazytest.repository.ProcessCaseNodeResultRepositoryService;
@@ -87,7 +87,7 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
 
       ExecutionResult result = executeNode(currentNode, context);
 
-      if (Objects.equals(result.getStatus(), NodeStatusEnum.FAILED)) {
+      if (Objects.equals(result.getStatus(), ExecStatusEnum.FAILED)) {
         handleFailedNode(context.getResultId(), nodeMap, result, context);
         break;
       } else {
@@ -99,8 +99,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
       result.setNextNodeId(nextNodeId);
 
       processCaseResultService.updateNodes(context.getResultId(), nodeMap,
-          StringUtils.isEmpty(nextNodeId) ? NodeStatusEnum.SUCCESS.name()
-              : NodeStatusEnum.RUNNING.name());
+          StringUtils.isEmpty(nextNodeId) ? ExecStatusEnum.SUCCESS.name()
+              : ExecStatusEnum.RUNNING.name());
       saveNodeResult(result, context);
     }
   }
@@ -124,8 +124,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
     } catch (Exception e) {
       log.info("executeNode error:", e);
 
-      node.updateStatus(NodeStatusEnum.FAILED);
-      executionResult.setStatus(NodeStatusEnum.FAILED);
+      node.updateStatus(ExecStatusEnum.FAILED);
+      executionResult.setStatus(ExecStatusEnum.FAILED);
       return executionResult;
     }
   }
@@ -134,8 +134,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   public void currentNodeRunning(Long id, Map<String, Node> nodeMap, String currentNode) {
     if (Objects.nonNull(currentNode)) {
       nodeMap.get(currentNode).getData()
-          .setBorderColor(NodeStatusEnum.RUNNING.getColor());
-      processCaseResultService.updateNodes(id, nodeMap, NodeStatusEnum.RUNNING.name());
+          .setBorderColor(ExecStatusEnum.RUNNING.getColor());
+      processCaseResultService.updateNodes(id, nodeMap, ExecStatusEnum.RUNNING.name());
     }
   }
 
@@ -173,12 +173,12 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   @Override
   public void markRemainingAsFailed(Map<String, Node> nodeMap, String type) {
     nodeMap.values().stream().filter(node -> Objects.isNull(node.getData().getColor()))
-        .forEach(node -> node.getData().setColor(NodeStatusEnum.getValueByType(type)));
+        .forEach(node -> node.getData().setColor(ExecStatusEnum.getValueByType(type)));
   }
 
   @Override
   public void markRemainingAsSuccess(Map<String, Node> nodeMap, Node currentNode, String type) {
-    nodeMap.get(currentNode.getId()).getData().setColor(NodeStatusEnum.getValueByType(type));
+    nodeMap.get(currentNode.getId()).getData().setColor(ExecStatusEnum.getValueByType(type));
   }
 
   /**
@@ -221,8 +221,8 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   @Override
   public void handleTimeout(long resultId, Map<String, Node> nodeMap,
       ExecutionProcessContext context) {
-    markRemainingAsFailed(nodeMap, NodeStatusEnum.TIMEOUT.name());
-    processCaseResultService.updateNodes(resultId, nodeMap, NodeStatusEnum.TIMEOUT.name());
+    markRemainingAsFailed(nodeMap, ExecStatusEnum.TIMEOUT.name());
+    processCaseResultService.updateNodes(resultId, nodeMap, ExecStatusEnum.TIMEOUT.name());
   }
 
   /**
@@ -236,18 +236,18 @@ public class FlowExecutorServiceImp implements FlowExecutorService {
   @Override
   public void handleFailedNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result,
       ExecutionProcessContext context) {
-    markRemainingAsFailed(nodeMap, NodeStatusEnum.FAILED.name());
+    markRemainingAsFailed(nodeMap, ExecStatusEnum.FAILED.name());
     result.setNodeMap(nodeMap);
     ProcessCaseNodeResult processCaseNodeResult = ProcessCaseNodeResultCovert
         .processCaseNodeResultConvert(result, context);
-    processCaseResultService.updateNodes(resultId, nodeMap, NodeStatusEnum.FAILED.name());
+    processCaseResultService.updateNodes(resultId, nodeMap, ExecStatusEnum.FAILED.name());
     processCaseNodeResultRepositoryService.saveOrUpdate(processCaseNodeResult);
   }
 
   @Override
   public void handleSuccessfulNode(long resultId, Map<String, Node> nodeMap, ExecutionResult result,
       ExecutionProcessContext context) {
-    markRemainingAsSuccess(nodeMap, context.getCurrentNode(), NodeStatusEnum.SUCCESS.name());
+    markRemainingAsSuccess(nodeMap, context.getCurrentNode(), ExecStatusEnum.SUCCESS.name());
   }
 
   /**

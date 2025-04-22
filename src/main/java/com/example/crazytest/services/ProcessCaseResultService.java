@@ -1,10 +1,12 @@
 package com.example.crazytest.services;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
+import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ProcessCaseResultVO;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ public interface ProcessCaseResultService {
   Optional<ProcessCaseRecord> getLatestRecord(List<ProcessCaseRecord> records);
 
   ProcessCaseResultVO getProcessCaseResult(String id);
+
+  IPage<ApiCaseResultReq> getProcessCaseResultLogs(Long caseId, Integer current, Integer pageSize);
 
 
 }

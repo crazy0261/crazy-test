@@ -1,5 +1,6 @@
 package com.example.crazytest.repository;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ProcessCaseRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.time.LocalDateTime;
@@ -24,6 +25,8 @@ public interface ProcessCaseResultRepositoryService extends IService<ProcessCase
   List<ProcessCaseRecord> getProcessCaseRecordList(Long processId);
 
   List<ProcessCaseRecord> getProcessCaseRecordFailList(Long processId, LocalDateTime time);
+
+  IPage<ProcessCaseRecord> getProcessCaseRecordLogList(Long caseId, Integer current, Integer pageSize);
 
 
 }

@@ -8,7 +8,7 @@ import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCaseNode;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.DataSourceConfigRepositoryService;
 import com.example.crazytest.repository.ProcessCaseNodeRepositoryService;
@@ -74,7 +74,7 @@ public class SqlNodeServiceImp implements NodeService {
         .replacePlaceholders(processCaseNode.getSqlScript(), context.getEnvParameter());
     String sql = sqlStr.toUpperCase();
     if (!sql.startsWith("SELECT")) {
-      result.setStatus(NodeStatusEnum.FAILED);
+      result.setStatus(ExecStatusEnum.FAILED);
       result.setSqlExecResult(ResultEnum.SQL_NOT_SELECT.getMessage());
       return result;
     }
@@ -99,8 +99,8 @@ public class SqlNodeServiceImp implements NodeService {
       AssertResultVo assertResultVo = apiCaseService
           .assertResult(assets, JSON.parseObject(resultSet.toString()));
       result.setMessage(JSON.toJSONString(assertResultVo));
-      result.setStatus(Boolean.TRUE.equals(assertResultVo.getPass()) ? NodeStatusEnum.SUCCESS
-          : NodeStatusEnum.FAILED);
+      result.setStatus(Boolean.TRUE.equals(assertResultVo.getPass()) ? ExecStatusEnum.SUCCESS
+          : ExecStatusEnum.FAILED);
 
       Map<String, String> envParameter = context.getEnvParameter();
       JSONObject outParam = Optional.ofNullable(processCaseNode.getOutputParams()).map(
@@ -110,7 +110,7 @@ public class SqlNodeServiceImp implements NodeService {
 
       context.setEnvParameter(envParameter);
     } catch (SQLException | IOException e) {
-      result.setStatus(NodeStatusEnum.FAILED);
+      result.setStatus(ExecStatusEnum.FAILED);
     }
     return result;
   }

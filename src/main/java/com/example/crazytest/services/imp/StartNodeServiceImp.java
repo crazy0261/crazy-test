@@ -5,7 +5,7 @@ import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.entity.req.ApiDebugReq;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.TestAccountRepositoryService;
 import com.example.crazytest.services.NodeService;
@@ -40,7 +40,7 @@ public class StartNodeServiceImp implements NodeService {
 
     if (Objects.isNull(testAccount)) {
       result.setMessage(ResultEnum.USER_NOT_FOUND.getMessage());
-      result.setStatus(NodeStatusEnum.FAILED);
+      result.setStatus(ExecStatusEnum.FAILED);
     } else {
       Map<String, String> params = Optional.ofNullable(apiDebugReq.getInputParams()).map(
           item -> item.stream()
@@ -49,7 +49,7 @@ public class StartNodeServiceImp implements NodeService {
 
       params.put("token", testAccount.getToken());
       context.setEnvParameter(params);
-      result.setStatus(NodeStatusEnum.SUCCESS);
+      result.setStatus(ExecStatusEnum.SUCCESS);
     }
     return result;
   }

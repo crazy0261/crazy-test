@@ -1,7 +1,6 @@
 package com.example.crazytest.entity;
 
-import com.example.crazytest.enums.NodeStatusEnum;
-import com.example.crazytest.enums.NodeTypeEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import lombok.Data;
 
 /**
@@ -37,7 +36,7 @@ public class Node {
     private String color;
   }
 
-  public void updateStatus(NodeStatusEnum status) {
+  public void updateStatus(ExecStatusEnum status) {
     this.data.setColor(status.getColor());
   }
 }

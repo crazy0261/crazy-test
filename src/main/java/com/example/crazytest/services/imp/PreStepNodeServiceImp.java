@@ -7,7 +7,7 @@ import com.example.crazytest.config.ExecutionProcessContext;
 import com.example.crazytest.entity.ExecutionResult;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
-import com.example.crazytest.enums.NodeStatusEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.services.NodeService;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class PreStepNodeServiceImp implements NodeService {
     context.setEnvParameter(env);
 
     executionResult.setPreStepExecResult(JSON.toJSONString(envParameter));
-    executionResult.setStatus(NodeStatusEnum.SUCCESS);
+    executionResult.setStatus(ExecStatusEnum.SUCCESS);
     return executionResult;
   }
 }

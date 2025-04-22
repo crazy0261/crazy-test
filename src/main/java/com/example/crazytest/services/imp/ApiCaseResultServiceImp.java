@@ -85,7 +85,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
             : ExecModeEnum.AUTO.getValue())
         .status(Optional.ofNullable(resultApiVO.getAssertResultVo()).map(
             AssertResultVo::getPass).filter(pass -> pass)
-            .map(pass -> ExecStatusEnum.SUCCESS.getValue()).orElse(ExecStatusEnum.FAIL.getValue()))
+            .map(pass -> ExecStatusEnum.SUCCESS.name()).orElse(ExecStatusEnum.FAILED.name()))
         .envId(apiDebugReq.getEnvId())
         .debugResult(JSON.toJSONString(resultApiVO))
         .scheduleId(apiDebugReq.getScheduleId())
@@ -209,10 +209,10 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
                 Collectors.collectingAndThen(Collectors.toList(), this::getLatestRecord)));
 
     long apiCaseSuccessCount = countByStatus(latestRecordsByCaseId,
-        apiCaseRecord -> ExecStatusEnum.SUCCESS.getValue()
+        apiCaseRecord -> ExecStatusEnum.SUCCESS.name()
             .equalsIgnoreCase(apiCaseRecord.getStatus()));
     long apiCaseFailCount = countByStatus(latestRecordsByCaseId,
-        apiCaseRecord -> !ExecStatusEnum.SUCCESS.getValue()
+        apiCaseRecord -> !ExecStatusEnum.SUCCESS.name()
             .equalsIgnoreCase(apiCaseRecord.getStatus()));
 
     caseResultCountEntity.setApiCaseCount(Convert.toInt(apiCaseFailCount + apiCaseSuccessCount));
