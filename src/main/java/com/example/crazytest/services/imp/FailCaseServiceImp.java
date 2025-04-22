@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -235,7 +236,7 @@ public class FailCaseServiceImp implements FailCaseService {
   }
 
   /**
-   * 合并数据统计实体列表
+   * 合并数据统计实体列表,取倒叙10条
    *
    * @param apiCaseList
    * @param processCaseList
@@ -253,6 +254,8 @@ public class FailCaseServiceImp implements FailCaseService {
 
     return mergedMap.entrySet().stream()
         .map(entry -> new DataCountEntity(entry.getKey(), entry.getValue()))
+        .sorted(Comparator.comparing(DataCountEntity::getCount).reversed())
+        .limit(10)
         .collect(Collectors.toList());
 
   }
