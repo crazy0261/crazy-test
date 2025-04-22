@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.TaskScheduleExecuteReq;
 import com.example.crazytest.entity.req.TaskScheduleReq;
+import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.TaskScheduleVO;
@@ -75,7 +76,7 @@ public class TaskScheduleController {
   @PostMapping("/execute")
   @Operation(summary = "执行定时任务")
   public Result<Void> execute(@RequestBody TaskScheduleExecuteReq executeReq) throws IOException {
-    taskScheduleService.execute(executeReq.getId());
+    taskScheduleService.execute(executeReq.getId(), ExecModeEnum.MANUAL.getValue());
     return Result.success();
   }
 

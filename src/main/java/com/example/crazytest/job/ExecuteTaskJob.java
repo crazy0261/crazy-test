@@ -1,5 +1,6 @@
 package com.example.crazytest.job;
 
+import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.services.TaskScheduleService;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -37,7 +38,7 @@ public class ExecuteTaskJob {
         .map(task -> CompletableFuture
             .runAsync(() -> {
               try {
-                taskScheduleService.execute(task);
+                taskScheduleService.execute(task, ExecModeEnum.AUTO.getValue());
               } catch (IOException e) {
                 log.error("task-id:{},executeTaskJob：{}", task, e.getMessage());
               }

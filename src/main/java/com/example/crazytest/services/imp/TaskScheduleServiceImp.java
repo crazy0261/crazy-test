@@ -7,12 +7,14 @@ import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.TaskScheduleReq;
 import com.example.crazytest.enums.ExecModeEnum;
+import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.enums.ResultEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
 import com.example.crazytest.repository.TaskScheduleRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.services.ApiCaseService;
+import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.services.TaskScheduleService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.AssertUtil;
@@ -23,10 +25,15 @@ import com.example.crazytest.vo.ResultApiVO;
 import com.example.crazytest.vo.TaskScheduleVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -40,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @DESRIPTION
  */
 
+@Slf4j
 @Service
 public class TaskScheduleServiceImp implements TaskScheduleService {
 
@@ -52,7 +60,9 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Autowired
   ProcessCaseRepositoryService processorService;
-  ;
+
+  @Autowired
+  ProcessCaseService processCaseService;
 
   @Autowired
   ApiCaseResultService apiCaseResultService;
@@ -101,7 +111,8 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
         Optional.ofNullable(taskSchedule.getProjectId()).orElse(BaseContext.getSelectProjectId()));
     taskSchedule
         .setOwnerId(Optional.ofNullable(taskSchedule.getOwnerId()).orElse(BaseContext.getUserId()));
-    taskSchedule.setTestcaseList(taskScheduleReq.getTestcaseList().toString());
+    taskSchedule.setTestcaseList(Optional.ofNullable(taskScheduleReq.getTestcaseList()).map(
+        Object::toString).orElse("[]"));
     return repositoryService.saveOrUpdate(taskSchedule);
   }
 
@@ -113,7 +124,7 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
     Long apiCaseCount =
         Objects.equals("API_CASE", taskSchedule.getTestcaseType()) ? apiCaseRepositoryService
             .countCase(BaseContext.getSelectProjectId())
-            : processorService.getProcessCount(BaseContext.getSelectProjectId(),Boolean.FALSE);
+            : processorService.getProcessCount(BaseContext.getSelectProjectId(), Boolean.FALSE);
 
     List<Long> apiCaseList = caseConvert.apiCaseIdTypeConvert(taskSchedule.getTestcaseList());
 
@@ -131,20 +142,47 @@ public class TaskScheduleServiceImp implements TaskScheduleService {
 
   @Override
   @Async("taskThreadPool")
-  public void execute(Long id) throws IOException {
+  public void execute(Long id, String mode) throws IOException {
     TaskSchedule taskSchedule = repositoryService.getById(id);
+
     ApiDebugReq apiDebugReq = new ApiDebugReq();
     apiDebugReq.setScheduleBatchId(TimestampRandomIdGenerator.generateId());
     apiDebugReq.setMode(ExecModeEnum.AUTO.getDesc());
     apiDebugReq.setEnvSortId(taskSchedule.getEnvSort());
     apiDebugReq.setScheduleId(taskSchedule.getId());
 
+    String testcaseList = taskSchedule.getTestcaseList();
+    List<Long> caseIds = caseConvert.apiCaseIdTypeConvert(testcaseList);
+
+    // 存储所有失败
+    Map<Long, String> failedTasks = Collections.synchronizedMap(new HashMap<>());
+
     if (Objects.equals("API_CASE", taskSchedule.getTestcaseType())) {
-      ResultApiVO resultApi = apiCaseService.debug(apiDebugReq);
-      apiCaseResultService.save(apiDebugReq, resultApi);
+
+      CompletableFuture.allOf(caseIds.stream().map(caseId -> {
+        apiDebugReq.setId(caseId);
+        return CompletableFuture.runAsync(() -> {
+          try {
+            ResultApiVO resultApi = apiCaseService.debug(apiDebugReq);
+            apiCaseResultService.save(apiDebugReq, resultApi);
+          } catch (IOException e) {
+            failedTasks.put(caseId, e.getMessage());
+            log.info("task-id:{},api-case-executeTaskJob：{}", taskSchedule, e.getMessage());
+          }
+        });
+      }).toArray(CompletableFuture[]::new)).join();
+
     } else {
-      // todo 场景用例
+      CompletableFuture.allOf(caseIds.stream().map(caseId -> {
+        apiDebugReq.setId(caseId);
+        return CompletableFuture.runAsync(() -> processCaseService.debug(apiDebugReq));
+      }).toArray(CompletableFuture[]::new)).join();
     }
+
+    caseConvert
+        .apiCaseTaskRecordSave(taskSchedule, apiDebugReq.getScheduleBatchId(),
+            failedTasks.isEmpty() ? ExecStatusEnum.SUCCESS.name() : ExecStatusEnum.FAILED.name(),
+            mode);
   }
 
   @Override

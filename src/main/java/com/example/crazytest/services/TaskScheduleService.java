@@ -18,7 +18,7 @@ public interface TaskScheduleService {
 
   Boolean delete(Long id);
 
-  void execute(Long id) throws IOException;
+  void execute(Long id, String mode) throws IOException;
 
   List<Long> listAllEnable();
 

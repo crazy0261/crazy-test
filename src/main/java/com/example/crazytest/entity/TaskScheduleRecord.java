@@ -44,7 +44,10 @@ public class TaskScheduleRecord implements Serializable {
   private Long scheduleBatchId;
 
   @ApiModelProperty(value = "环境id")
-  private String envId;
+  private Integer envSortId;
+
+  @ApiModelProperty(value = "执行模式")
+  private String mode;
 
   @ApiModelProperty(value = "执行状态")
   private String status;

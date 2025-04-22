@@ -45,7 +45,7 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
 
     return page.convert(taskScheduleRecord -> {
       TaskScheduleRecordVO taskScheduleRecordVO = new TaskScheduleRecordVO();
-      EnvConfig envConfig = envConfigRepositoryService.getById(taskScheduleRecord.getEnvId());
+      EnvConfig envConfig = envConfigRepositoryService.getById(taskScheduleRecord.getEnvSortId());
       TaskSchedule taskSchedule = taskScheduleRepositoryService
           .getById(taskScheduleRecord.getScheduleId());
       BeanUtils.copyProperties(taskScheduleRecord, taskScheduleRecordVO);
