@@ -60,4 +60,10 @@ public class ApplicationManagementController {
     return Result.success(appManagementService.listAllApplicationManagement());
   }
 
+  @PostMapping("/delete")
+  @Operation(summary = "删除当前应用")
+  public Result<Boolean> delete(@RequestBody ApplicationManagementReq applicationManagementReq) {
+    return Result.success(appManagementService.delete(applicationManagementReq.getId()));
+  }
+
 }

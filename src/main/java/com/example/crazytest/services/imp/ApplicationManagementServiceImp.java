@@ -89,4 +89,9 @@ public class ApplicationManagementServiceImp implements ApplicationManagementSer
     return apiCount - count;
   }
 
+  @Override
+  public Boolean delete(Long id) {
+    return applicationManagementRepositoryService.removeById(id);
+  }
+
 }

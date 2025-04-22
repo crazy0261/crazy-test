@@ -2,6 +2,7 @@ package com.example.crazytest.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -71,8 +72,9 @@ public class ApplicationManagement implements Serializable {
   private String updateByName;
 
 
+  @TableLogic
   @ApiModelProperty(value = "是否删除")
-  private Integer isDelete;
+  private Long isDelete;
 
 
 }

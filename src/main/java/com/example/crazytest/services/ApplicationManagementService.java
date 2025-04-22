@@ -18,4 +18,6 @@ public interface ApplicationManagementService {
 
   Long getCoverApiCount(Long projectId, Long appId, Long apiCount);
 
+  Boolean delete(Long id);
+
 }
