@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:mysql://124.222.106.11:3307/crazy_test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /api
+
+xxl:
+  job:
+    accessToken: crazyTest20250329
+    admin:
+      addresses: http://124.222.106.11:8800/xxl-job-admin
+      timeout: 10
+    executor:
+      appname: xxl-job-executor-crazy-test
+      #      address: http://124.222.106.11:8800
+      #      address:
+      ip:
+      port: 9999
+      logpath: ./xxl-job/executor
+      logretentiondays: 7

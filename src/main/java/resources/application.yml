@@ -1,0 +1,37 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
+  port: 8080
+  connection-timeout: 5000ms
+
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml # Mapper XML 文件路径
+  type-aliases-package: com.example.crazytest.entity # 实体类包路径
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 逻辑删除字段名
+      logic-delete-value: 1 # 逻辑删除值
+      logic-not-delete-value: 0 # 未删除值
+
+
+logging:
+  level:
+    org.springframework.jdbc: INFO
+
+user:
+  resetPwd: 2667544fa2fa43948243f8871dfc9139 # crazy-test2025
+
+
+
