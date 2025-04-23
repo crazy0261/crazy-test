@@ -37,6 +37,12 @@ Crazy Test 是一个开源的测试平台，可以快速搭建测试平台支持
 
 - docker run -d --name crazy-test -p 8080:8080 crazy-test:latest
 
+6. 添加定时任务
+    - 每日数据统计 ： createDataDailyJob
+    - 用例执行： executeTaskJob
+    - 创建测试账号token ： createAccountTokenJob
+    ![img.png](src/photo/定时任务_xxl.png)
+
 ## 页面
 
 1. 登录
