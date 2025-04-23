@@ -25,7 +25,8 @@
     <fastjson.version>1.2.47</fastjson.version>
     <okhttp.version>4.9.3</okhttp.version>
     <xxl-job-core.version>2.4.0</xxl-job-core.version>
-    <groovy-all.version>3.0.9</groovy-all.version>
+    <groovy.version>2.5.5</groovy.version>
+    <groovy.compile.version>2.5.8</groovy.compile.version>
   </properties>
 
   <dependencies>
@@ -114,10 +115,24 @@
       <artifactId>swagger-parser</artifactId>
       <version>${swagger-parser.version}</version>
     </dependency>
+
+    <!-- groovy -->
+    <dependency>
+      <artifactId>groovy</artifactId>
+      <groupId>org.codehaus.groovy</groupId>
+      <version>${groovy.compile.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <!--		groovy		-->
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <version>${groovy-all.version}</version> <!-- 请根据需要选择合适的版本 -->
+      <artifactId>groovy</artifactId>
+      <version>${groovy.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-jsr223</artifactId>
+      <version>${groovy.version}</version>
     </dependency>
 
 
