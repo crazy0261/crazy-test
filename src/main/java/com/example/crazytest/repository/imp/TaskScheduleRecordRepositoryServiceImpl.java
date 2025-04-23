@@ -30,6 +30,7 @@ public class TaskScheduleRecordRepositoryServiceImpl extends
         .eq(TaskScheduleRecord::getProjectId, projectId)
         .eq(Objects.nonNull(scheduleId), TaskScheduleRecord::getScheduleId, scheduleId)
         .eq(TaskScheduleRecord::getIsDelete, Boolean.FALSE)
+        .orderByDesc(TaskScheduleRecord::getUpdateTime)
         .page(new Page<>(current, pageSize));
   }
 
