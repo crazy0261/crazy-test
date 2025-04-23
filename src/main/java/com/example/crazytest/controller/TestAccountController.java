@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TestAccount;
 import com.example.crazytest.services.TestAccountService;
 import com.example.crazytest.utils.Result;
@@ -39,9 +38,8 @@ public class TestAccountController {
   @Operation(summary = "分页查询账号")
   public Result<List<TestAccountVO>> list(String name, String genTokenStatus,
       int current, int pageSize) {
-    IPage<TestAccountVO> resultPage = testAccountService
-        .list(name, genTokenStatus, current, pageSize);
-    return Result.success(resultPage.getRecords(), resultPage.getTotal());
+
+    return Result.coverPage(testAccountService.list(name, genTokenStatus, current, pageSize));
   }
 
   @PostMapping("/save")

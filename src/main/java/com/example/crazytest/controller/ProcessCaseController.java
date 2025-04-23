@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.dto.ProcessCaseDTO;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.req.ApiDebugReq;
@@ -61,8 +60,7 @@ public class ProcessCaseController {
         .current(current)
         .pageSize(pageSize)
         .build();
-    IPage<ProcessCaseVO> listPage = processCaseService.listPage(processCaseDTO);
-    return Result.success(listPage.getRecords(), listPage.getTotal());
+    return Result.coverPage(processCaseService.listPage(processCaseDTO));
   }
 
   @PostMapping("/save")

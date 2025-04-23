@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.services.ApiCaseResultService;
 import com.example.crazytest.utils.Result;
@@ -38,8 +37,7 @@ public class ApiCaseResultController {
       @RequestParam(value = "apiTestcaseId", required = true) String apiTestcaseId,
       @RequestParam(value = "current", required = true) Integer current,
       @RequestParam(value = "pageSize", required = true) Integer pageSize) {
-    IPage<ApiCaseResultReq> resultPage = apiCaseResultService.list(apiTestcaseId, current, pageSize);
-    return Result.success(resultPage.getRecords(), resultPage.getTotal());
+    return Result.coverPage(apiCaseResultService.list(apiTestcaseId, current, pageSize));
   }
 
   @GetMapping("/query")

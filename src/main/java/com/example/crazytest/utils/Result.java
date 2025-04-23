@@ -1,5 +1,8 @@
 package com.example.crazytest.utils;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -32,6 +35,10 @@ public class Result<T> {
     response.total = total;
     response.success = success;
     return response;
+  }
+
+  public static <T> Result<List<T>>coverPage(IPage<T> data) {
+    return success(data.getRecords(),data.getTotal());
   }
 
   public static <T> Result<T> success(int code, T data, String message, long total) {

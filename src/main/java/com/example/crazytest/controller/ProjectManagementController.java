@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ProjectManagement;
 import com.example.crazytest.services.ProjectManagementService;
 import com.example.crazytest.utils.Result;
@@ -39,9 +38,7 @@ public class ProjectManagementController {
       @RequestParam(name = "name", required = false) String name,
       @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-    IPage<ProjectManagement> projectManagementResult = projectManagementService
-        .list(name, current, pageSize);
-    return Result.success(projectManagementResult.getRecords(), projectManagementResult.getTotal());
+    return Result.coverPage(projectManagementService.list(name, current, pageSize));
   }
 
   @PostMapping("/save")

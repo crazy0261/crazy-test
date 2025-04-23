@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.req.ApiCaseBatchReq;
 import com.example.crazytest.entity.req.ApiCaseReq;
 import com.example.crazytest.entity.req.ApiDebugReq;
@@ -53,9 +52,8 @@ public class ApiCaseController {
       @RequestParam(value = "ownerId", required = false) Long ownerId,
       @RequestParam(value = "current", required = false, defaultValue = "1") Integer current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-    IPage<ApiCaseVO> result = apiCaseService
-        .list(name, appId, path, status, recentExecResult, ownerId, current, pageSize);
-    return Result.success(result.getRecords(), result.getTotal());
+    return Result.coverPage(apiCaseService
+        .list(name, appId, path, status, recentExecResult, ownerId, current, pageSize));
   }
 
   @GetMapping("/getById")

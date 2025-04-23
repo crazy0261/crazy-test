@@ -24,18 +24,18 @@ public class TaskScheduleRecordRepositoryServiceImpl extends
     TaskScheduleRecordRepositoryService {
 
   @Override
-  public IPage<TaskScheduleRecord> listPage(Long projectId, Long scheduleId, Long scheduleBatchId,
-      Integer current, Integer pageSize) {
+  public IPage<TaskScheduleRecord> listPage(Long projectId, Long scheduleId, Integer current,
+      Integer pageSize) {
     return this.lambdaQuery()
         .eq(TaskScheduleRecord::getProjectId, projectId)
         .eq(Objects.nonNull(scheduleId), TaskScheduleRecord::getScheduleId, scheduleId)
-        .eq(Objects.nonNull(scheduleBatchId), TaskScheduleRecord::getScheduleBatchId, scheduleBatchId)
         .eq(TaskScheduleRecord::getIsDelete, Boolean.FALSE)
         .page(new Page<>(current, pageSize));
   }
 
   @Override
-  public IPage<TaskScheduleRecord> listPageResult(Long projectId, Long scheduleId, List<Long> ids, Integer current, Integer pageSize) {
+  public IPage<TaskScheduleRecord> listPageResult(Long projectId, Long scheduleId, List<Long> ids,
+      Integer current, Integer pageSize) {
     return this.lambdaQuery()
         .eq(TaskScheduleRecord::getProjectId, projectId)
         .eq(Objects.nonNull(scheduleId), TaskScheduleRecord::getScheduleId, scheduleId)

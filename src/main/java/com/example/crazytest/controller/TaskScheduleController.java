@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.TaskSchedule;
 import com.example.crazytest.entity.req.TaskScheduleExecuteReq;
 import com.example.crazytest.entity.req.TaskScheduleReq;
@@ -48,9 +47,8 @@ public class TaskScheduleController {
       @RequestParam(value = "enable", required = false) Integer enable,
       @RequestParam(value = "current", defaultValue = "1") Integer current,
       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-    IPage<TaskScheduleVO> taskSchedulePage = taskScheduleService
-        .list(name, testcaseType, ownerName, enable, current, pageSize);
-    return Result.success(taskSchedulePage.getRecords(), taskSchedulePage.getTotal());
+    return Result.coverPage(
+        taskScheduleService.list(name, testcaseType, ownerName, enable, current, pageSize));
   }
 
   @PostMapping("/save")

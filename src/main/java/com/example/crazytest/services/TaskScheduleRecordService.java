@@ -8,7 +8,7 @@ import java.util.List;
 public interface TaskScheduleRecordService {
 
 
-  IPage<TaskScheduleRecordVO> listPage(Long scheduleId, Long scheduleBatchId, Integer current, Integer pageSize);
+  IPage<TaskScheduleRecordVO> listPage(Long scheduleId, Integer current, Integer pageSize);
 
   IPage<TaskScheduleRecord> queryBatchExecResult(Long scheduleId, List<Long> ids, Integer current, Integer pageSize);
 

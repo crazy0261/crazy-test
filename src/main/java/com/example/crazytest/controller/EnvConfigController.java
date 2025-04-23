@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EnvConfig;
 import com.example.crazytest.entity.req.EnvConfigReq;
 import com.example.crazytest.vo.EnvConfigVO;
@@ -44,9 +43,8 @@ public class EnvConfigController {
       @RequestParam(value = "sort", required = false) String sort,
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-    IPage<EnvConfigVO> pageEnvInfoPage = envConfigService
-        .list(appid, envName, sort, domainName, current, pageSize);
-    return Result.success(pageEnvInfoPage.getRecords(), pageEnvInfoPage.getTotal());
+    return Result
+        .coverPage(envConfigService.list(appid, envName, sort, domainName, current, pageSize));
   }
 
   @PostMapping("/save")

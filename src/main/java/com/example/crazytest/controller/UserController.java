@@ -1,14 +1,10 @@
 package com.example.crazytest.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserReq;
 import com.example.crazytest.entity.req.UserResultEntity;
 import com.example.crazytest.services.UserService;
-import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.Result;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -51,9 +47,7 @@ public class UserController {
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize
   ) {
-    IPage<UserResultEntity> users = userService
-        .getUsers(account, name, phone, status, current, pageSize);
-    return Result.success(users.getRecords(), users.getTotal());
+    return Result.coverPage(userService.getUsers(account, name, phone, status, current, pageSize));
   }
 
   /**

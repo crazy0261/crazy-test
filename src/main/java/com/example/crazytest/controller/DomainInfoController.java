@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DomainInfo;
 import com.example.crazytest.services.DomainInfoService;
 import com.example.crazytest.utils.Result;
@@ -40,8 +39,8 @@ public class DomainInfoController {
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-    IPage<DomainInfo> resultPage = domainInfoService.list(name, urlPath, current, pageSize);
-    return Result.success(resultPage.getRecords(), resultPage.getTotal());
+
+    return Result.coverPage(domainInfoService.list(name, urlPath, current, pageSize));
   }
 
   @PostMapping("/save")

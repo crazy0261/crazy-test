@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApplicationManagement;
 import com.example.crazytest.vo.ApplicationManagementVO;
 import com.example.crazytest.entity.req.ApplicationManagementReq;
@@ -43,9 +42,7 @@ public class ApplicationManagementController {
       @RequestParam(value = "current", required = false, defaultValue = "1") int current,
       @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
 
-    IPage<ApplicationManagementVO> resultPage = appManagementService
-        .list(name, ownerId, current, pageSize);
-    return Result.success(resultPage.getRecords(), resultPage.getTotal());
+    return Result.coverPage(appManagementService.list(name, ownerId, current, pageSize));
   }
 
   @PostMapping("/save")

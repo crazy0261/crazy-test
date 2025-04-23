@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.DataSourceConfig;
 import com.example.crazytest.entity.req.DataSourceConfigReq;
 import com.example.crazytest.services.DataSourceConfigService;
@@ -40,8 +39,7 @@ public class DataSourceConfigController {
   public Result<List<DataSourceConfigVO>> list(@RequestParam(required = false) String name,
       @RequestParam(required = false, defaultValue = "1") Integer current,
       @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-    IPage<DataSourceConfigVO> page = dataSourceService.list(name, current, pageSize);
-    return Result.success(page.getRecords(), page.getTotal());
+    return Result.coverPage(dataSourceService.list(name, current, pageSize));
   }
 
   @PostMapping("/save")

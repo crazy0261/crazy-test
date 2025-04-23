@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiManagement;
 import com.example.crazytest.entity.req.ImportApiReq;
 import com.example.crazytest.services.ImportApiService;
@@ -71,8 +70,7 @@ public class ApiManagementController {
     apiManagementDTO.setStatus(status);
     apiManagementDTO.setCurrent(current);
     apiManagementDTO.setPageSize(pageSize);
-    IPage<ApiManagementVO> apiManagementVoPage = apiManagementService.listAll(apiManagementDTO);
-    return Result.success(apiManagementVoPage.getRecords(), apiManagementVoPage.getTotal());
+    return Result.coverPage(apiManagementService.listAll(apiManagementDTO));
   }
 
   @GetMapping("/get/id")

@@ -1,9 +1,11 @@
 package com.example.crazytest.controller;
 
 
+import com.example.crazytest.services.TaskScheduleRecordService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.TaskScheduleRecordVO;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,12 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/task/schedule/record")
 public class TaskScheduleRecordController {
 
+  @Autowired
+  TaskScheduleRecordService taskScheduleRecordService;
+
   @GetMapping("/list")
-  public Result<List<TaskScheduleRecordVO>> list(@RequestParam(value = "scheduleId") Long scheduleId,
-      @RequestParam(value = "scheduleBatchId") Long scheduleBatchId,
+  public Result<List<TaskScheduleRecordVO>> list(
+      @RequestParam(value = "scheduleId") Long scheduleId,
       @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-    return null;
+    return Result.coverPage(taskScheduleRecordService.listPage(scheduleId, current, pageSize));
   }
 
 }

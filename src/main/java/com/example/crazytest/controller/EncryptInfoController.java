@@ -1,7 +1,6 @@
 package com.example.crazytest.controller;
 
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.EncryptInfo;
 import com.example.crazytest.entity.req.EncryptInfoReq;
 import com.example.crazytest.services.EncryptInfoService;
@@ -41,8 +40,7 @@ public class EncryptInfoController {
       @RequestParam(value = "name", required = false) String name,
       @RequestParam(value = "current", defaultValue = "1") Integer current,
       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-    IPage<EncryptInfoVO> encryptInfoPage = encryptInfoService.list(name, current, pageSize);
-    return Result.success(encryptInfoPage.getRecords(), encryptInfoPage.getTotal());
+    return Result.coverPage(encryptInfoService.list(name, current, pageSize));
   }
 
   @PostMapping("/save")

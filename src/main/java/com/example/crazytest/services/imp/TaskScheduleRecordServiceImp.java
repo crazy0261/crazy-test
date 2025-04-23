@@ -39,9 +39,8 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
   ApiCaseResultService apiCaseResultService;
 
   @Override
-  public IPage<TaskScheduleRecordVO> listPage(Long scheduleId, Long scheduleBatchId,
-      Integer current, Integer pageSize) {
-    IPage<TaskScheduleRecord> page =taskScheduleRecordRepositoryService.listPage(BaseContext.getSelectProjectId(), scheduleId, scheduleBatchId, current, pageSize);
+  public IPage<TaskScheduleRecordVO> listPage(Long scheduleId, Integer current, Integer pageSize) {
+    IPage<TaskScheduleRecord> page =taskScheduleRecordRepositoryService.listPage(BaseContext.getSelectProjectId(), scheduleId, current, pageSize);
 
     return page.convert(taskScheduleRecord -> {
       TaskScheduleRecordVO taskScheduleRecordVO = new TaskScheduleRecordVO();
