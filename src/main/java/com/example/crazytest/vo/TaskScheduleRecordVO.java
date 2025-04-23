@@ -21,7 +21,7 @@ public class TaskScheduleRecordVO {
   private String scheduleName;
 
   @ApiModelProperty(value = "定时任务批次Id")
-  private Long scheduleBatchId;
+  private String scheduleBatchId;
 
   @ApiModelProperty(value = "环境名称")
   private String envName;

@@ -48,6 +48,7 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
       TaskSchedule taskSchedule = taskScheduleRepositoryService
           .getById(taskScheduleRecord.getScheduleId());
       BeanUtils.copyProperties(taskScheduleRecord, taskScheduleRecordVO);
+      taskScheduleRecordVO.setScheduleBatchId(String.valueOf(taskScheduleRecord.getScheduleBatchId()));
       taskScheduleRecordVO.setEnvName(envConfig.getEnvName());
       taskScheduleRecordVO.setScheduleName(taskSchedule.getName());
       return taskScheduleRecordVO;
