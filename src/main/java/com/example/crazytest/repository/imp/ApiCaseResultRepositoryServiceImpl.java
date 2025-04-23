@@ -57,17 +57,16 @@ public class ApiCaseResultRepositoryServiceImpl extends
         .eq(ApiCaseRecord::getProjectId, projectId)
         .eq(ApiCaseRecord::getScheduleBatchId, scheduleBatchId)
         .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
-        .groupBy(ApiCaseRecord::getApiTestcaseId)
         .orderByDesc(ApiCaseRecord::getUpdateTime)
         .list();
   }
 
   @Override
-  public IPage<ApiCaseRecord> resultList(Long projectId, List<Long> apiTestcaseIds, Integer current,
+  public IPage<ApiCaseRecord> resultList(Long projectId, List<Long> ids, Integer current,
       Integer pageSize) {
     return this.lambdaQuery()
         .eq(ApiCaseRecord::getProjectId, projectId)
-        .in(Objects.nonNull(apiTestcaseIds), ApiCaseRecord::getApiTestcaseId, apiTestcaseIds)
+        .in(Objects.nonNull(ids), ApiCaseRecord::getId, ids)
         .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
         .page(new Page<>(current, pageSize));
   }

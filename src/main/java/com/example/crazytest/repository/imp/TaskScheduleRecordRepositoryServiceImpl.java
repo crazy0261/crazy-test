@@ -34,14 +34,5 @@ public class TaskScheduleRecordRepositoryServiceImpl extends
         .page(new Page<>(current, pageSize));
   }
 
-  @Override
-  public IPage<TaskScheduleRecord> listPageResult(Long projectId, Long scheduleId, List<Long> ids,
-      Integer current, Integer pageSize) {
-    return this.lambdaQuery()
-        .eq(TaskScheduleRecord::getProjectId, projectId)
-        .eq(Objects.nonNull(scheduleId), TaskScheduleRecord::getScheduleId, scheduleId)
-        .in(TaskScheduleRecord::getId, ids)
-        .orderByDesc(TaskScheduleRecord::getUpdateTime)
-        .page(new Page<>(current, pageSize));
-  }
+
 }

@@ -278,4 +278,24 @@ public class ProcessCaseServiceImp implements ProcessCaseService {
 
     return "";
   }
+
+  /**
+   * 获取流程用例的所有者id
+   * @return
+   */
+  @Override
+  public Map<Long, Long> getProcessCaseOwnerMap() {
+    List<ProcessCase> processCaseList =processCaseRepositoryService.getAllList(BaseContext.getSelectProjectId());
+    return processCaseList.stream().collect(Collectors.toMap(ProcessCase::getId, ProcessCase::getOwnerId));
+  }
+
+  /**
+   * 获取流程用例的名称
+   * @return
+   */
+  @Override
+  public Map<Long, String> getProcessCaseCaseNameMap() {
+    List<ProcessCase> processCaseList =processCaseRepositoryService.getAllList(BaseContext.getSelectProjectId());
+    return processCaseList.stream().collect(Collectors.toMap(ProcessCase::getId, ProcessCase::getName));
+  }
 }

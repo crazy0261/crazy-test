@@ -1,5 +1,6 @@
 package com.example.crazytest.services.imp;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -7,15 +8,15 @@ import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.EnvConfig;
-import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.ApiDebugReq;
+import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ExecModeEnum;
 import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ApiCaseRepositoryService;
 import com.example.crazytest.repository.ApiCaseResultRepositoryService;
 import com.example.crazytest.repository.EnvConfigRepositoryService;
-import com.example.crazytest.repository.UserRepositoryService;
 import com.example.crazytest.services.ApiCaseResultService;
+import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ApiCaseResultVO;
@@ -49,7 +50,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   ApiCaseRepositoryService apiCaseRepository;
 
   @Autowired
-  UserRepositoryService userRepository;
+  UserService userService;
 
   @Autowired
   EnvConfigRepositoryService envConfigRepositoryService;
@@ -66,7 +67,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
     return apiCaseResult.convert(caseResult -> {
       ApiCaseResultReq apiCaseResultVo = new ApiCaseResultReq();
-      EnvConfig envConfig =  envConfigRepositoryService.getById(caseResult.getEnvId());
+      EnvConfig envConfig = envConfigRepositoryService.getById(caseResult.getEnvId());
       BeanUtils.copyProperties(caseResult, apiCaseResultVo);
       apiCaseResultVo.setEnvName(envConfig.getEnvName());
       return apiCaseResultVo;
@@ -78,7 +79,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
     ApiCase apiCase = apiCaseRepository.getById(apiDebugReq.getId());
 
     ApiCaseRecord apiCaseRecord = ApiCaseRecord.builder()
-        .projectId(BaseContext.getSelectProjectId())
+        .projectId(apiCase.getProjectId())
         .apiTestcaseId(apiDebugReq.getId())
         .caseOwnerId(apiCase.getOwnerId())
         .mode(Objects.isNull(apiDebugReq.getMode()) ? ExecModeEnum.MANUAL.getValue()
@@ -113,7 +114,13 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
     List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
         .lastExecResult(BaseContext.getSelectProjectId(), scheduleBatchId);
 
-    return apiCaseRecordList.stream().map(ApiCaseRecord::getId)
+    Map<Long, ApiCaseRecord> longApiCaseRecordMap = apiCaseRecordList.stream().collect(
+        Collectors.groupingBy(ApiCaseRecord::getApiTestcaseId, Collectors.collectingAndThen(
+            Collectors.maxBy(Comparator.comparing(ApiCaseRecord::getUpdateTime)),
+            opt -> opt.orElse(null)
+        )));
+
+    return longApiCaseRecordMap.values().stream().map(ApiCaseRecord::getId)
         .collect(Collectors.toList());
   }
 
@@ -126,10 +133,10 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
    * @return
    */
   @Override
-  public IPage<ApiCaseRecord> resultList(List<Long> apiCaseResultIds, Integer current,
+  public IPage<ApiCaseRecord> resultList(List<Long> ids, Integer current,
       Integer pageSize) {
     return apiCaseResultRepositoryService
-        .resultList(BaseContext.getSelectProjectId(), apiCaseResultIds, current, pageSize);
+        .resultList(BaseContext.getSelectProjectId(), ids, current, pageSize);
   }
 
   /**
@@ -144,6 +151,10 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
   public IPage<ApiCaseResultVO> getApiResultDetail(Long scheduleBatchId, Integer current,
       Integer pageSize) {
     List<Long> ids = lastExecResult(scheduleBatchId);
+
+    if (CollUtil.isEmpty(ids)) {
+      return null;
+    }
     IPage<ApiCaseRecord> apiCaseRecordIPage = resultList(ids, current, pageSize);
 
     return apiCaseRecordIPage.convert(apiCaseRecord -> {
@@ -151,16 +162,17 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
       BeanUtils.copyProperties(apiCaseRecord, apiCaseRecordVO);
 
       ApiCase apiCase = apiCaseRepository.getById(apiCaseRecord.getApiTestcaseId());
+      Map<Long, String> userInfoMap = userService.getUserListAllMap();
       List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
           .getResultChildren(BaseContext.getSelectProjectId(), scheduleBatchId,
               apiCaseRecord.getApiTestcaseId(), apiCaseRecord.getId());
-      User user = userRepository.getById(apiCase.getOwnerId());
 
-      List<ApiCaseResultVO> apiCaseRecordChildren = getApiCaseRecordChildrenCovert(
-          apiCaseRecordList, user.getName(), apiCase.getName());
+      List<ApiCaseResultVO> apiCaseRecordChildren = getApiCaseRecordChildren(
+          apiCaseRecordList, userInfoMap, apiCase.getName());
 
-      apiCaseRecordVO.setOwnerName(user.getName());
+      apiCaseRecordVO.setOwnerName(userInfoMap.get(apiCase.getOwnerId()));
       apiCaseRecordVO.setCaseName(apiCase.getName());
+      apiCaseRecordVO.setCaseType(CaseTypeEnums.API_CASE_TYPE.getDesc());
       apiCaseRecordVO.setChildren(apiCaseRecordChildren);
       return apiCaseRecordVO;
     });
@@ -170,17 +182,17 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
    * 获取用例执行结果详情 整理子集
    *
    * @param apiCaseRecordList
-   * @param ownerName
+   * @param userInfoMap
    * @param caseName
    * @return
    */
   @Override
-  public List<ApiCaseResultVO> getApiCaseRecordChildrenCovert(List<ApiCaseRecord> apiCaseRecordList,
-      String ownerName, String caseName) {
+  public List<ApiCaseResultVO> getApiCaseRecordChildren(List<ApiCaseRecord> apiCaseRecordList,
+      Map<Long, String> userInfoMap, String caseName) {
     return apiCaseRecordList.stream().map(apiCaseRecord -> {
       ApiCaseResultVO apiCaseResultVO = new ApiCaseResultVO();
       BeanUtils.copyProperties(apiCaseRecord, apiCaseResultVO);
-      apiCaseResultVO.setOwnerName(ownerName);
+      apiCaseResultVO.setOwnerName(userInfoMap.get(apiCaseRecord.getCaseOwnerId()));
       apiCaseResultVO.setCaseName(caseName);
       return apiCaseResultVO;
     }).collect(Collectors.toList());

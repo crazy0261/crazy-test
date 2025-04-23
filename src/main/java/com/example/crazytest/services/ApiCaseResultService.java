@@ -24,11 +24,13 @@ public interface ApiCaseResultService {
 
   List<Long> lastExecResult(Long scheduleBatchId);
 
-  IPage<ApiCaseRecord> resultList(List<Long> apiCaseResultIds, Integer current, Integer pageSize);
+  IPage<ApiCaseRecord> resultList(List<Long> ids, Integer current, Integer pageSize);
 
-  IPage<ApiCaseResultVO> getApiResultDetail(Long scheduleBatchId, Integer current, Integer pageSize);
+  IPage<ApiCaseResultVO> getApiResultDetail(Long scheduleBatchId, Integer current,
+      Integer pageSize);
 
-  List<ApiCaseResultVO> getApiCaseRecordChildrenCovert(List<ApiCaseRecord> apiCaseRecordList, String ownerName, String caseName);
+  List<ApiCaseResultVO> getApiCaseRecordChildren(List<ApiCaseRecord> apiCaseRecordList,
+      Map<Long, String> userInfoMap, String caseName);
 
   CaseResultCountEntity getApiCaseSuccessCount();
 

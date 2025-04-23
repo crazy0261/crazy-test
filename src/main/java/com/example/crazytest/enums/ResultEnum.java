@@ -29,6 +29,7 @@ public enum ResultEnum {
   NODE_EXEC_TIMEOUT(400, "节点执行超时 "),
   TASK_NAME_EXIST(400, "任务名称已存在"),
   ENV_INFO_NOT_NULL(400, "环境信息为空 "),
+  CASE_TYPE_NOT_EXIST(400, "类型不存在，请检查 "),
   PROCESS_CASE_NODE_NOT_SELECT_APP(400, "请在开始节点选择应用")
   ;
 

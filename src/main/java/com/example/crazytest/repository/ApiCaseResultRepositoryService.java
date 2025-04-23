@@ -24,7 +24,7 @@ public interface ApiCaseResultRepositoryService extends IService<ApiCaseRecord> 
 
   List<ApiCaseRecord> lastExecResult(Long projectId, Long scheduleBatchId);
 
-  IPage<ApiCaseRecord> resultList(Long projectId, List<Long> apiTestcaseIds, Integer current,
+  IPage<ApiCaseRecord> resultList(Long projectId, List<Long> ids, Integer current,
       Integer pageSize);
 
   List<ApiCaseRecord> getResultChildren(Long projectId, Long scheduleBatchId, Long apiTestcaseId, Long id);

@@ -43,5 +43,10 @@ public interface ProcessCaseService {
 
   String pollingQuery(Long resultId);
 
+  Map<Long,Long > getProcessCaseOwnerMap();
+
+  Map<Long,String > getProcessCaseCaseNameMap();
+
+
 
 }

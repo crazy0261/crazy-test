@@ -7,6 +7,7 @@ import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
+import com.example.crazytest.vo.ProcessCaseResultDetailVO;
 import com.example.crazytest.vo.ProcessCaseResultVO;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,15 @@ public interface ProcessCaseResultService {
   ProcessCaseResultVO getProcessCaseResult(String id);
 
   IPage<ApiCaseResultReq> getProcessCaseResultLogs(Long caseId, Integer current, Integer pageSize);
+
+  IPage<ProcessCaseResultDetailVO> getProcessCaseResultDetail(String scheduleBatchId,
+      Integer current, Integer pageSize);
+
+  List<Long> lastProcessCaseRecordIds(Long scheduleBatchId);
+
+  List<ProcessCaseResultDetailVO> getProcessCaseRecordChildren(Long projectId, Long scheduleBatchId,
+      Long caseId, Map<Long, Long> ownerMap, Map<Long, String> userMap, Long id,
+      Map<Long, String> caseNameMap);
 
 
 }

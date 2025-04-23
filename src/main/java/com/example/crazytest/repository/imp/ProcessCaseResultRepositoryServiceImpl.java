@@ -76,7 +76,41 @@ public class ProcessCaseResultRepositoryServiceImpl extends
       Integer pageSize) {
     return this.lambdaQuery()
         .eq(ProcessCaseRecord::getCaseId, caseId)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<ProcessCaseRecord> getScheduleBatchIdList(Long scheduleBatchId) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getScheduleBatchId, scheduleBatchId)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .orderByDesc(ProcessCaseRecord::getCreateTime)
+        .list();
+  }
+
+
+  @Override
+  public IPage<ProcessCaseRecord> getTaskRecordDetailList(Long scheduleBatchId,
+      List<Long> caseIds ,Integer current, Integer pageSize) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getScheduleBatchId, scheduleBatchId)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .in(ProcessCaseRecord::getCaseId, caseIds)
+        .groupBy(ProcessCaseRecord::getCaseId)
         .orderByDesc(ProcessCaseRecord::getCreateTime)
         .page(new Page<>(current, pageSize));
+  }
+
+  @Override
+  public List<ProcessCaseRecord> getProcessCaseRecordChildren(Long projectId, Long scheduleBatchId,
+      Long caseId, Long id) {
+    return this.lambdaQuery()
+        .eq(ProcessCaseRecord::getProjectId, projectId)
+        .eq(ProcessCaseRecord::getScheduleBatchId, scheduleBatchId)
+        .eq(ProcessCaseRecord::getCaseId, caseId)
+        .ne(ProcessCaseRecord::getId, id)
+        .orderByDesc(ProcessCaseRecord::getUpdateTime)
+        .list();
   }
 }

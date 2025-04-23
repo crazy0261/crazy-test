@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.User;
 import com.example.crazytest.entity.req.UserResultEntity;
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -31,4 +32,6 @@ public interface UserService {
   Boolean checkUser(String account);
 
   List<UserResultEntity> listAll();
+
+  Map<Long,String> getUserListAllMap();
 }

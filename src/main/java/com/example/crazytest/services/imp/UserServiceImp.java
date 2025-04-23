@@ -12,6 +12,7 @@ import com.example.crazytest.utils.AssertUtil;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.utils.JWTUtil;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -146,5 +147,11 @@ public class UserServiceImp implements UserService {
           BeanUtils.copyProperties(user, userResultEntity);
           return userResultEntity;
         }).collect(Collectors.toList());
+  }
+
+  @Override
+  public Map<Long, String> getUserListAllMap() {
+    List<User> userList = userRepositoryService.listAllAccount();
+    return userList.stream().collect(Collectors.toMap(User::getId, User::getName));
   }
 }

@@ -26,7 +26,13 @@ public interface ProcessCaseResultRepositoryService extends IService<ProcessCase
 
   List<ProcessCaseRecord> getProcessCaseRecordFailList(Long processId, LocalDateTime time);
 
-  IPage<ProcessCaseRecord> getProcessCaseRecordLogList(Long caseId, Integer current, Integer pageSize);
+  IPage<ProcessCaseRecord> getProcessCaseRecordLogList(Long caseId, Integer current,
+      Integer pageSize);
 
+  List<ProcessCaseRecord> getScheduleBatchIdList(Long scheduleBatchId);
 
+  IPage<ProcessCaseRecord> getTaskRecordDetailList(Long scheduleBatchId, List<Long> caseIds,
+      Integer current, Integer pageSize);
+
+  List<ProcessCaseRecord> getProcessCaseRecordChildren(Long projectId,Long scheduleBatchId,Long caseId,Long id);
 }

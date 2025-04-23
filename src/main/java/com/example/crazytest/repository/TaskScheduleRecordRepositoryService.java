@@ -17,6 +17,6 @@ public interface TaskScheduleRecordRepositoryService extends IService<TaskSchedu
 
   IPage<TaskScheduleRecord> listPage(Long projectId, Long scheduleId,Integer current, Integer pageSize);
 
-  IPage<TaskScheduleRecord> listPageResult(Long projectId,  Long scheduleId, List<Long> ids, Integer current, Integer pageSize);
+
 
 }
