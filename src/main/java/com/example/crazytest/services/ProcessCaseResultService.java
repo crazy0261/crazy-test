@@ -6,9 +6,13 @@ import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
-import com.example.crazytest.entity.req.ApiCaseResultReq;
+import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.TaskScheduleRecord;
 import com.example.crazytest.vo.ProcessCaseResultDetailVO;
+import com.example.crazytest.vo.ProcessCaseResultLogVO;
 import com.example.crazytest.vo.ProcessCaseResultVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,7 +31,7 @@ public interface ProcessCaseResultService {
 
   ProcessCaseResultVO getProcessCaseResult(String id);
 
-  IPage<ApiCaseResultReq> getProcessCaseResultLogs(Long caseId, Integer current, Integer pageSize);
+  IPage<ProcessCaseResultLogVO> getProcessCaseResultLogs(Long caseId, Integer current, Integer pageSize);
 
   IPage<ProcessCaseResultDetailVO> getProcessCaseResultDetail(String scheduleBatchId,
       Integer current, Integer pageSize);
@@ -37,6 +41,11 @@ public interface ProcessCaseResultService {
   List<ProcessCaseResultDetailVO> getProcessCaseRecordChildren(Long projectId, Long scheduleBatchId,
       Long caseId, Map<Long, Long> ownerMap, Map<Long, String> userMap, Long id,
       Map<Long, String> caseNameMap);
+
+  TaskBatchConvergeVO taskBatchConverge(TaskSchedule taskSchedule, TaskScheduleRecord taskScheduleRecords)
+      throws JsonProcessingException;
+
+  Map<String,Long> countStatusByCaseIds(List<Long> caseIds);
 
 
 }

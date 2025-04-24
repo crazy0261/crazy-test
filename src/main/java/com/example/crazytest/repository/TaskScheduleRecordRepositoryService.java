@@ -15,8 +15,9 @@ import java.util.List;
  */
 public interface TaskScheduleRecordRepositoryService extends IService<TaskScheduleRecord> {
 
-  IPage<TaskScheduleRecord> listPage(Long projectId, Long scheduleId,Integer current, Integer pageSize);
+  IPage<TaskScheduleRecord> listPage(Long projectId, Long scheduleId, Integer current, Integer pageSize);
 
+  TaskScheduleRecord listByScheduleBatch(Long scheduleId, Long scheduleBatchId);
 
 
 }

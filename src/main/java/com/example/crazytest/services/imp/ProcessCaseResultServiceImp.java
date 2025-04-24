@@ -4,13 +4,16 @@ import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.config.ExecutionProcessContext;
+import com.example.crazytest.convert.ApiCaseConvert;
 import com.example.crazytest.convert.ProcessCaseNodeResultCovert;
+import com.example.crazytest.convert.TaskBatchConvergeCovert;
 import com.example.crazytest.convert.mapArrayConvert;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.Node;
 import com.example.crazytest.entity.ProcessCase;
 import com.example.crazytest.entity.ProcessCaseRecord;
-import com.example.crazytest.entity.req.ApiCaseResultReq;
+import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.TaskScheduleRecord;
 import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ExecStatusEnum;
 import com.example.crazytest.repository.ProcessCaseRepositoryService;
@@ -21,7 +24,10 @@ import com.example.crazytest.services.ProcessCaseService;
 import com.example.crazytest.services.UserService;
 import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ProcessCaseResultDetailVO;
+import com.example.crazytest.vo.ProcessCaseResultLogVO;
 import com.example.crazytest.vo.ProcessCaseResultVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +63,9 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
 
   @Autowired
   UserService userService;
+
+  @Autowired
+  ApiCaseConvert apiCaseConvert;
 
   @Override
   public void save(ProcessCase processCase, ExecutionProcessContext context) {
@@ -153,18 +162,26 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
     return processCaseResult;
   }
 
+  /**
+   * 查询用例执行结果日志
+   *
+   * @param caseId
+   * @param current
+   * @param pageSize
+   * @return
+   */
   @Override
-  public IPage<ApiCaseResultReq> getProcessCaseResultLogs(Long caseId, Integer current,
+  public IPage<ProcessCaseResultLogVO> getProcessCaseResultLogs(Long caseId, Integer current,
       Integer pageSize) {
     IPage<ProcessCaseRecord> page = repositoryService
         .getProcessCaseRecordLogList(caseId, current, pageSize);
     return page.convert(processCaseRecord -> {
-      ApiCaseResultReq apiCaseResultReq = new ApiCaseResultReq();
-      apiCaseResultReq.setId(processCaseRecord.getId());
-      apiCaseResultReq.setScheduleBatchId(processCaseRecord.getScheduleBatchId());
-      apiCaseResultReq.setStatus(processCaseRecord.getStatus());
-      apiCaseResultReq.setCreateTime(processCaseRecord.getCreateTime());
-      return apiCaseResultReq;
+      ProcessCaseResultLogVO processCaseResultLog = new ProcessCaseResultLogVO();
+      processCaseResultLog.setId(processCaseRecord.getId().toString());
+      processCaseResultLog.setScheduleBatchId(processCaseRecord.getScheduleBatchId());
+      processCaseResultLog.setStatus(processCaseRecord.getStatus());
+      processCaseResultLog.setCreateTime(processCaseRecord.getCreateTime());
+      return processCaseResultLog;
     });
   }
 
@@ -203,6 +220,12 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
     });
   }
 
+  /**
+   * 获取用例执行结果详情
+   *
+   * @param scheduleBatchId
+   * @return
+   */
   @Override
   public List<Long> lastProcessCaseRecordIds(Long scheduleBatchId) {
     List<ProcessCaseRecord> processCaseRecords = repositoryService
@@ -215,10 +238,20 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
         )));
     return longApiCaseRecordMap.values().stream().map(ProcessCaseRecord::getId)
         .collect(Collectors.toList());
-
-
   }
 
+  /**
+   * 获取用例执行结果详情
+   *
+   * @param projectId
+   * @param scheduleBatchId
+   * @param caseId
+   * @param ownerMap
+   * @param userMap
+   * @param id
+   * @param caseNameMap
+   * @return
+   */
   @Override
   public List<ProcessCaseResultDetailVO> getProcessCaseRecordChildren(Long projectId,
       Long scheduleBatchId, Long caseId, Map<Long, Long> ownerMap, Map<Long, String> userMap,
@@ -235,5 +268,38 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
           processCaseResultDetailVO.setCaseName(caseNameMap.get(processCaseRecord.getCaseId()));
           return processCaseResultDetailVO;
         }).collect(Collectors.toList());
+  }
+
+  /**
+   * 任务批量结果统计
+   *
+   * @param taskSchedule
+   * @param taskScheduleRecords
+   * @return
+   * @throws JsonProcessingException
+   */
+  @Override
+  public TaskBatchConvergeVO taskBatchConverge(TaskSchedule taskSchedule,
+      TaskScheduleRecord taskScheduleRecords) throws JsonProcessingException {
+    String caseList = taskSchedule.getTestcaseList();
+    List<Long> caseIds = apiCaseConvert.apiCaseIdTypeConvert(caseList);
+    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds);
+
+    return TaskBatchConvergeCovert
+        .taskBatchConverge(taskSchedule, taskScheduleRecords, countStatusByCaseIds);
+  }
+
+
+  /**
+   * 根据用例id统计用例执行结果
+   *
+   * @param caseIds
+   * @return
+   */
+  @Override
+  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds) {
+    List<ProcessCaseRecord> apiCaseRecordList = repositoryService.getCountStatusByCaseIds(caseIds);
+    return apiCaseRecordList.stream().collect(Collectors.groupingBy(ProcessCaseRecord::getStatus,
+        Collectors.mapping(ProcessCaseRecord::getStatus, Collectors.counting())));
   }
 }

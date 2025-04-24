@@ -4,10 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.example.crazytest.convert.ApiCaseConvert;
+import com.example.crazytest.convert.TaskBatchConvergeCovert;
 import com.example.crazytest.entity.ApiCase;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
 import com.example.crazytest.entity.EnvConfig;
+import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.TaskScheduleRecord;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.enums.CaseTypeEnums;
 import com.example.crazytest.enums.ExecModeEnum;
@@ -22,6 +26,8 @@ import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ApiCaseResultVO;
 import com.example.crazytest.vo.AssertResultVo;
 import com.example.crazytest.vo.ResultApiVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +37,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 /**
@@ -54,6 +61,10 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
   @Autowired
   EnvConfigRepositoryService envConfigRepositoryService;
+
+  @Lazy
+  @Autowired
+  ApiCaseConvert caseConvert;
 
   @Override
   public ApiCaseRecord queryById(Long id) {
@@ -276,4 +287,39 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
     return recordsByCaseId.values().stream().filter(Optional::isPresent)
         .map(Optional::get).filter(filterCondition).count();
   }
+
+  /**
+   * 任务批量统计
+   *
+   * @param taskSchedule
+   * @param taskScheduleRecords
+   * @return
+   */
+  @Override
+  public TaskBatchConvergeVO taskBatchConverge(TaskSchedule taskSchedule,
+      TaskScheduleRecord taskScheduleRecords)
+      throws JsonProcessingException {
+
+    String testcaseList = taskSchedule.getTestcaseList();
+    List<Long> caseIds = caseConvert.apiCaseIdTypeConvert(testcaseList);
+    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds);
+
+    return TaskBatchConvergeCovert
+        .taskBatchConverge(taskSchedule, taskScheduleRecords, countStatusByCaseIds);
+  }
+
+  /**
+   * 根据用例ID统计状态数量
+   * @param caseIds
+   * @return
+   */
+  @Override
+  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds) {
+    List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
+        .getCountStatusByCaseIds(caseIds);
+    return apiCaseRecordList.stream().collect(Collectors.groupingBy(ApiCaseRecord::getStatus,
+        Collectors.mapping(ApiCaseRecord::getStatus, Collectors.counting())));
+  }
+
+
 }

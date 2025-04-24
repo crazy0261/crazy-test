@@ -77,6 +77,7 @@ public class ProcessCaseResultRepositoryServiceImpl extends
     return this.lambdaQuery()
         .eq(ProcessCaseRecord::getCaseId, caseId)
         .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
+        .orderByDesc(ProcessCaseRecord::getCreateTime)
         .page(new Page<>(current, pageSize));
   }
 
@@ -111,6 +112,14 @@ public class ProcessCaseResultRepositoryServiceImpl extends
         .eq(ProcessCaseRecord::getCaseId, caseId)
         .ne(ProcessCaseRecord::getId, id)
         .orderByDesc(ProcessCaseRecord::getUpdateTime)
+        .list();
+  }
+
+  @Override
+  public List<ProcessCaseRecord> getCountStatusByCaseIds(List<Long> caseIds) {
+    return this.lambdaQuery()
+        .in(ProcessCaseRecord::getCaseId, caseIds)
+        .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
         .list();
   }
 }

@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 public class CUrlUtil {
 
+  private CUrlUtil(){}
+
   public static Map<String, Object> parse(String curlCommand) {
     Map<String, Object> result = new HashMap<>();
     List<String> headerFilters = Arrays.asList(

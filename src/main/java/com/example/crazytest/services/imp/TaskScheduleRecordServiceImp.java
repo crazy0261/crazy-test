@@ -15,7 +15,9 @@ import com.example.crazytest.utils.BaseContext;
 import com.example.crazytest.vo.ApiCaseResultVO;
 import com.example.crazytest.vo.CaseResultDetailVO;
 import com.example.crazytest.vo.ProcessCaseResultDetailVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
 import com.example.crazytest.vo.TaskScheduleRecordVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Objects;
 import java.util.Optional;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +49,14 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
   @Autowired
   ProcessCaseResultService processCaseResultService;
 
+  /**
+   * 任务记录列表
+   *
+   * @param scheduleId
+   * @param current
+   * @param pageSize
+   * @return
+   */
   @Override
   public IPage<TaskScheduleRecordVO> listPage(Long scheduleId, Integer current, Integer pageSize) {
     IPage<TaskScheduleRecord> page = taskScheduleRecordRepositoryService
@@ -66,6 +76,15 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
     });
   }
 
+  /**
+   * 批次任务用例详情列表
+   *
+   * @param scheduleId
+   * @param scheduleBatchId
+   * @param current
+   * @param pageSize
+   * @return
+   */
   @Override
   public CaseResultDetailVO scheduleBatchList(Long scheduleId, String scheduleBatchId,
       Integer current, Integer pageSize) {
@@ -87,6 +106,28 @@ public class TaskScheduleRecordServiceImp implements TaskScheduleRecordService {
       return caseResult;
     }
     return caseResult;
+  }
+
+  /**
+   * 任务批次聚合
+   *
+   * @param scheduleId
+   * @param scheduleBatchId
+   * @return
+   */
+  @Override
+  public TaskBatchConvergeVO taskBatchConverge(Long scheduleId, String scheduleBatchId)
+      throws JsonProcessingException {
+    Long scheduleBatch = Long.valueOf(scheduleBatchId);
+    TaskSchedule taskSchedule = taskScheduleRepositoryService.getById(scheduleId);
+    TaskScheduleRecord taskScheduleRecords = taskScheduleRecordRepositoryService
+        .listByScheduleBatch(scheduleId, scheduleBatch);
+
+    if (Objects.equals(CaseTypeEnums.API_CASE_TYPE.getType(), taskSchedule.getTestcaseType())) {
+      return apiCaseResultService.taskBatchConverge(taskSchedule, taskScheduleRecords);
+    } else {
+      return processCaseResultService.taskBatchConverge(taskSchedule, taskScheduleRecords);
+    }
   }
 
 }

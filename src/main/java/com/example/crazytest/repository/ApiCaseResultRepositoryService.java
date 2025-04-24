@@ -33,5 +33,7 @@ public interface ApiCaseResultRepositoryService extends IService<ApiCaseRecord> 
 
   List<ApiCaseRecord> getApiCaseFailed(Long projectId, LocalDateTime time);
 
+  List<ApiCaseRecord> getCountStatusByCaseIds(List<Long> caseIds);
+
 
 }

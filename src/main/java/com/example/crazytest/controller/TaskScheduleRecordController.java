@@ -4,8 +4,9 @@ package com.example.crazytest.controller;
 import com.example.crazytest.services.TaskScheduleRecordService;
 import com.example.crazytest.utils.Result;
 import com.example.crazytest.vo.CaseResultDetailVO;
-import com.example.crazytest.vo.ProcessCaseResultDetailVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
 import com.example.crazytest.vo.TaskScheduleRecordVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -49,7 +50,18 @@ public class TaskScheduleRecordController {
       @RequestParam(value = "scheduleBatchId") String scheduleBatchId,
       @RequestParam(name = "current", required = false, defaultValue = "1") Integer current,
       @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
-    return Result.success(taskScheduleRecordService.scheduleBatchList(scheduleId,scheduleBatchId, current, pageSize));
+    return Result.success(taskScheduleRecordService
+        .scheduleBatchList(scheduleId, scheduleBatchId, current, pageSize));
+  }
+
+  @GetMapping("/batch/converge")
+  @Operation(summary = "批次任务用例详情统计")
+  public Result<TaskBatchConvergeVO> taskBatchConverge(
+      @RequestParam(value = "scheduleId") Long scheduleId,
+      @RequestParam(value = "scheduleBatchId") String scheduleBatchId)
+      throws JsonProcessingException {
+    return Result.success(taskScheduleRecordService.taskBatchConverge(scheduleId, scheduleBatchId));
+
   }
 
 }

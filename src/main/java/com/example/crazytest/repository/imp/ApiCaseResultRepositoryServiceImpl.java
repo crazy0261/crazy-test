@@ -99,4 +99,12 @@ public class ApiCaseResultRepositoryServiceImpl extends
         .orderByAsc(ApiCaseRecord::getCreateTime)
         .list();
   }
+
+  @Override
+  public List<ApiCaseRecord> getCountStatusByCaseIds(List<Long> caseIds) {
+    return this.lambdaQuery()
+        .in(ApiCaseRecord::getApiTestcaseId, caseIds)
+        .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
+        .list();
+  }
 }

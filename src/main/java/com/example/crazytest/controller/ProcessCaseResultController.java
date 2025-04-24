@@ -2,9 +2,9 @@ package com.example.crazytest.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.services.ProcessCaseResultService;
 import com.example.crazytest.utils.Result;
+import com.example.crazytest.vo.ProcessCaseResultLogVO;
 import com.example.crazytest.vo.ProcessCaseResultVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,11 +40,11 @@ public class ProcessCaseResultController {
 
   @GetMapping("/log/list")
   @Operation(summary = "查询用例执行日志")
-  public Result<List<ApiCaseResultReq>> logList(
+  public Result<List<ProcessCaseResultLogVO>> logList(
       @RequestParam(value = "caseId", required = true) Long caseId,
       @RequestParam(value = "current", required = true) Integer current,
       @RequestParam(value = "pageSize", required = true) Integer pageSize) {
-    IPage<ApiCaseResultReq> page = processCaseService
+    IPage<ProcessCaseResultLogVO> page = processCaseService
         .getProcessCaseResultLogs(caseId, current, pageSize);
     return Result.success(page.getRecords(), page.getTotal());
 

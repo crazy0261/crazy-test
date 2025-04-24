@@ -34,5 +34,14 @@ public class TaskScheduleRecordRepositoryServiceImpl extends
         .page(new Page<>(current, pageSize));
   }
 
+  @Override
+  public TaskScheduleRecord listByScheduleBatch(Long scheduleId, Long scheduleBatchId) {
+    return this.lambdaQuery()
+        .eq(TaskScheduleRecord::getScheduleId, scheduleId)
+        .eq(TaskScheduleRecord::getScheduleBatchId, scheduleBatchId)
+        .orderByDesc(TaskScheduleRecord::getUpdateTime)
+        .one();
+  }
+
 
 }

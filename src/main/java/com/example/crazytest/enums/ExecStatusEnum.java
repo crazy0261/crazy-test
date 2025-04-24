@@ -8,7 +8,8 @@ public enum ExecStatusEnum {
   RUNNING("gray", "执行中"),
   SUCCESS("green", "成功"),
   FAILED("red", "失败"),
-  TIMEOUT("orange", "超时");
+  TIMEOUT("orange", "超时"),
+  IGNORE("blue", "忽略");
 
   private final String color;
   private final String desc;

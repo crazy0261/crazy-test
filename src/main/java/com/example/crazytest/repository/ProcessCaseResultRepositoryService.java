@@ -35,4 +35,6 @@ public interface ProcessCaseResultRepositoryService extends IService<ProcessCase
       Integer current, Integer pageSize);
 
   List<ProcessCaseRecord> getProcessCaseRecordChildren(Long projectId,Long scheduleBatchId,Long caseId,Long id);
+
+  List<ProcessCaseRecord> getCountStatusByCaseIds(List<Long> caseIds);
 }

@@ -3,10 +3,14 @@ package com.example.crazytest.services;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.crazytest.entity.ApiCaseRecord;
 import com.example.crazytest.entity.CaseResultCountEntity;
+import com.example.crazytest.entity.TaskSchedule;
+import com.example.crazytest.entity.TaskScheduleRecord;
 import com.example.crazytest.entity.req.ApiDebugReq;
 import com.example.crazytest.entity.req.ApiCaseResultReq;
 import com.example.crazytest.vo.ApiCaseResultVO;
 import com.example.crazytest.vo.ResultApiVO;
+import com.example.crazytest.vo.TaskBatchConvergeVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,4 +43,9 @@ public interface ApiCaseResultService {
   Optional<ApiCaseRecord> getLatestRecord(List<ApiCaseRecord> records);
 
   <T> long countByStatus(Map<Long, Optional<T>> recordsByCaseId, Predicate<T> filterCondition);
+
+  TaskBatchConvergeVO taskBatchConverge(TaskSchedule taskSchedule, TaskScheduleRecord taskScheduleRecords)
+      throws JsonProcessingException;
+
+  Map<String,Long> countStatusByCaseIds(List<Long> caseIds);
 }
