@@ -283,7 +283,7 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
       TaskScheduleRecord taskScheduleRecords) throws JsonProcessingException {
     String caseList = taskSchedule.getTestcaseList();
     List<Long> caseIds = apiCaseConvert.apiCaseIdTypeConvert(caseList);
-    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds);
+    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds,taskScheduleRecords.getScheduleBatchId());
 
     return TaskBatchConvergeCovert
         .taskBatchConverge(taskSchedule, taskScheduleRecords, countStatusByCaseIds);
@@ -297,8 +297,8 @@ public class ProcessCaseResultServiceImp implements ProcessCaseResultService {
    * @return
    */
   @Override
-  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds) {
-    List<ProcessCaseRecord> apiCaseRecordList = repositoryService.getCountStatusByCaseIds(caseIds);
+  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds,Long scheduleBatchId) {
+    List<ProcessCaseRecord> apiCaseRecordList = repositoryService.getCountStatusByCaseIds(caseIds,scheduleBatchId);
     return apiCaseRecordList.stream().collect(Collectors.groupingBy(ProcessCaseRecord::getStatus,
         Collectors.mapping(ProcessCaseRecord::getStatus, Collectors.counting())));
   }
