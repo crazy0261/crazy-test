@@ -101,9 +101,10 @@ public class ApiCaseResultRepositoryServiceImpl extends
   }
 
   @Override
-  public List<ApiCaseRecord> getCountStatusByCaseIds(List<Long> caseIds) {
+  public List<ApiCaseRecord> getCountStatusByCaseIds(List<Long> caseIds,Long scheduleBatchId) {
     return this.lambdaQuery()
         .in(ApiCaseRecord::getApiTestcaseId, caseIds)
+        .eq(ApiCaseRecord::getScheduleBatchId, scheduleBatchId)
         .eq(ApiCaseRecord::getIsDelete, Boolean.FALSE)
         .list();
   }

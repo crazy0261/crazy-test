@@ -116,9 +116,10 @@ public class ProcessCaseResultRepositoryServiceImpl extends
   }
 
   @Override
-  public List<ProcessCaseRecord> getCountStatusByCaseIds(List<Long> caseIds) {
+  public List<ProcessCaseRecord> getCountStatusByCaseIds(List<Long> caseIds,Long scheduleBatchId) {
     return this.lambdaQuery()
         .in(ProcessCaseRecord::getCaseId, caseIds)
+        .eq(ProcessCaseRecord::getScheduleBatchId, scheduleBatchId)
         .eq(ProcessCaseRecord::getIsDelete, Boolean.FALSE)
         .list();
   }

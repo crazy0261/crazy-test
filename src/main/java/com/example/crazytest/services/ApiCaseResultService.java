@@ -47,5 +47,5 @@ public interface ApiCaseResultService {
   TaskBatchConvergeVO taskBatchConverge(TaskSchedule taskSchedule, TaskScheduleRecord taskScheduleRecords)
       throws JsonProcessingException;
 
-  Map<String,Long> countStatusByCaseIds(List<Long> caseIds);
+  Map<String,Long> countStatusByCaseIds(List<Long> caseIds,Long scheduleBatchId);
 }

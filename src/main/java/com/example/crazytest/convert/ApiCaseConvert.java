@@ -79,7 +79,6 @@ public class ApiCaseConvert {
     taskScheduleRecord.setTestcaseList(taskSchedule.getTestcaseList());
 
     taskScheduleRecordRepositoryService.saveOrUpdate(taskScheduleRecord);
-
   }
 
 }

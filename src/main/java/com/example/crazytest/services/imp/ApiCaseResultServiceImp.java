@@ -302,7 +302,7 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
 
     String testcaseList = taskSchedule.getTestcaseList();
     List<Long> caseIds = caseConvert.apiCaseIdTypeConvert(testcaseList);
-    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds);
+    Map<String, Long> countStatusByCaseIds = countStatusByCaseIds(caseIds,taskScheduleRecords.getScheduleBatchId());
 
     return TaskBatchConvergeCovert
         .taskBatchConverge(taskSchedule, taskScheduleRecords, countStatusByCaseIds);
@@ -314,12 +314,10 @@ public class ApiCaseResultServiceImp implements ApiCaseResultService {
    * @return
    */
   @Override
-  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds) {
+  public Map<String, Long> countStatusByCaseIds(List<Long> caseIds,Long scheduleBatchId) {
     List<ApiCaseRecord> apiCaseRecordList = apiCaseResultRepositoryService
-        .getCountStatusByCaseIds(caseIds);
+        .getCountStatusByCaseIds(caseIds,scheduleBatchId);
     return apiCaseRecordList.stream().collect(Collectors.groupingBy(ApiCaseRecord::getStatus,
         Collectors.mapping(ApiCaseRecord::getStatus, Collectors.counting())));
   }
-
-
 }
